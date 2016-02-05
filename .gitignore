@@ -34,3 +34,7 @@ node_modules
 
 # Editor
 *.sublime-*
+
+# Build with gulp
+js/
+css/
