@@ -14,6 +14,8 @@ And run below gulp task:
 gulp run
 ```
 
+(or `gulp.bat run` on Windows)
+
 ### Run Electron directly
 
 Run `electron.bat` or `./node_modules/.bin/electron.cmd .` from console for executing mdSlide on Windows.
