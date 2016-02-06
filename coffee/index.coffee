@@ -12,7 +12,9 @@ require 'codemirror/mode/gfm/gfm'
 require 'codemirror/addon/edit/continuelist'
 
 $ ->
-  editor = $('#editor')[0]
+  editor  = $('#editor')[0]
+  preview = $('#preview')[0]
+
   editorCm = CodeMirror.fromTextArea editor,
     mode: 'gfm'
     theme: 'base16-light'
@@ -23,4 +25,4 @@ $ ->
       Enter: 'newlineAndIndentContinueMarkdownList'
 
   editorCm.on 'change', (cm, chg) ->
-    $('#preview').html Markdown.parse(cm.getValue())
+    preview.send 'render', Markdown.parse(cm.getValue())
