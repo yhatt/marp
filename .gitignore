@@ -35,6 +35,9 @@ node_modules
 # Editor
 *.sublime-*
 
+# Sublime gulp
+.sublime-gulp.cache
+
 # Build with gulp
 js/
 css/

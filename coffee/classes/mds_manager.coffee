@@ -8,7 +8,6 @@ module.exports = class MdsManager
 
   windows: new Map
   window_states: new Map
-  events: {}
 
   constructor: ->
     ipc.on 'MdsRendererRequestAccept', @onRequestedAccept
@@ -38,15 +37,12 @@ module.exports = class MdsManager
           send_target.push(id) if state == @WINDOW_ACCEPTED
 
       else if target.to?
-        tos = target.to
-        tos = [target.to] if type_is("Number", target.to)
-
+        tos = if type_is("Number", target.to) then [target.to] else target.to
         for t in tos
-          if @window_states.get(t) == @WINDOW_ACCEPTED
-            send_target.push t
+          send_target.push t if @window_states.get(t) == @WINDOW_ACCEPTED
 
       else
-        @windows.get(target.from)._fire_manager_event evt, args...
+        @windows.get(target.from).trigger evt, args...
 
       for wid in send_target
         w = @windows.get(wid)?.browserWindow?.webContents

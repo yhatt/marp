@@ -14,5 +14,6 @@ $ ->
     theme: 'base16-light'
     lineWrapping: true
     lineNumbers: false
+    dragDrop: false
     extraKeys:
       Enter: 'newlineAndIndentContinueMarkdownList'

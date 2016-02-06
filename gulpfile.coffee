@@ -1,4 +1,4 @@
-gulp = require('gulp')
+module.exports = gulp = require('gulp')
 $ = do require('gulp-load-plugins')
 
 gulp.task 'compile', ['compile:coffee', 'compile:sass']
