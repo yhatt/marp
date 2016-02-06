@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "codemirror": "^5.11.0",
+    "extend": "^3.0.0",
     "github-markdown-css": "^2.2.1",
     "highlight.js": "^9.1.0",
     "jquery": "^2.2.0",
