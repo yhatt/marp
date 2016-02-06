@@ -5,6 +5,7 @@ MdsManager     = new ManagerClass
 
 module.exports = class MdsWindow
   browserWindow: null
+  events: {}
 
   constructor: (options) ->
     @browserWindow = do =>
@@ -24,8 +25,10 @@ module.exports = class MdsWindow
     @_opening = !!state
 
     if @_opening
-      MdsManager.addWindow @_window_id, @browserWindow
+      MdsManager.addWindow @_window_id, @
     else
       MdsManager.removeWindow @_window_id
 
     return @_opening
+
+  _fire_manager_event: (evt, args...) => @events[evt]?.apply(@, args)

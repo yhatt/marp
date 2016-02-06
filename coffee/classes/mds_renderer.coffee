@@ -19,6 +19,7 @@ module.exports = class MdsRenderer
   on: (evt, func) =>
     @events[evt] = [] unless @events[evt]?
     @events[evt].push func
+    return @
 
   sendToMain:       (evt, args...) => @send evt, null, args...
   sendToAll:        (evt, args...) => @send evt, '*',  args...
