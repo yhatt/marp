@@ -3,6 +3,7 @@ ipc = require('electron').ipcRenderer
 module.exports = class MdsRenderer
   id: null
   _accepted: false
+
   events: {}
 
   constructor: ->

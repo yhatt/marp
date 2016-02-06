@@ -1,7 +1,7 @@
-ManagerClass   = require './mds_manager'
+clsMdsManager  = require './mds_manager'
 BrowserWindow  = require 'browser-window'
 extend         = require 'extend'
-MdsManager     = new ManagerClass
+MdsManager     = new clsMdsManager
 
 module.exports = class MdsWindow
   browserWindow: null
@@ -14,21 +14,21 @@ module.exports = class MdsWindow
       bw.loadUrl "file://#{__dirname}/../../index.html##{@_window_id}"
       bw.on 'closed', =>
         @browserWindow = null
-        @setOpening false
+        @_setIsOpen false
 
-    @setOpening true
+    @_setIsOpen true
 
   trigger: (evt, args...) => @events[evt]?.apply(@, args)
 
   events: {}
 
-  getOpening: => @_opening
-  setOpening: (state) =>
-    @_opening = !!state
+  isOpen: => @_isOpen
+  _setIsOpen: (state) =>
+    @_isOpen = !!state
 
-    if @_opening
+    if @_isOpen
       MdsManager.addWindow @_window_id, @
     else
       MdsManager.removeWindow @_window_id
 
-    return @_opening
+    return @_isOpen
