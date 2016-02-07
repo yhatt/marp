@@ -27,7 +27,7 @@ foobar
 foobar
 ```
 
-> ***Notice***: Ruler is not display in mdSlide.
+> *Notice: Ruler is not display in mdSlide.*
 
 ---
 
