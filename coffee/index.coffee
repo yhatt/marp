@@ -26,3 +26,15 @@ $ ->
 
   editorCm.on 'change', (cm, chg) ->
     preview.send 'render', cm.getValue()
+
+  # Publish PDF
+  $('#export_to_pdf').click ->
+    MdsRenderer.sendToMain 'exportPdfDialog'
+
+  MdsRenderer.on 'publishPdf', (fname) ->
+    preview.printToPDF
+      marginsType: 1
+      pageSize: 'A4'
+      printBackground: true
+      landscape: true
+    , (err, data) -> MdsRenderer.sendToMain 'saveData', fname, data unless err
