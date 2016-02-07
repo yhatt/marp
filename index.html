@@ -6,7 +6,6 @@
     <script>window.jQuery = window.$ = require('jquery');</script>
 
     <link rel="stylesheet" href="node_modules/photon/dist/css/photon.css" />
-    <link rel="stylesheet" href="node_modules/codemirror/theme/base16-light.css" />
     <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css" />
     <link rel="stylesheet" href="css/index.css" />
   </head>
@@ -15,6 +14,24 @@
     <div class="window">
       <div class="window-content">
         <div class="pane-group">
+          <!-- TODO: Slide preview pane
+          <div class="pane-sm sidebar">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <div class="media-body">
+                  <strong>List item title</strong>
+                  <p>Lorem ipsum dolor sit amet.</p>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="media-body">
+                  <strong>List item title</strong>
+                  <p>Lorem ipsum dolor sit amet.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          -->
           <div class="pane markdown">
             <textarea id="editor" wrap="soft"></textarea>
           </div>
@@ -23,6 +40,16 @@
           </div>
         </div>
       </div>
+      <footer class="toolbar toolbar-footer">
+        <div class="toolbar-actions">
+          <button class="btn btn-default pull-right" onclick="$('#preview')[0].reload();">
+            Refresh
+          </button>
+          <button class="btn btn-default pull-right" onclick="$('#preview')[0].openDevTools();">
+            Open MD Dev Tool
+          </button>
+        </div>
+      </footer>
     </div>
   </body>
 

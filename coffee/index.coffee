@@ -2,9 +2,6 @@ clsMdsRenderer = require './js/classes/mds_renderer'
 MdsRenderer    = new clsMdsRenderer
 MdsRenderer.requestAccept()
 
-clsMdsMarkdown = require './js/classes/mds_markdown'
-Markdown       = new clsMdsMarkdown
-
 CodeMirror = require 'codemirror'
 require 'codemirror/mode/xml/xml'
 require 'codemirror/mode/markdown/markdown'
@@ -15,9 +12,12 @@ $ ->
   editor  = $('#editor')[0]
   preview = $('#preview')[0]
 
+  $(preview).on 'ipc-message', (event) ->
+    console.log event.originalEvent.channel
+
   editorCm = CodeMirror.fromTextArea editor,
     mode: 'gfm'
-    theme: 'base16-light'
+    theme: 'mdslide'
     lineWrapping: true
     lineNumbers: false
     dragDrop: false
@@ -25,4 +25,4 @@ $ ->
       Enter: 'newlineAndIndentContinueMarkdownList'
 
   editorCm.on 'change', (cm, chg) ->
-    preview.send 'render', Markdown.parse(cm.getValue())
+    preview.send 'render', cm.getValue()

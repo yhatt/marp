@@ -1,0 +1,95 @@
+// ===== Slide mixins =====
+
+=body-markdown-mode
+  @media not print
+    body:not(.slide-view)
+      @content
+
+=body-slide-mode
+  body.slide-view
+    @content
+
+  @media print
+    body
+      @content
+
+=body-slide-preview
+  @media not print
+    body.slide-view
+      @content
+
+// ===== Slide CSS common =====
+
+$slideWidth: 297mm
+$slideHeight: 210mm
+$previewMargin: 20px
+
+html, body
+  height: 100%
+
+body
+  margin: 0
+
+#container, .slide_wrapper, .slide
+  box-sizing: border-box
+
+#slide-size
+  box-sizing: border-box
+  width: $slideWidth
+  height: $slideHeight
+  padding: $previewMargin
+  display: none
+
++body-markdown-mode
+  #container
+    padding: 30px 20px
+
++body-slide-mode
+  #container
+    padding: 0
+
+  .slide_wrapper
+    background: #fff
+    position: relative
+    width: $slideWidth
+    height: $slideHeight
+    overflow: hidden
+    page-break-after: always;
+
+    > .slide
+      position: absolute
+      left: 0
+      right: 0
+      top: 50%
+      box-sizing: border-box
+      width: $slideWidth
+      padding: 0 ($slideWidth * 0.07)
+      transform-origin: 0 0
+      transform: translateY(-50%)
+
+      > :first-child
+        margin-top: 0
+
+      > :last-child
+        margin-bottom: 0
+
++body-slide-preview
+  background: #202020
+
+  .slide_wrapper
+    border: 1px solid #000
+    box-shadow: 0 10px 30px #000
+
+  &.list
+    #container
+      padding: $previewMargin 0
+
+    .slide_wrapper
+      margin: $previewMargin auto 0 auto
+
+  &.screen
+    .slide_wrapper
+      position: absolute
+      left: 50%
+      top: 50%
+      transform: translate(-50%, -50%)
