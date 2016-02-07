@@ -7,13 +7,6 @@ module.exports = class MdsMarkdown
   @slideTagOpen:  '<div class="slide_wrapper"><div class="slide">'
   @slideTagClose: '</div></div>'
 
-  @defOpts:
-    html: true
-    xhtmlOut: true
-    breaks: true
-    linkify: true
-    highlight: @defHighlighter
-
   @defHighlighter: (code, lang) ->
     if lang?
       if lang == 'text' or lang == 'plain'
@@ -25,6 +18,13 @@ module.exports = class MdsMarkdown
 
     return highlightJs.highlightAuto(code).value
 
+  @defOpts:
+    html: true
+    xhtmlOut: true
+    breaks: true
+    linkify: true
+    highlight: @defHighlighter
+
   @defPlugins:
     'markdown-it-mark': {}
     'markdown-it-emoji':
@@ -35,6 +35,7 @@ module.exports = class MdsMarkdown
     md.renderer.rules.hr    = (token, idx) => "#{MdsMarkdown.slideTagClose}#{MdsMarkdown.slideTagOpen}"
 
   @createMarkdownIt: (opts = {}, plugins = {}, after = @defAfter) =>
+    console.log @defOpts
     md = markdownIt(extend(@defOpts, opts))
 
     for plugName, plugOpts of extend(@defPlugins, plugins)
