@@ -6,7 +6,10 @@ window.jQuery = window.$ = require('jquery')
 
 # Markdown rendering
 ipc.on 'render', (e, md) ->
-  document.getElementById('markdown').innerHTML = Markdown.parse(md)
+  markdown = Markdown.parse(md)
+  document.getElementById('markdown').innerHTML = markdown.parsed
+
+  ipc.sendToHost 'rulerChanged', markdown.rulers if markdown.rulerChanged
 
 # Slize size from css
 slideSize = do ->
@@ -68,3 +71,20 @@ $(window).resize ->
   psCss.text previewStyle
 
 .trigger('resize')
+
+# Current page
+ipc.on 'currentPage', (e, page) ->
+  currentPageStyle =
+    """
+    @media not print {
+      body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})) { display: none; }
+    }
+    """
+
+  cpCss = $('#mds-currentPageStyle')
+  cpCss = $('<style id="mds-currentPageStyle"></style>').appendTo('head') if cpCss.length < 1
+  cpCss.text currentPageStyle
+
+# Mode
+ipc.on 'setClass', (e, classes) ->
+  $('body').attr 'class', classes

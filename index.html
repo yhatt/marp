@@ -24,8 +24,26 @@
       </div>
       <footer class="toolbar toolbar-footer">
         <div class="toolbar-actions">
-          <button class="btn btn-default pull-right" onclick="$('#preview')[0].openDevTools();"><span class="icon icon-cog"></span></button>
-          <button class="btn btn-positive pull-right" id="export_to_pdf">Export to PDF...</button>
+          <button class="btn btn-default pull-right" onclick="$('#preview')[0].openDevTools();"><span class="icon icon-flash"></span></button>
+          <button class="btn btn-default pull-right" id="export_to_pdf">
+            <span class="icon icon-export icon-text"></span>
+            Export PDF slide
+          </button>
+
+          <div class="btn-group pull-right" id="preview-modes">
+            <button class="btn btn-default" id="preview-mode-markdown" data-class="">
+              <span class="icon icon-pencil icon-text"></span>
+              Markdown
+            </button>
+            <button class="btn btn-default active" id="preview-mode-screen" data-class="slide-view screen">
+              <span class="icon icon-monitor icon-text"></span>
+              1:1
+            </button>
+            <button class="btn btn-default" id="preview-mode-list" data-class="slide-view list">
+              <span class="icon icon-doc-text icon-text"></span>
+              Slide list
+            </button>
+          </div>
         </div>
       </footer>
     </div>
