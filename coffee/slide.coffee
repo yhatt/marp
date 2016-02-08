@@ -51,7 +51,7 @@ $(window).resize ->
       height: #{size_obj.height}px;
     }
     body.slide-view.#{klass} .slide_wrapper > .slide {
-      transform: scale(#{size_obj.width / slideSize.width}) translateY(-50%);
+      transform: scale(#{size_obj.width / slideSize.width}) translateY(-50%) translateY(#{slideSize.height / 2}px);
     }
     """
 

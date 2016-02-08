@@ -55,23 +55,21 @@ img.emoji
     padding: 0
 
   .slide_wrapper
+    box-sizing: border-box
     background: #fff
     position: relative
     width: $slideWidth
     height: $slideHeight
     overflow: hidden
-    page-break-after: always;
+    page-break-inside: avoid
+    page-break-after: always
 
     > .slide
-      position: absolute
-      left: 0
-      right: 0
-      top: 50%
       box-sizing: border-box
       width: $slideWidth
       padding: 0 ($slideWidth * 0.07)
       transform-origin: 0 0
-      transform: translateY(-50%)
+      transform: translateY(-50%) translateY($slideHeight / 2)
 
       > :first-child
         margin-top: 0
