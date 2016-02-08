@@ -1,3 +1,4 @@
+shell          = require('electron').shell
 clsMdsRenderer = require './js/classes/mds_renderer'
 MdsRenderer    = new clsMdsRenderer
 MdsRenderer.requestAccept()
@@ -53,12 +54,27 @@ $ ->
   editorStates = new EditorStates editorCm, preview
 
   # Markdown preview
-  $(preview).on 'ipc-message', (event) ->
-    e = event.originalEvent
+  $(preview)
+    .on 'ipc-message', (event) ->
+      e = event.originalEvent
 
-    switch e.channel
-      when 'rulerChanged'
-        editorStates.refreshPage e.args[0]
+      switch e.channel
+        when 'rulerChanged'
+          editorStates.refreshPage e.args[0]
+
+    .on 'new-window', (e) ->
+      e.preventDefault()
+      shell.openExternal e.originalEvent.url
+
+    .on 'dom-ready', ->
+      will_navigate_url = null
+
+      $(preview)
+        .on 'will-navigate', (e) -> will_navigate_url = e.originalEvent.url
+        .on 'did-start-loading', (e) ->
+          preview.stop()
+          shell.openExternal will_navigate_url if will_navigate_url?
+          will_navigate_url = null
 
   # Mode
   previewButtons = $('#preview-modes [data-class]')
