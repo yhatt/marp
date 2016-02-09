@@ -4,6 +4,7 @@ MenuItem = electron.MenuItem || electron.remote.MenuItem
 isRemote = !electron.Menu?
 
 module.exports = class MdsMenu
+  @appMenu: null
   menu: new Menu()
 
   @isOSX: ->
@@ -19,7 +20,9 @@ module.exports = class MdsMenu
       @menu = Menu.buildFromTemplate(template)
 
   setAppMenu: =>
-    Menu.setApplicationMenu @menu if !isRemote
+    if !isRemote
+      MdsMenu.appMenu = @
+      Menu.setApplicationMenu MdsMenu.appMenu.menu
 
   popup: =>
     @menu.popup(electron.remote.getCurrentWindow()) if isRemote

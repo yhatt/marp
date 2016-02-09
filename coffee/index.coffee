@@ -81,12 +81,8 @@ $ ->
           shell.openExternal will_navigate_url if will_navigate_url?
           will_navigate_url = null
 
-  # Mode
-  previewButtons = $('#preview-modes [data-class]')
-  previewButtons.click ->
-    previewButtons.removeClass 'active'
-    $(this).addClass 'active'
-    preview.send 'setClass', $(this).attr('data-class')
+  # View modes
+  $('.viewmode-btn[data-viewmode]').click -> MdsRenderer.sendToMain('viewMode', $(this).attr('data-viewmode'))
 
   # Events
   MdsRenderer
@@ -106,6 +102,20 @@ $ ->
     .on 'save', (fname) ->
       MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue()
       MdsRenderer.sendToMain 'initializeState', fname
+
+    .on 'viewMode', (mode) ->
+      switch mode
+        when 'markdown'
+          editorStates.preview.send 'setClass', ''
+        when 'screen'
+          editorStates.preview.send 'setClass', 'slide-view screen'
+        when 'list'
+          editorStates.preview.send 'setClass', 'slide-view list'
+        else
+          return
+
+      $('.viewmode-btn[data-viewmode]').removeClass('active')
+        .filter("[data-viewmode='#{mode}']").addClass('active')
 
   # Initialize
   editorStates.codeMirror.focus()

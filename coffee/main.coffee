@@ -77,12 +77,15 @@ appMenuTpl = [
     submenu: [
       {
         label: 'Markdown view'
+        click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'markdown' if w
       }
       {
         label: '1:1 slide view'
+        click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'screen' if w
       }
       {
         label: 'Slide list view'
+        click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'list' if w
       }
       { type: 'separator' }
       {

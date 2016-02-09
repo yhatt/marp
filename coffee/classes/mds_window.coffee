@@ -1,4 +1,5 @@
 clsMdsManager  = require './mds_manager'
+MdsMenu        = require './mds_menu'
 BrowserWindow  = require 'browser-window'
 extend         = require 'extend'
 fs             = require 'fs'
@@ -96,6 +97,8 @@ module.exports = class MdsWindow
     setChangedStatus: (changed) ->
       @changed = !!changed
       @refreshTitle()
+
+    viewMode: (mode) -> @send 'viewMode', mode
 
   refreshTitle: =>
     @browserWindow?.setTitle "#{@options?.title || 'mdSlide'} - #{@getShortPath()}#{if @changed then ' *' else ''}"
