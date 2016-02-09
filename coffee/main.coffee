@@ -165,10 +165,10 @@ appMenu = new MdsMenu appMenuTpl, [
     click: -> app.quit()
   }
 ]
-appMenu.setAppMenu()
 
 app.on 'window-all-closed', ->
   app.quit() if process.platform != 'darwin'
 
 app.on 'ready', ->
+  appMenu.setAppMenu()
   new MdsWindow
