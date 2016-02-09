@@ -87,12 +87,22 @@ $ ->
   # Events
   MdsRenderer
     .on 'publishPdf', (fname) ->
+      editorStates.codeMirror.getInputField().blur()
+      $('body').addClass 'exporting-pdf'
+
       editorStates.preview.printToPDF
         marginsType: 1
         pageSize: 'A4'
         printBackground: true
         landscape: true
-      , (err, data) -> MdsRenderer.sendToMain 'writeFile', fname, data unless err
+      , (err, data) ->
+        unless err
+          MdsRenderer.sendToMain 'writeFile', fname, data, 'unfreeze'
+        else
+          MdsRenderer.sendToMain 'unfreeze'
+
+    .on 'unfreezed', ->
+      $('body').removeClass 'exporting-pdf'
 
     .on 'loadText', (buffer) ->
       editorStates._lockChangedStatus = true

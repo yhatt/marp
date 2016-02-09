@@ -12,6 +12,7 @@ module.exports = class MdsWindow
   browserWindow: null
   path: null
   changed: false
+  freeze: false
 
   _closeConfirmed: false
 
@@ -29,6 +30,10 @@ module.exports = class MdsWindow
         @trigger 'load', fileOpts?.buffer || '', @path
 
       bw.on 'close', (e) =>
+        if @freeze
+          e.preventDefault()
+          return
+
         if @changed and !@_closeConfirmed
           e.preventDefault()
           dialog.showMessageBox @browserWindow,
@@ -108,11 +113,13 @@ module.exports = class MdsWindow
       @browserWindow.close()
 
     exportPdfDialog: ->
+      return if @freeze
       dialog.showSaveDialog @browserWindow,
         title: 'Export to PDF...'
         filters: [{ name: 'PDF file', extensions: ['pdf'] }]
       , (fname) =>
         return unless fname?
+        @freeze = true
         @send 'publishPdf', fname
 
     initializeState: (filePath = null, changed = false) ->
@@ -125,6 +132,9 @@ module.exports = class MdsWindow
       @refreshTitle()
 
     viewMode: (mode) -> @send 'viewMode', mode
+    unfreeze: ->
+      @freeze = false
+      @send 'unfreezed'
 
   refreshTitle: =>
     @browserWindow?.setTitle "#{@options?.title || 'mdSlide'} - #{@getShortPath()}#{if @changed then ' *' else ''}"

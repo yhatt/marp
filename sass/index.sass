@@ -27,3 +27,37 @@
   color: #999
   text-shadow: 0 1px 0 #fff
   font-size: 95%
+
+#exporting-indicator
+  position: absolute
+  left: 0
+  top: 0
+  right: 0
+  bottom: 0
+  background: rgba(#eee, 0.5)
+  display: none
+  z-index: 9999
+
+  #exporting-indicator-modal
+    position: absolute
+    left: 50%
+    top: 50%
+    transform: translate(-50%, -50%)
+    padding: 20px 20px 20px 62px
+    line-height: 32px
+    background: #fff
+    box-shadow: 0 10px 30px #333
+    border-radius: 5px
+    border: 1px solid #ccc
+
+    .throbber
+      position: absolute
+      top: 20px
+      left: 20px
+
+body.exporting-pdf
+  > :not(#exporting-indicator)
+    pointer-events: none !important
+
+  #exporting-indicator
+    display: block

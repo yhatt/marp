@@ -30,7 +30,7 @@ appMenuTpl = [
       }
       { type: 'separator' }
       {
-        label: 'Export to PDF...'
+        label: 'Export to slide PDF...'
         accelerator: 'CmdOrCtrl+Shift+E'
         click: (item, w) -> w.mdsWindow.trigger 'exportPdfDialog' if w
       }
@@ -93,12 +93,6 @@ appMenuTpl = [
         accelerator: do -> if MdsMenu.isOSX() then 'Ctrl+Command+F' else 'F11'
         click: (item, focusedWindow) ->
           focusedWindow.setFullScreen !focusedWindow.isFullScreen() if focusedWindow
-      }
-      {
-        label: 'Toggle Developer Tools',
-        accelerator: 'Ctrl+Shift+I'
-        click: (item, focusedWindow) ->
-          focusedWindow.toggleDevTools() if focusedWindow
       }
     ]
   }
