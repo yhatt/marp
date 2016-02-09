@@ -12,24 +12,27 @@ require 'codemirror/addon/edit/continuelist'
 class EditorStates
   rulers: []
   currentPage: null
+  _lockChangedStatus: false
 
   constructor: (@codeMirror, @preview) ->
     @codeMirror.on 'change', (cm, chg) =>
       @preview.send 'render', cm.getValue()
+      MdsRenderer.sendToMain 'setChangedStatus', true if !@_lockChangedStatus
 
     @codeMirror.on 'cursorActivity', (cm) =>
       window.setTimeout =>
         @refreshPage()
-      , 10
+      , 5
 
     $(@preview).on 'did-finish-load', (e) =>
+      @preview.send 'currentPage', 1
       @preview.send 'render', @codeMirror.getValue()
 
   refreshPage: (rulers) =>
     @rulers = rulers if rulers?
     page    = 1
 
-    lineNumber = @codeMirror.getCursor().line
+    lineNumber = @codeMirror.getCursor().line || 0
     for rulerLine in @rulers
       page++ if rulerLine <= lineNumber
 
@@ -54,7 +57,7 @@ $ ->
   editorStates = new EditorStates editorCm, preview
 
   # Markdown preview
-  $(preview)
+  $(editorStates.preview)
     .on 'ipc-message', (event) ->
       e = event.originalEvent
 
@@ -69,7 +72,7 @@ $ ->
     .on 'dom-ready', ->
       will_navigate_url = null
 
-      $(preview)
+      $(editorStates.preview)
         .on 'will-navigate', (e) -> will_navigate_url = e.originalEvent.url
         .on 'did-start-loading', (e) ->
           preview.stop()
@@ -83,19 +86,25 @@ $ ->
     $(this).addClass 'active'
     preview.send 'setClass', $(this).attr('data-class')
 
-  # Publish PDF
-  $('#export_to_pdf').click ->
-    MdsRenderer.sendToMain 'exportPdfDialog'
+  # Events
+  MdsRenderer
+    .on 'publishPdf', (fname) ->
+      editorStates.preview.printToPDF
+        marginsType: 1
+        pageSize: 'A4'
+        printBackground: true
+        landscape: true
+      , (err, data) -> MdsRenderer.sendToMain 'writeFile', fname, data unless err
 
-  MdsRenderer.on 'publishPdf', (fname) ->
-    preview.printToPDF
-      marginsType: 1
-      pageSize: 'A4'
-      printBackground: true
-      landscape: true
-    , (err, data) -> MdsRenderer.sendToMain 'saveData', fname, data unless err
+    .on 'loadText', (buffer) ->
+      editorStates._lockChangedStatus = true
+      editorStates.codeMirror.setValue buffer
+      editorStates._lockChangedStatus = false
 
+    .on 'save', (fname) ->
+      MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue()
+      MdsRenderer.sendToMain 'initializeState', fname
 
-  # Intialize
+  # Initialize
+  editorStates.codeMirror.focus()
   editorStates.refreshPage()
-  editorCm.focus()
