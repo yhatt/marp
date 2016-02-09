@@ -1,5 +1,7 @@
 # mdSlide
 
+![mdSlide](screenshot.png)
+
 Presentation writer with markdown (Powered by Electron)
 
 ## Getting started
