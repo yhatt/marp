@@ -99,8 +99,8 @@ $ ->
       editorStates.codeMirror.setValue buffer
       editorStates._lockChangedStatus = false
 
-    .on 'save', (fname) ->
-      MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue()
+    .on 'save', (fname, triggerOnSucceeded = null) ->
+      MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue(), triggerOnSucceeded
       MdsRenderer.sendToMain 'initializeState', fname
 
     .on 'viewMode', (mode) ->

@@ -13,6 +13,8 @@ module.exports = class MdsWindow
   path: null
   changed: false
 
+  _closeConfirmed: false
+
   constructor: (fileOpts = {}, @options = {}) ->
     @path = fileOpts?.path || null
 
@@ -25,6 +27,22 @@ module.exports = class MdsWindow
       bw.webContents.on 'did-finish-load', =>
         @_windowLoaded = true
         @trigger 'load', fileOpts?.buffer || '', @path
+
+      bw.on 'close', (e) =>
+        if @changed and !@_closeConfirmed
+          e.preventDefault()
+          dialog.showMessageBox @browserWindow,
+            type: 'question'
+            buttons: ['Yes', 'No', 'Cancel']
+            title: 'mdSlide'
+            message: 'Are you sure?'
+            detail: "#{@getShortPath()} has been modified. Do you want to save the changes?"
+          , (result) =>
+            switch result
+              when 0
+                @trigger 'save', 'forceClose'
+              when 1
+                @trigger 'forceClose'
 
       bw.on 'closed', =>
         @browserWindow = null
@@ -66,8 +84,10 @@ module.exports = class MdsWindow
       @trigger 'initializeState', path
       @send 'loadText', buffer
 
-    save: -> if @path then @send('save', @path) else @trigger 'saveAs'
-    saveAs: ->
+    save: (triggerOnSucceeded = null) ->
+      if @path then @send('save', @path, triggerOnSucceeded) else @trigger('saveAs', triggerOnSucceeded)
+
+    saveAs: (triggerOnSucceeded = null) ->
       dialog.showSaveDialog @browserWindow,
         title: 'Save as...'
         filters: [
@@ -75,11 +95,17 @@ module.exports = class MdsWindow
           { name: 'Text file', extensions: ['txt'] }
           { name: 'All files', extensions: ['*'] }
         ]
-      , (fname) => @send 'save', fname if fname?
+      , (fname) => @send 'save', fname, triggerOnSucceeded if fname?
 
-    writeFile: (fileName, data) ->
-      fs.writeFile fileName, data, (err) ->
-        console.log "Write file to #{fileName}." unless err
+    writeFile: (fileName, data, triggerOnSucceeded = null) ->
+      fs.writeFile fileName, data, (err) =>
+        unless err
+          console.log "Write file to #{fileName}."
+          @trigger triggerOnSucceeded if triggerOnSucceeded?
+
+    forceClose: ->
+      @_closeConfirmed = true
+      @browserWindow.close()
 
     exportPdfDialog: ->
       dialog.showSaveDialog @browserWindow,
