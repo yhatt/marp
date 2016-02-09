@@ -40,6 +40,8 @@ class EditorStates
       @currentPage = page
       @preview.send 'currentPage', @currentPage
 
+    $('#page-indicator').text "Page #{@currentPage} / #{@rulers.length + 1}"
+
 $ ->
   editor  = $('#editor')[0]
   preview = $('#preview')[0]
