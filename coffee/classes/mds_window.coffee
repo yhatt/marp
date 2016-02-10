@@ -79,16 +79,18 @@ module.exports = class MdsWindow
 
       , (fname) =>
         return unless fname?
+        @trigger 'loadFromFile', fname[0]
 
-        fs.readFile fname[0], (err, txt) =>
-          return if err
+    loadFromFile: (fname) ->
+      fs.readFile fname, (err, txt) =>
+        return if err
 
-          if !@path and not @changed
-            @trigger 'load', txt.toString(), fname[0]
-          else
-            new MdsWindow
-              path: fname[0]
-              buffer: txt.toString()
+        if !@path and not @changed
+          @trigger 'load', txt.toString(), fname
+        else
+          new MdsWindow
+            path: fname
+            buffer: txt.toString()
 
     load: (buffer = '', path = null) ->
       @trigger 'initializeState', path

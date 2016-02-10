@@ -84,6 +84,19 @@ $ ->
   # View modes
   $('.viewmode-btn[data-viewmode]').click -> MdsRenderer.sendToMain('viewMode', $(this).attr('data-viewmode'))
 
+  # File D&D
+  $(document)
+    .on 'dragover',  -> false
+    .on 'dragleave', -> false
+    .on 'dragend',   -> false
+    .on 'drop',      (e) =>
+      e.preventDefault()
+
+      file = e.originalEvent.dataTransfer?.files?[0]?.path
+      MdsRenderer.sendToMain 'loadFromFile', file if file?
+
+      return false
+
   # Events
   MdsRenderer
     .on 'publishPdf', (fname) ->
