@@ -20,23 +20,22 @@ appMenuTpl = [
         label: 'Open...'
         accelerator: 'CmdOrCtrl+O'
         click: (item, w) ->
-          openOpts =
-            title: 'Open'
-            filters: [
-              { name: 'Markdown files', extensions: ['md', 'mdown'] }
-              { name: 'Text file', extensions: ['txt'] }
-              { name: 'All files', extensions: ['*'] }
-            ]
-            properties: ['openFile', 'createDirectory']
-
-          afterOpen = (fnames) ->
-            return unless fnames?
-            MdsWindow.loadFromFile fnames[0], w?.mdsWindow
-
-          if w?.mdsWindow?.browserWindow?
-            dialog.showOpenDialog w.mdsWindow.browserWindow, openOpts, afterOpen
-          else
-            dialog.showOpenDialog openOpts, afterOpen
+          args = [
+            {
+              title: 'Open'
+              filters: [
+                { name: 'Markdown files', extensions: ['md', 'mdown'] }
+                { name: 'Text file', extensions: ['txt'] }
+                { name: 'All files', extensions: ['*'] }
+              ]
+              properties: ['openFile', 'createDirectory']
+            }
+            (fnames) ->
+              return unless fnames?
+              MdsWindow.loadFromFile fnames[0], w?.mdsWindow
+          ]
+          args.unshift w.mdsWindow.browserWindow if w?.mdsWindow?.browserWindow?
+          dialog.showOpenDialog.apply @, args
       }
       {
         label: 'Save'
