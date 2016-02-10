@@ -190,6 +190,9 @@ app.on 'window-all-closed', ->
 app.on 'before-quit', ->
   MdsWindow.appWillQuit = true
 
+app.on 'activate', (e, hasVisibleWindows) ->
+  new MdsWindow unless hasVisibleWindows
+
 app.on 'ready', ->
   appMenu.setAppMenu()
   new MdsWindow
