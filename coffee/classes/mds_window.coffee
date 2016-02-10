@@ -100,11 +100,7 @@ module.exports = class MdsWindow
     saveAs: (triggerOnSucceeded = null) ->
       dialog.showSaveDialog @browserWindow,
         title: 'Save as...'
-        filters: [
-          { name: 'Markdown files', extensions: ['md', 'mdown'] }
-          { name: 'Text file', extensions: ['txt'] }
-          { name: 'All files', extensions: ['*'] }
-        ]
+        filters: [{ name: 'Markdown file', extensions: ['md'] }]
       , (fname) =>
         if fname?
           @send 'save', fname, triggerOnSucceeded
