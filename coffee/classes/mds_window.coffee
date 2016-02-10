@@ -10,8 +10,8 @@ module.exports = class MdsWindow
   @appWillQuit: false
 
   @defOptions:
-    width: 860
-    height: 400
+    width: 1000
+    height: 420
 
   browserWindow: null
   path: null
