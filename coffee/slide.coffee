@@ -25,8 +25,7 @@ ipc.on 'currentPage', (e, page) ->
   cpCss.text currentPageStyle
 
 # Mode
-ipc.on 'setClass', (e, classes) ->
-  $('body').attr 'class', classes
+ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
 
 # Initialize
 $ ->

@@ -30,11 +30,9 @@ module.exports = class MdsWindow
         @trigger 'load', fileOpts?.buffer || '', @path
 
       bw.on 'close', (e) =>
-        if @freeze
-          e.preventDefault()
-          return
+        return e.preventDefault() if @freeze
 
-        if @changed and !@_closeConfirmed
+        if @changed
           e.preventDefault()
           dialog.showMessageBox @browserWindow,
             type: 'question'
@@ -108,9 +106,7 @@ module.exports = class MdsWindow
           console.log "Write file to #{fileName}."
           @trigger triggerOnSucceeded if triggerOnSucceeded?
 
-    forceClose: ->
-      @_closeConfirmed = true
-      @browserWindow.close()
+    forceClose: -> @browserWindow.destroy()
 
     exportPdfDialog: ->
       return if @freeze
