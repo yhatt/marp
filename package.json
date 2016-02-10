@@ -15,6 +15,7 @@
     "electron-prebuilt": "^0.36.7",
     "gulp": "^3.9.0",
     "gulp-coffee": "^2.3.1",
+    "gulp-cssnano": "^2.1.1",
     "gulp-load-plugins": "^1.2.0",
     "gulp-plumber": "^1.0.1",
     "gulp-run-electron": "^1.2.2",
