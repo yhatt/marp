@@ -63,38 +63,28 @@ module.exports = class MdsWindow
 
     @_setIsOpen true
 
+  @loadFromFile: (fname, mdsWindow) ->
+    fs.readFile fname, (err, txt) =>
+      return if err
+
+      if mdsWindow? and mdsWindow.isBufferEmpty()
+        mdsWindow.trigger 'load', txt.toString(), fname
+      else
+        new MdsWindow
+          path: fname
+          buffer: txt.toString()
+
+  loadFromFile: (fname) => MdsWindow.loadFromFile fname, @
+
   trigger: (evt, args...) =>
     @events[evt]?.apply(@, args)
 
   events:
-    open: ->
-      dialog.showOpenDialog @browserWindow,
-        title: 'Open'
-        filters: [
-          { name: 'Markdown files', extensions: ['md', 'mdown'] }
-          { name: 'Text file', extensions: ['txt'] }
-          { name: 'All files', extensions: ['*'] }
-        ]
-        properties: ['openFile', 'createDirectory']
-
-      , (fname) =>
-        return unless fname?
-        @trigger 'loadFromFile', fname[0]
-
-    loadFromFile: (fname) ->
-      fs.readFile fname, (err, txt) =>
-        return if err
-
-        if !@path and not @changed
-          @trigger 'load', txt.toString(), fname
-        else
-          new MdsWindow
-            path: fname
-            buffer: txt.toString()
-
     load: (buffer = '', path = null) ->
       @trigger 'initializeState', path
       @send 'loadText', buffer
+
+    loadFromFile: (fname) -> @loadFromFile fname
 
     save: (triggerOnSucceeded = null) ->
       if @path then @send('save', @path, triggerOnSucceeded) else @trigger('saveAs', triggerOnSucceeded)
@@ -160,6 +150,8 @@ module.exports = class MdsWindow
       MdsManager.removeWindow @_window_id
 
     return @_isOpen
+
+  isBufferEmpty: => !@path and not @changed
 
   send: (evt, args...) =>
     return false unless @_windowLoaded and @browserWindow?

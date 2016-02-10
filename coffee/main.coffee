@@ -1,4 +1,6 @@
 app       = require 'app'
+fs        = require 'fs'
+dialog    = require('electron').dialog
 MdsWindow = require './classes/mds_window'
 MdsMenu   = require './classes/mds_menu'
 
@@ -17,7 +19,24 @@ appMenuTpl = [
       {
         label: 'Open...'
         accelerator: 'CmdOrCtrl+O'
-        click: (item, w) -> w.mdsWindow.trigger 'open' if w
+        click: (item, w) ->
+          openOpts =
+            title: 'Open'
+            filters: [
+              { name: 'Markdown files', extensions: ['md', 'mdown'] }
+              { name: 'Text file', extensions: ['txt'] }
+              { name: 'All files', extensions: ['*'] }
+            ]
+            properties: ['openFile', 'createDirectory']
+
+          afterOpen = (fnames) ->
+            return unless fnames?
+            MdsWindow.loadFromFile fnames[0], w?.mdsWindow
+
+          if w?.mdsWindow?.browserWindow?
+            dialog.showOpenDialog w.mdsWindow.browserWindow, openOpts, afterOpen
+          else
+            dialog.showOpenDialog openOpts, afterOpen
       }
       {
         label: 'Save'
@@ -91,8 +110,8 @@ appMenuTpl = [
       {
         label: 'Toggle Full Screen'
         accelerator: do -> if MdsMenu.isOSX() then 'Ctrl+Command+F' else 'F11'
-        click: (item, focusedWindow) ->
-          focusedWindow.setFullScreen !focusedWindow.isFullScreen() if focusedWindow
+        click: (item, w) ->
+          w.setFullScreen !w.isFullScreen() if w
       }
     ]
   }
