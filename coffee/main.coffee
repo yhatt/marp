@@ -42,12 +42,12 @@ appMenuTpl = [
       {
         label: 'Undo'
         accelerator: 'CmdOrCtrl+Z'
-        role: 'undo'
+        click: (item, w) -> w.mdsWindow.send 'editCommand', 'undo' if w
       }
       {
         label: 'Redo'
         accelerator: 'Shift+CmdOrCtrl+Z'
-        role: 'redo'
+        click: (item, w) -> w.mdsWindow.send 'editCommand', 'redo' if w
       }
       { type: 'separator' }
       {
@@ -68,7 +68,7 @@ appMenuTpl = [
       {
         label: 'Select All'
         accelerator: 'CmdOrCtrl+A'
-        role: 'selectall'
+        click: (item, w) -> w.mdsWindow.send 'editCommand', 'selectAll' if w
       }
     ]
   }

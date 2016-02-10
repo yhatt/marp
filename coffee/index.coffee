@@ -140,6 +140,9 @@ $ ->
       $('.viewmode-btn[data-viewmode]').removeClass('active')
         .filter("[data-viewmode='#{mode}']").addClass('active')
 
+    .on 'editCommand', (command) ->
+      editorStates.codeMirror.execCommand(command)
+
   # Initialize
   editorStates.codeMirror.focus()
   editorStates.refreshPage()
