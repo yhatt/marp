@@ -7,7 +7,11 @@ dialog         = require('electron').dialog
 MdsManager     = new clsMdsManager
 
 module.exports = class MdsWindow
-  @defOptions: {}
+  @appWillQuit: false
+
+  @defOptions:
+    width: 860
+    height: 400
 
   browserWindow: null
   path: null
@@ -30,7 +34,10 @@ module.exports = class MdsWindow
         @trigger 'load', fileOpts?.buffer || '', @path
 
       bw.on 'close', (e) =>
-        return e.preventDefault() if @freeze
+        if @freeze
+          e.preventDefault()
+          MdsWindow.appWillQuit = false
+          return
 
         if @changed
           e.preventDefault()
@@ -42,10 +49,10 @@ module.exports = class MdsWindow
             detail: "#{@getShortPath()} has been modified. Do you want to save the changes?"
           , (result) =>
             switch result
-              when 0
-                @trigger 'save', 'forceClose'
-              when 1
-                @trigger 'forceClose'
+              when 0 then @trigger 'save', 'forceClose'
+              when 1 then @trigger 'forceClose'
+              else
+                MdsWindow.appWillQuit = false
 
       bw.on 'closed', =>
         @browserWindow = null
@@ -98,13 +105,19 @@ module.exports = class MdsWindow
           { name: 'Text file', extensions: ['txt'] }
           { name: 'All files', extensions: ['*'] }
         ]
-      , (fname) => @send 'save', fname, triggerOnSucceeded if fname?
+      , (fname) =>
+        if fname?
+          @send 'save', fname, triggerOnSucceeded
+        else
+          MdsWindow.appWillQuit = false
 
     writeFile: (fileName, data, triggerOnSucceeded = null) ->
       fs.writeFile fileName, data, (err) =>
         unless err
           console.log "Write file to #{fileName}."
           @trigger triggerOnSucceeded if triggerOnSucceeded?
+        else
+          MdsWindow.appWillQuit = false
 
     forceClose: -> @browserWindow.destroy()
 

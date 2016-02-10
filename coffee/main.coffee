@@ -167,7 +167,10 @@ appMenu = new MdsMenu appMenuTpl, [
 ]
 
 app.on 'window-all-closed', ->
-  app.quit() if process.platform != 'darwin'
+  app.quit() if process.platform != 'darwin' or !!MdsWindow.appWillQuit
+
+app.on 'before-quit', ->
+  MdsWindow.appWillQuit = true
 
 app.on 'ready', ->
   appMenu.setAppMenu()
