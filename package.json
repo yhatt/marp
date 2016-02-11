@@ -1,6 +1,6 @@
 {
   "name": "mdslide",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Presentation writer with markdown",
   "main": "main.js",
   "scripts": {
