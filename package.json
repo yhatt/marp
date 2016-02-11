@@ -2,6 +2,10 @@
   "name": "mdslide",
   "version": "0.0.1",
   "description": "Presentation writer with markdown",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yhatt/mdslide"
+  },
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
