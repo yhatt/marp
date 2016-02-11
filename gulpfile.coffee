@@ -100,9 +100,9 @@ gulp.task 'dist', ['clean:dist'], ->
 gulp.task 'package', ['clean:packages', 'dist'], (done) ->
   runSequence 'package:win32', 'package:darwin', 'package:linux', done
 
-gulp.task 'package:win32',  (done) -> packageElectron { platform: 'win32', arch: 'ia32,x64' }, done
-gulp.task 'package:linux',  (done) -> packageElectron { platform: 'linux', arch: 'ia32,x64' }, done
-gulp.task 'package:darwin', (done) -> packageElectron { platform: 'darwin', arch: 'x64' }, done
+gulp.task 'package:win32',  ['dist'], (done) -> packageElectron { platform: 'win32', arch: 'ia32,x64' }, done
+gulp.task 'package:linux',  ['dist'], (done) -> packageElectron { platform: 'linux', arch: 'ia32,x64' }, done
+gulp.task 'package:darwin', ['dist'], (done) -> packageElectron { platform: 'darwin', arch: 'x64' }, done
 
 gulp.task 'build',        (done) -> runSequence 'compile:production', 'package', done
 gulp.task 'build:win32',  (done) -> runSequence 'compile:production', 'package:win32', done
@@ -145,7 +145,8 @@ gulp.task 'archive:darwin', (done) ->
                 background: Path.join(__dirname, "resources/darwin/dmg-background.png")
                 'icon-size': 80
                 contents: [
-                  { x: 10, y: 10, type: 'link', path: '/Applications' }
+                  { x: 40, y: 10, type: 'file', path: "#{config.name}.app" }
+                  { x: 180, y: 10, type: 'link', path: '/Applications' }
                 ]
             })
             .on 'end', globDone
