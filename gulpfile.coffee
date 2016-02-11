@@ -22,6 +22,7 @@ gulp.task 'clean:js', -> del ['js/**/*', 'js']
 gulp.task 'clean:css', -> del ['css/**/*', 'css']
 gulp.task 'clean:dist', -> del ['dist/**/*', 'dist']
 gulp.task 'clean:packages', -> del ['packages/**/*', 'packages']
+gulp.task 'clean:releases', -> del ['releases/**/*', 'releases']
 
 gulp.task 'compile', ['compile:coffee', 'compile:sass']
 gulp.task 'compile:production', ['compile:coffee:production', 'compile:sass:production']
