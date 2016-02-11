@@ -7,13 +7,21 @@ Presentation writer with markdown (Powered by Electron)
 
 ## Usage
 
-### Install and execute
+### Install
 
-[Please download latest archives from release page.](https://github.com/yhatt/mdslide/releases) You can put unpacked files to your any folder.
+[Please download latest archives from release page.](https://github.com/yhatt/mdslide/releases)
 
-- **Windows**: Unzip `*.*.*-mdslide-win32-[arch].zip` and run `mdslide.exe`
-- **Mac OS X**: (Currently setting build system)
-- **Linux**: Unpack `*.*.*-mdslide-linux-[arch].tar.gz` and run `mdslide`
+##### Windows
+
+Unzip `*.*.*-mdSlide-win32-[arch].zip` and run `mdSlide.exe`.
+
+##### Mac OS X
+
+Mount `*.*.*-mdSlide-darwin-x64.dmg`, D&D `mdSlide` to `Applications` and run it from Applications folder / Launchpad.
+
+##### Linux
+
+Unpack `*.*.*-mdSlide-linux-[arch].tar.gz` and run `mdSlide`.
 
 ## Develop
 
@@ -31,20 +39,24 @@ gulp run
 
 (or `gulp.bat run` on Windows)
 
-#### Run Electron directly
-
-Run `electron.bat` or `./node_modules/.bin/electron.cmd .` from console for executing mdSlide on Windows.
-
-On Mac or Linux, run `./node_modules/.bin/electron .` from console. When direnv has installed, you can execute with `electron .` (If direnv blocked, please run `direnv allow`).
-
 ### Create release build
 
 ```
 gulp release
 ```
 
-Please set application version in `package.json`.
+Set application version in `package.json`.
 
-#### Notice
+#### Windows
 
-*Currently not supported building for Darwin.*
+If you want to build for Windows in other platforms, please install [Wine](https://www.winehq.org/) to change Electron's resources.
+
+#### OSX
+
+To build for Darwin is only supported in OSX. Please install [gulp-appdmg](https://github.com/Aluxian/gulp-appdmg) to create archive (`.dmg`) for Darwin release.
+
+```
+npm install gulp-appdmg
+```
+
+*Notice: **Don't add to development dependency of `package.json`.** The release task would fail in other platforms.*
