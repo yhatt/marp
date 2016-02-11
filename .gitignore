@@ -41,3 +41,5 @@ node_modules
 # Build with gulp
 js/
 css/
+dist/
+packages/
