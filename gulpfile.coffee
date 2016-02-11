@@ -31,7 +31,7 @@ packageElectron = (opts = {}, done) ->
   packager extend(packageOpts, opts), (err) ->
     if err
       if err.syscall == 'spawn wine'
-        console.log 'Packaging failed. Please install wine.'
+        $.util.log 'Packaging failed. Please install wine.'
       else
         throw err
 
@@ -120,11 +120,14 @@ gulp.task 'archive:win32', (done) ->
   , done
 
 gulp.task 'archive:darwin', (done) ->
-  appdmg = require('gulp-appdmg')
+  appdmg = try
+    require('gulp-appdmg')
+  catch err
+    null
 
   unless appdmg
-    console.log 'Archiving for darwin is supported only OSX.'
-    console.log 'In OSX, please install gulp-appdmg (`npm install gulp-appdmg`)'
+    $.util.log 'Archiving for darwin is supported only OSX.'
+    $.util.log 'In OSX, please install gulp-appdmg (`npm install gulp-appdmg`)'
     return done()
 
   globFolders 'packages/*-darwin-*', (path, globDone) ->
