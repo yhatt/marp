@@ -1,16 +1,33 @@
 module.exports = gulp = require('gulp')
-$ = do require('gulp-load-plugins')
-config = require('./package.json')
-del = require('del')
-packager = require('electron-packager')
+
+$           = do require('gulp-load-plugins')
+config      = require('./package.json')
+del         = require('del')
+packager    = require('electron-packager')
 runSequence = require('run-sequence')
-Path = require('path')
+Path        = require('path')
+extend      = require('extend')
+
+packageOpts =
+  asar: true
+  dir: 'dist'
+  out: 'packages'
+  name: config.name
+  version: '0.36.7'
+  prune: true
+  overwrite: true
+  'app-bundle-id': 'jp.yhatt.mdslide'
+  'app-version': config.version
+
+packageElectron = (opts = {}, done) ->
+  packager extend(packageOpts, opts), (err) ->
+    throw err if err
+    done() if done?
 
 globFolders = (pattern, func, callback) ->
   doneTasks = 0
   g = new (require("glob").Glob) pattern, (err, pathes) ->
     return console.log(err) if err
-
     done = ->
       doneTasks++
       callback() if callback? and doneTasks >= pathes.length
@@ -65,19 +82,16 @@ gulp.task 'dist', ['clean:dist'], ->
       production: true
 
 gulp.task 'package', ['clean:packages', 'dist'], (done) ->
-  packager
-    all: true
-    asar: true
-    dir: 'dist'
-    out: 'packages'
-    name: config.name
-    version: '0.36.7'
-    prune: true
-    'app-bundle-id': 'jp.yhatt.mdslide'
-    'app-version': config.version
-  , (err, appPath) -> done()
+  runSequence 'package:win32', 'package:darwin', 'package:linux', done
 
-gulp.task 'build', (done) -> runSequence 'compile:production', 'package', done
+gulp.task 'package:win32',  (done) -> packageElectron { platform: 'win32', arch: 'ia32,x64' }, done
+gulp.task 'package:linux',  (done) -> packageElectron { platform: 'linux', arch: 'ia32,x64' }, done
+gulp.task 'package:darwin', (done) -> packageElectron { platform: 'darwin', arch: 'x64' }, done
+
+gulp.task 'build',        (done) -> runSequence 'compile:production', 'package', done
+gulp.task 'build:win32',  (done) -> runSequence 'compile:production', 'package:win32', done
+gulp.task 'build:linux',  (done) -> runSequence 'compile:production', 'package:linux', done
+gulp.task 'build:darwin', (done) -> runSequence 'compile:production', 'package:darwin', done
 
 gulp.task 'archive', ['archive:win32', 'archive:darwin', 'archive:linux']
 
