@@ -7,6 +7,7 @@ packager    = require('electron-packager')
 runSequence = require('run-sequence')
 Path        = require('path')
 extend      = require('extend')
+mkdirp      = require('mkdirp')
 
 packageOpts =
   asar: true
@@ -28,7 +29,12 @@ packageOpts =
 
 packageElectron = (opts = {}, done) ->
   packager extend(packageOpts, opts), (err) ->
-    throw err if err
+    if err
+      if err.syscall == 'spawn wine'
+        console.log 'Packaging failed. Please install wine.'
+      else
+        throw err
+
     done() if done?
 
 globFolders = (pattern, func, callback) ->
@@ -111,8 +117,33 @@ gulp.task 'archive:win32', (done) ->
   , done
 
 gulp.task 'archive:darwin', (done) ->
-  # TODO: setting gulp-appdmg
-  done()
+  appdmg = require('gulp-appdmg')
+
+  unless appdmg
+    console.log 'Archiving for darwin is supported only OSX.'
+    console.log 'In OSX, please install gulp-appdmg (`npm install gulp-appdmg`)'
+    return done()
+
+  globFolders 'packages/*-darwin-*', (path, globDone) ->
+    release_to = Path.join(__dirname, "releases/#{config.version}-#{Path.basename(path, '.*')}.dmg")
+
+    mkdirp Path.dirname(release_to), (err) ->
+      del(release_to)
+        .then ->
+          gulp.src []
+            .pipe appdmg({
+              target: release_to
+              basepath: Path.join(__dirname, path)
+              specification:
+                title: config.name
+                background: Path.join(__dirname, "resources/darwin/dmg-background.png")
+                'icon-size': 80
+                contents: [
+                  { x: 10, y: 10, type: 'link', path: '/Applications' }
+                ]
+            })
+            .on 'end', globDone
+  , done
 
 gulp.task 'archive:linux', (done) ->
   globFolders 'packages/*-linux-*', (path, globDone) ->
