@@ -1,6 +1,6 @@
 {
-  "name": "mdslide",
-  "version": "0.0.1",
+  "name": "mdSlide",
+  "version": "0.0.2",
   "description": "Presentation writer with markdown",
   "repository": {
     "type": "git",
