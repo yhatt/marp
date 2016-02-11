@@ -40,12 +40,15 @@ packageElectron = (opts = {}, done) ->
 globFolders = (pattern, func, callback) ->
   doneTasks = 0
   g = new (require("glob").Glob) pattern, (err, pathes) ->
-    return console.log(err) if err
+    throw err if err
     done = ->
       doneTasks++
       callback() if callback? and doneTasks >= pathes.length
 
-    func(path, done) for path in pathes
+    if pathes.length > 0
+      func(path, done) for path in pathes
+    else
+      callback()
 
 gulp.task 'clean', ['clean:js', 'clean:css', 'clean:dist', 'clean:packages']
 gulp.task 'clean:js', -> del ['js/**/*', 'js']
