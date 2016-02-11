@@ -18,6 +18,13 @@ packageOpts =
   overwrite: true
   'app-bundle-id': 'jp.yhatt.mdslide'
   'app-version': config.version
+  'version-string':
+    ProductName: config.name
+    InternalName: config.name
+    FileDescription: config.description
+    CompanyName: 'yhatt'
+    LegalCopyright: ''
+    OriginalFilename: "#{config.name}.exe"
 
 packageElectron = (opts = {}, done) ->
   packager extend(packageOpts, opts), (err) ->
