@@ -92,7 +92,7 @@ gulp.task 'compile:sass:production', ['clean:css'], ->
     .pipe gulp.dest('css')
 
 gulp.task 'dist', ['clean:dist'], ->
-  gulp.src ['js/**/*', 'css/**/*', '*.js', '!gulpfile.js', '*.html', 'package.json'], { base: '.' }
+  gulp.src ['js/**/*', 'css/**/*', 'images/**/*', '*.js', '!gulpfile.js', '*.html', 'package.json'], { base: '.' }
     .pipe gulp.dest('dist')
     .pipe $.install
       production: true

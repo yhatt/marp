@@ -45,6 +45,7 @@
     "markdown-it": "^5.1.0",
     "markdown-it-emoji": "^1.1.0",
     "markdown-it-mark": "^2.0.0",
+    "path": "^0.12.7",
     "photon": "git+https://github.com/connors/photon.git",
     "twemoji": "^1.4.1"
   }

@@ -3,6 +3,7 @@ MdsMenu        = require './mds_menu'
 BrowserWindow  = require 'browser-window'
 extend         = require 'extend'
 fs             = require 'fs'
+Path           = require 'path'
 dialog         = require('electron').dialog
 MdsManager     = new clsMdsManager
 
@@ -12,6 +13,7 @@ module.exports = class MdsWindow
   @defOptions:
     width: 1000
     height: 420
+    icon: Path.join(__dirname, '/../../images/mdslide.png')
 
   browserWindow: null
   path: null
