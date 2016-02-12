@@ -59,4 +59,4 @@ To build for Darwin is only supported in OSX. Please install [gulp-appdmg](https
 npm install gulp-appdmg
 ```
 
-*Notice: **Don't add to development dependency of `package.json`.** The release task would fail in other platforms.*
+*Notice:* **Don't add to development dependency of `package.json`.** The release task would fail in other platforms.
