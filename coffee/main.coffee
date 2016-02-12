@@ -48,7 +48,7 @@ appMenuTpl = [
       }
       { type: 'separator' }
       {
-        label: 'Export to slide PDF...'
+        label: 'Export slides to PDF...'
         accelerator: 'CmdOrCtrl+Shift+E'
         click: (item, w) -> w.mdsWindow.trigger 'exportPdfDialog' if w
       }
