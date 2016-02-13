@@ -3,9 +3,32 @@ fs        = require 'fs'
 dialog    = require('electron').dialog
 MdsWindow = require './classes/mds_window'
 MdsMenu   = require './classes/mds_menu'
+Path      = require 'path'
 
 require('crash-reporter').start()
 
+# Parse arguments
+opts =
+  file: null
+  development: false
+
+for arg in process.argv.slice(1)
+  break_arg = false
+  switch arg
+    when '--development', '--dev'
+      opts.development = true
+    else
+      resolved_file = Path.resolve(arg)
+
+      try
+        unless fs.accessSync(resolved_file, fs.R_OK)?
+          if fs.lstatSync(resolved_file).isFile()
+            opts.file = resolved_file
+            break_arg = true
+
+  break if break_arg
+
+# Main menu
 appMenuTpl = [
   {
     label: 'File'
@@ -144,6 +167,22 @@ else
     label: 'Close'
     role: 'close'
 
+if opts.development
+  appMenuTpl.push
+    label: 'Dev'
+    submenu: [
+      {
+        label: 'Toggle Dev Tools'
+        accelerator: 'Alt+Ctrl+I'
+        click: (item, w) -> w.toggleDevTools() if w
+      }
+      {
+        label: 'Toggle Markdown Dev Tools'
+        accelerator: 'Alt+Ctrl+Shift+I'
+        click: (item, w) -> w.mdsWindow.send 'openDevTool' if w
+      }
+    ]
+
 appMenu = new MdsMenu appMenuTpl, [
   {
     label: 'About'
@@ -195,4 +234,8 @@ app.on 'activate', (e, hasVisibleWindows) ->
 
 app.on 'ready', ->
   appMenu.setAppMenu()
-  new MdsWindow
+
+  if opts.file
+    MdsWindow.loadFromFile opts.file, null
+  else
+    new MdsWindow

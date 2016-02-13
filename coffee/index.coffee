@@ -143,6 +143,12 @@ $ ->
     .on 'editCommand', (command) ->
       editorStates.codeMirror.execCommand(command)
 
+    .on 'openDevTool', ->
+      if editorStates.preview.isDevToolsOpened()
+        editorStates.preview.closeDevTools()
+      else
+        editorStates.preview.openDevTools()
+
   # Initialize
   editorStates.codeMirror.focus()
   editorStates.refreshPage()

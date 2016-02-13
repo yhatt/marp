@@ -179,4 +179,4 @@ gulp.task 'release', (done) -> runSequence 'build', 'archive', 'clean', done
 
 gulp.task 'run', ['compile'], ->
   gulp.src '.'
-    .pipe $.runElectron()
+    .pipe $.runElectron(['--development'])
