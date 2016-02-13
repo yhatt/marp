@@ -232,10 +232,17 @@ app.on 'before-quit', ->
 app.on 'activate', (e, hasVisibleWindows) ->
   new MdsWindow unless hasVisibleWindows
 
+app.on 'open-file', (e, path) ->
+  e.preventDefault()
+
+  opts.fileOpened = true
+  MdsWindow.loadFromFile path, null
+
 app.on 'ready', ->
   appMenu.setAppMenu()
 
-  if opts.file
-    MdsWindow.loadFromFile opts.file, null
-  else
-    new MdsWindow
+  unless opts.fileOpened
+    if opts.file
+      MdsWindow.loadFromFile opts.file, null
+    else
+      new MdsWindow

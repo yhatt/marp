@@ -25,6 +25,7 @@
     "gulp-gzip": "^1.2.0",
     "gulp-install": "^0.6.0",
     "gulp-load-plugins": "^1.2.0",
+    "gulp-plist": "^0.1.0",
     "gulp-plumber": "^1.0.1",
     "gulp-run-electron": "^1.2.2",
     "gulp-sass": "^2.2.0",

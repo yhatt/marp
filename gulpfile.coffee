@@ -116,7 +116,20 @@ gulp.task 'package:darwin', (done) ->
     platform: 'darwin'
     arch: 'x64'
     icon: Path.join(__dirname, 'resources/darwin/mdslide.icns')
-  }, done
+  }, ->
+    gulp.src ["packages/*-darwin-*/#{config.name}.app/Contents/Info.plist"], { base: '.' }
+      .pipe $.plist
+        CFBundleDocumentTypes: [
+          {
+            CFBundleTypeExtensions: ['md', 'mdown']
+            CFBundleTypeIconFile: ''
+            CFBundleTypeName: 'Markdown file'
+            CFBundleTypeRole: 'Editor'
+            LSHandlerRank: 'Owner'
+          }
+        ]
+      .pipe gulp.dest('.')
+      .on 'end', done
 
 gulp.task 'build',        (done) -> runSequence 'compile:production', 'package', done
 gulp.task 'build:win32',  (done) -> runSequence 'compile:production', 'package:win32', done
