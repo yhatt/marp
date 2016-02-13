@@ -88,7 +88,8 @@ gulp.task 'compile:coffee:production', ['clean:js'], ->
 gulp.task 'compile:sass:production', ['clean:css'], ->
   gulp.src ['sass/**/*.scss', 'sass/**/*.sass']
     .pipe $.sass()
-    .pipe $.cssnano()
+    .pipe $.cssnano
+      zindex: false
     .pipe gulp.dest('css')
 
 gulp.task 'dist', ['clean:dist'], ->
