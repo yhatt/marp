@@ -97,6 +97,24 @@ $ ->
 
       return false
 
+  # Splitter
+  draggingSplitter = false
+  $('.pane-splitter')
+    .mousedown ->
+      draggingSplitter = true
+
+  $(window)
+    .mousemove (e) ->
+      if draggingSplitter
+        splitPoint = Math.min(Math.max(0, e.clientX), document.body.clientWidth) / document.body.clientWidth
+        splitPoint = Math.min(0.8, Math.max(0.2, splitPoint))
+
+        $('.pane.markdown').css('flex-grow', splitPoint * 100)
+        $('.pane.preview').css('flex-grow', (1 - splitPoint) * 100)
+
+    .mouseup ->
+      draggingSplitter = false
+
   # Events
   MdsRenderer
     .on 'publishPdf', (fname) ->
