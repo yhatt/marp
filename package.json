@@ -1,7 +1,7 @@
 {
   "name": "mdSlide",
-  "version": "0.0.2",
-  "description": "Presentation writer with markdown",
+  "version": "0.0.3",
+  "description": "Markdown slide writer, powered by Electron.",
   "repository": {
     "type": "git",
     "url": "https://github.com/yhatt/mdslide"
