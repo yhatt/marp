@@ -15,7 +15,7 @@ mdSlide
 - **Mac OS X**: Mount `*.*.*-mdSlide-darwin-x64.dmg`, D&D `mdSlide` to `Applications` and run it from Applications folder / Launchpad.
 - **Linux**: Unpack `*.*.*-mdSlide-linux-[arch].tar.gz` and run `mdSlide`.
 
-## How to write slides?
+### How to write slides?
 
 Split slides by horizontal ruler `---`. It's very simple. Please refer to [example.md](https://raw.githubusercontent.com/yhatt/mdslide/master/example.md).
 
