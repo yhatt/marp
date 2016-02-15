@@ -1,29 +1,37 @@
 mdSlide
 ===
 
-![mdSlide](screenshot.png)
+**Markdown slide writer, powered by [Electron](http://electron.atom.io/).**
 
-Presentation writer with markdown (Powered by Electron)
+![mdSlide](screenshot.png)
 
 ## Usage
 
 ### Install
 
-[Please download latest archives from release page.](https://github.com/yhatt/mdslide/releases)
+:arrow_forward: **[Download latest archives from release page.](https://github.com/yhatt/mdslide/releases)**
 
-##### Windows
+- **Windows**: Unzip `*.*.*-mdSlide-win32-[arch].zip` and run `mdSlide.exe`.
+- **Mac OS X**: Mount `*.*.*-mdSlide-darwin-x64.dmg`, D&D `mdSlide` to `Applications` and run it from Applications folder / Launchpad.
+- **Linux**: Unpack `*.*.*-mdSlide-linux-[arch].tar.gz` and run `mdSlide`.
 
-Unzip `*.*.*-mdSlide-win32-[arch].zip` and run `mdSlide.exe`.
+## How to write slides?
 
-##### Mac OS X
+Split slides by horizontal ruler `---`. It's very simple. Please refer to [example.md](https://raw.githubusercontent.com/yhatt/mdslide/master/example.md).
 
-Mount `*.*.*-mdSlide-darwin-x64.dmg`, D&D `mdSlide` to `Applications` and run it from Applications folder / Launchpad.
+```md
+# Slide 1
 
-##### Linux
+foobar
 
-Unpack `*.*.*-mdSlide-linux-[arch].tar.gz` and run `mdSlide`.
+---
 
-## Develop
+# Slide 2
+
+foobar
+```
+
+## For developers
 
 ### Getting started
 
@@ -31,27 +39,27 @@ Unpack `*.*.*-mdSlide-linux-[arch].tar.gz` and run `mdSlide`.
 npm install
 ```
 
-And run below gulp task:
+And run below gulp task to execute:
 
 ```
 gulp run
 ```
 
-(or `gulp.bat run` on Windows)
-
-### Create release build
+### Create release builds
 
 ```
 gulp release
 ```
 
-Set application version in `package.json`.
+Please set application version in `package.json`.
 
-#### Windows
+#### OS specific
 
-If you want to build for Windows in other platforms, please install [Wine](https://www.winehq.org/) to change Electron's resources.
+##### Windows
 
-#### OSX
+If you want to build for Windows in other platforms, please install [Wine](https://www.winehq.org/) to rewrite Electron's resources.
+
+##### OSX
 
 To build for Darwin is only supported in OSX. Please install [gulp-appdmg](https://github.com/Aluxian/gulp-appdmg) to create archive (`.dmg`) for Darwin release.
 
@@ -59,4 +67,9 @@ To build for Darwin is only supported in OSX. Please install [gulp-appdmg](https
 npm install gulp-appdmg
 ```
 
-*Notice:* **Don't add to development dependency of `package.json`.** The release task would fail in other platforms.
+*Notice:* **Don't add it to development dependency of `package.json`.** The release task would fail in other platforms.
+
+## Licenses
+
+Copyright &copy; 2016 [Yuki Hattori](https://github.com/yhatt).
+This software released under the [MIT License](https://opensource.org/licenses/mit-license.php).
