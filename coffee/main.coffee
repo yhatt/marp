@@ -48,7 +48,7 @@ app.on 'open-file', (e, path) ->
   MdsWindow.loadFromFile path, null
 
 app.on 'ready', ->
-  global.mdSlide.mainMenu.getMenu({ development: false }).setAppMenu()
+  global.mdSlide.mainMenu.getMenu().setAppMenu()
 
   unless opts.fileOpened
     if opts.file
