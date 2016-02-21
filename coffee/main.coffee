@@ -1,7 +1,8 @@
 app       = require 'app'
 fs        = require 'fs'
-MdsWindow = require './classes/mds_window'
 Path      = require 'path'
+MdsWindow = require './classes/mds_window'
+MainMenu  = require './classes/mds_main_menu'
 
 require('crash-reporter').start()
 
@@ -28,7 +29,7 @@ for arg in process.argv.slice(1)
 
 # Main menu
 global.mdSlide =
-  mainMenu: (require './main_menu')(opts)
+  mainMenu: new MainMenu opts
 
 # Application events
 app.on 'window-all-closed', ->
@@ -47,7 +48,7 @@ app.on 'open-file', (e, path) ->
   MdsWindow.loadFromFile path, null
 
 app.on 'ready', ->
-  global.mdSlide.mainMenu.setAppMenu()
+  global.mdSlide.mainMenu.getMenu({ development: false }).setAppMenu()
 
   unless opts.fileOpened
     if opts.file

@@ -47,24 +47,6 @@ module.exports = class MdsMenu
     else
       @menu = new Menu()
 
-  findIndexesByAttributes: (attrs, target = @template, indexes = []) =>
-    for elmObject, idx in target
-      matched = true
-      for attrKey, attrVal of attrs
-        matched = false if !elmObject[attrKey]? or attrVal != elmObject[attrKey]
-
-      if matched
-        indexes.push idx
-        return indexes
-
-      if elmObject.submenu?
-        indexes.push idx
-        ret = @findIndexesByAttributes attrs, elmObject.submenu, indexes
-        return ret if ret != false
-        indexes.pop()
-
-    return false
-
   setAppMenu: =>
     if !isRemote
       MdsMenu.appMenu = @
