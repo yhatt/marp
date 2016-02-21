@@ -9,7 +9,7 @@ module.exports = class MdsMenu
 
   constructor: (@template) ->
 
-  @filterTemplate: (tpl = @template) =>
+  @filterTemplate: (tpl, opts = {}) =>
     newTpl = []
     for item in tpl
       filtered = false
@@ -33,24 +33,30 @@ module.exports = class MdsMenu
             filtered = true
             break
 
+      # Replacement filter
+      if item.replacement?
+        filtered = true
+        if opts?.replacements? and opts.replacements[item.replacement]?
+          Array.prototype.push.apply(newTpl, MdsMenu.filterTemplate(opts.replacements[item.replacement], opts))
+
       unless filtered
         newTplIdx = newTpl.push(item) - 1
 
         if newTpl[newTplIdx].submenu?
-          newTpl[newTplIdx].submenu = MdsMenu.filterTemplate(newTpl[newTplIdx].submenu)
+          newTpl[newTplIdx].submenu = MdsMenu.filterTemplate(newTpl[newTplIdx].submenu, opts)
 
     return newTpl
 
-  getMenu: =>
+  getMenu: (opts = {}) =>
     if @template?
-      @menu = Menu.buildFromTemplate(MdsMenu.filterTemplate(@template))
+      @menu = Menu.buildFromTemplate(MdsMenu.filterTemplate(@template, opts))
     else
       @menu = new Menu()
 
-  setAppMenu: =>
+  setAppMenu: (opts = {}) =>
     if !isRemote
       MdsMenu.appMenu = @
-      Menu.setApplicationMenu MdsMenu.appMenu.getMenu()
+      Menu.setApplicationMenu MdsMenu.appMenu.getMenu(opts)
 
-  popup: =>
-    @getMenu().popup(electron.remote.getCurrentWindow()) if isRemote
+  popup: (opts = {}) =>
+    @getMenu(opts).popup(electron.remote.getCurrentWindow()) if isRemote

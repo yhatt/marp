@@ -10,7 +10,10 @@ module.exports = class MdsMainMenu
 
   constructor: (@opts) ->
 
-  getMenu: (additionalOpts) =>
+  setAppMenu: (menuOpts) =>
+    @getMenu(menuOpts).setAppMenu(menuOpts)
+
+  getMenu: (additionalOpts = {}) =>
     @menu = new MdsMenu @generateTemplate(extend(@opts, additionalOpts))
 
   generateTemplate: (opts = @opts) =>
@@ -60,7 +63,7 @@ module.exports = class MdsMainMenu
           { label: 'Save &As...', click: (item, w) -> w.mdsWindow.trigger 'saveAs' if w }
           { type: 'separator' }
           { label: '&Export Slides to PDF...', accelerator: 'CmdOrCtrl+Shift+E', click: (item, w) -> w.mdsWindow.trigger 'exportPdfDialog' if w }
-          { label: '(Recently Opened Files...)', position: 'endof=file-history', enabled: false }
+          { replacement: 'file-history' }
           { type: 'separator', platform: '!darwin' }
           { label: 'Close', role: 'close', platform: '!darwin' }
         ]

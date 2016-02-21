@@ -82,6 +82,9 @@ module.exports = class MdsWindow
     @events[evt]?.apply(@, args)
 
   events:
+    setAppMenu: (opts = {}) ->
+      global.mdSlide.mainMenu.setAppMenu(opts)
+
     load: (buffer = '', path = null) ->
       @trigger 'initializeState', path
       @send 'loadText', buffer
