@@ -103,17 +103,18 @@ $ ->
     .mousedown ->
       draggingSplitter = true
 
-  $(window)
-    .mousemove (e) ->
-      if draggingSplitter
-        splitPoint = Math.min(Math.max(0, e.clientX), document.body.clientWidth) / document.body.clientWidth
-        splitPoint = Math.min(0.8, Math.max(0.2, splitPoint))
+  window.addEventListener 'mousemove', (e) ->
+    if draggingSplitter
+      splitPoint = Math.min(Math.max(0, e.clientX), document.body.clientWidth) / document.body.clientWidth
+      splitPoint = Math.min(0.8, Math.max(0.2, splitPoint))
 
-        $('.pane.markdown').css('flex-grow', splitPoint * 100)
-        $('.pane.preview').css('flex-grow', (1 - splitPoint) * 100)
+      $('.pane.markdown').css('flex-grow', splitPoint * 100)
+      $('.pane.preview').css('flex-grow', (1 - splitPoint) * 100)
+  , false
 
-    .mouseup ->
-      draggingSplitter = false
+  window.addEventListener 'mouseup', (e) ->
+    draggingSplitter = false
+  , false
 
   # Events
   MdsRenderer
