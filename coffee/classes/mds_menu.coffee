@@ -7,22 +7,68 @@ module.exports = class MdsMenu
   @appMenu: null
   menu: new Menu()
 
-  @isOSX: ->
-    process?.platform == 'darwin'
+  constructor: (@template) ->
 
-  constructor: (template, osxTemplate) ->
-    if template?
-      if !isRemote and osxTemplate? and @constructor.isOSX()
-        template.unshift
-          label: electron.app.getName()
-          submenu: osxTemplate
+  @filterTemplate: (tpl = @template) =>
+    newTpl = []
+    for item in tpl
+      filtered = false
 
-      @menu = Menu.buildFromTemplate(template)
+      # Platform filter
+      if item.platform?
+        target_platforms = item.platform.split(",")
+        current_platform = process.platform.toLowerCase()
+
+        for target_platform in target_platforms
+          invert_condition = false
+
+          if target_platform[0] == '!'
+            target_platform  = target_platform.slice 1
+            invert_condition = true
+
+          cond = target_platform == current_platform
+          cond = !cond if invert_condition
+
+          unless cond
+            filtered = true
+            break
+
+      unless filtered
+        newTplIdx = newTpl.push(item) - 1
+
+        if newTpl[newTplIdx].submenu?
+          newTpl[newTplIdx].submenu = MdsMenu.filterTemplate(newTpl[newTplIdx].submenu)
+
+    return newTpl
+
+  getMenu: =>
+    if @template?
+      @menu = Menu.buildFromTemplate(MdsMenu.filterTemplate(@template))
+    else
+      @menu = new Menu()
+
+  findIndexesByAttributes: (attrs, target = @template, indexes = []) =>
+    for elmObject, idx in target
+      matched = true
+      for attrKey, attrVal of attrs
+        matched = false if !elmObject[attrKey]? or attrVal != elmObject[attrKey]
+
+      if matched
+        indexes.push idx
+        return indexes
+
+      if elmObject.submenu?
+        indexes.push idx
+        ret = @findIndexesByAttributes attrs, elmObject.submenu, indexes
+        return ret if ret != false
+        indexes.pop()
+
+    return false
 
   setAppMenu: =>
     if !isRemote
       MdsMenu.appMenu = @
-      Menu.setApplicationMenu MdsMenu.appMenu.menu
+      Menu.setApplicationMenu MdsMenu.appMenu.getMenu()
 
   popup: =>
-    @menu.popup(electron.remote.getCurrentWindow()) if isRemote
+    @getMenu().popup(electron.remote.getCurrentWindow()) if isRemote
