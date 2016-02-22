@@ -1,3 +1,6 @@
+global.mdSlide or=
+  config: require './classes/mds_config'
+
 app       = require 'app'
 fs        = require 'fs'
 Path      = require 'path'
@@ -5,6 +8,9 @@ MdsWindow = require './classes/mds_window'
 MainMenu  = require './classes/mds_main_menu'
 
 require('crash-reporter').start()
+
+# Initialize config
+global.mdSlide.config.initialize()
 
 # Parse arguments
 opts =
@@ -28,12 +34,13 @@ for arg in process.argv.slice(1)
   break if break_arg
 
 # Main menu
-global.mdSlide =
-  mainMenu: new MainMenu opts
+global.mdSlide.mainMenu = new MainMenu opts
 
 # Application events
 app.on 'window-all-closed', ->
-  app.quit() if process.platform != 'darwin' or !!MdsWindow.appWillQuit
+  if process.platform != 'darwin' or !!MdsWindow.appWillQuit
+    global.mdSlide.config.save()
+    app.quit()
 
 app.on 'before-quit', ->
   MdsWindow.appWillQuit = true
