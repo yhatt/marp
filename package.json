@@ -1,6 +1,6 @@
 {
   "name": "mdSlide",
-  "version": "0.0.3",
+  "version": "0.0.4pre",
   "description": "Markdown slide writer, powered by Electron.",
   "repository": {
     "type": "git",
