@@ -27,6 +27,7 @@ class EditorStates
     $(@preview).on 'did-finish-load', (e) =>
       @preview.send 'currentPage', 1
       @preview.send 'render', @codeMirror.getValue()
+      MdsRenderer.sendToMain 'previewInitialized'
 
   refreshPage: (rulers) =>
     @rulers = rulers if rulers?
@@ -153,8 +154,6 @@ $ ->
           editorStates.preview.send 'setClass', 'slide-view screen'
         when 'list'
           editorStates.preview.send 'setClass', 'slide-view list'
-        else
-          return
 
       $('.viewmode-btn[data-viewmode]').removeClass('active')
         .filter("[data-viewmode='#{mode}']").addClass('active')

@@ -1,8 +1,9 @@
-app       = require 'app'
-extend    = require 'extend'
-dialog    = require('electron').dialog
-MdsMenu   = require './mds_menu'
-MdsWindow = require './mds_window'
+app            = require 'app'
+extend         = require 'extend'
+dialog         = require('electron').dialog
+MdsMenu        = require './mds_menu'
+MdsWindow      = require './mds_window'
+MdsFileHistory = require './mds_file_history'
 
 module.exports = class MdsMainMenu
   opts: {}
@@ -10,7 +11,32 @@ module.exports = class MdsMainMenu
 
   constructor: (@opts) ->
 
-  setAppMenu: (menuOpts) =>
+  setAppMenu: (menuOpts = {}) =>
+    # TODO: Radio type menu is not implemented. Currently main menu is not supported per window states.
+    menuOpts = extend true, menuOpts,
+      replacements:
+        fileHistory: MdsFileHistory.generateMenuItemTemplate(MdsWindow)
+        slideViews: [
+          {
+            label: '&Markdown view'
+            #type: 'radio'
+            #checked: global.mdSlide.config.get('viewMode') == 'markdown'
+            click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'markdown' if w
+          }
+          {
+            label: '1:1 &Slide view'
+            #type: 'radio'
+            #checked: global.mdSlide.config.get('viewMode') == 'screen'
+            click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'screen' if w
+          }
+          {
+            label: 'Slide &List view'
+            #type: 'radio'
+            #checked: global.mdSlide.config.get('viewMode') == 'list'
+            click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'list' if w
+          }
+        ]
+
     @getMenu(menuOpts).setAppMenu(menuOpts)
 
   getMenu: (additionalOpts = {}) =>
@@ -59,11 +85,14 @@ module.exports = class MdsMainMenu
               args.unshift w.mdsWindow.browserWindow if w?.mdsWindow?.browserWindow?
               dialog.showOpenDialog.apply @, args
           }
+          {
+            label: 'Open &Recent'
+            submenu: [{ replacement: 'fileHistory' }]
+          }
           { label: '&Save', accelerator: 'CmdOrCtrl+S', click: (item, w) -> w.mdsWindow.trigger 'save' if w }
           { label: 'Save &As...', click: (item, w) -> w.mdsWindow.trigger 'saveAs' if w }
           { type: 'separator' }
-          { label: '&Export Slides to PDF...', accelerator: 'CmdOrCtrl+Shift+E', click: (item, w) -> w.mdsWindow.trigger 'exportPdfDialog' if w }
-          { replacement: 'file-history' }
+          { label: '&Export Slides as PDF...', accelerator: 'CmdOrCtrl+Shift+E', click: (item, w) -> w.mdsWindow.trigger 'exportPdfDialog' if w }
           { type: 'separator', platform: '!darwin' }
           { label: 'Close', role: 'close', platform: '!darwin' }
         ]
@@ -83,9 +112,7 @@ module.exports = class MdsMainMenu
       {
         label: '&View'
         submenu: [
-          { label: '&Markdown view', click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'markdown' if w }
-          { label: '1:1 &Slide view', click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'screen' if w }
-          { label: 'Slide &List view', click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'list' if w }
+          { replacement: 'slideViews' }
           { type: 'separator' }
           {
             label: 'Toggle &Full Screen'

@@ -1,5 +1,6 @@
 clsMdsManager  = require './mds_manager'
 MdsMenu        = require './mds_menu'
+MdsFileHistory = require './mds_file_history'
 BrowserWindow  = require 'browser-window'
 extend         = require 'extend'
 fs             = require 'fs'
@@ -69,6 +70,9 @@ module.exports = class MdsWindow
     fs.readFile fname, (err, txt) =>
       return if err
 
+      MdsFileHistory.push fname
+      global.mdSlide.mainMenu.setAppMenu()
+
       if mdsWindow? and mdsWindow.isBufferEmpty()
         mdsWindow.trigger 'load', txt.toString(), fname
       else
@@ -82,8 +86,8 @@ module.exports = class MdsWindow
     @events[evt]?.apply(@, args)
 
   events:
-    setAppMenu: (opts = {}) ->
-      global.mdSlide.mainMenu.setAppMenu(opts)
+    previewInitialized: ->
+      @trigger 'viewMode', global.mdSlide.config.get('viewMode')
 
     load: (buffer = '', path = null) ->
       @trigger 'initializeState', path
@@ -133,7 +137,13 @@ module.exports = class MdsWindow
       @changed = !!changed
       @refreshTitle()
 
-    viewMode: (mode) -> @send 'viewMode', mode
+    viewMode: (mode) ->
+      global.mdSlide.config.set('viewMode', mode)
+      global.mdSlide.config.save()
+      global.mdSlide.mainMenu.setAppMenu()
+
+      @send 'viewMode', mode
+
     unfreeze: ->
       @freeze = false
       @send 'unfreezed'

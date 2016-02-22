@@ -11,12 +11,14 @@ class MdsConfig
 
   @initialConfig:
     fileHistory: []
+    fileHistoryMax: 8
+    viewMode: 'screen'
 
   constructor: ->
     return instance if instance?
 
     instance = @
-    instance.load()
+    instance.initialize()
 
   initialize: (conf = @configFile) => @load(conf, true)
 
