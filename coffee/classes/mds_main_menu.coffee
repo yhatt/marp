@@ -11,11 +11,22 @@ module.exports = class MdsMainMenu
 
   constructor: (@opts) ->
 
-  setAppMenu: (menuOpts = {}) =>
-    # TODO: Radio type menu is not implemented. Currently main menu is not supported per window states.
-    menuOpts = extend true, menuOpts,
+  setAppMenu: (menuOptsOriginal = {}) =>
+    menuOpts = extend true, menuOptsOriginal,
       replacements:
-        fileHistory: MdsFileHistory.generateMenuItemTemplate(MdsWindow)
+        fileHistory: do =>
+          historyMenu = MdsFileHistory.generateMenuItemTemplate(MdsWindow)
+          historyMenu.push { type: 'separator' } if historyMenu.length > 0
+          historyMenu.push
+            label: 'Clear Menu'
+            enabled: historyMenu.length > 0
+            click: (item, w) =>
+              MdsFileHistory.clear()
+              w.mdsWindow.trigger 'renderMenu' if w
+
+          return historyMenu
+
+        # TODO: Radio type menu is not implemented. Currently main menu is not supported per window states.
         slideViews: [
           {
             label: '&Markdown view'

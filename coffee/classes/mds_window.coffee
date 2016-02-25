@@ -89,6 +89,9 @@ module.exports = class MdsWindow
     previewInitialized: ->
       @trigger 'viewMode', global.mdSlide.config.get('viewMode')
 
+    renderMenu: ->
+      global.mdSlide.mainMenu.setAppMenu()
+
     load: (buffer = '', path = null) ->
       @trigger 'initializeState', path
       @send 'loadText', buffer
@@ -140,8 +143,8 @@ module.exports = class MdsWindow
     viewMode: (mode) ->
       global.mdSlide.config.set('viewMode', mode)
       global.mdSlide.config.save()
-      global.mdSlide.mainMenu.setAppMenu()
 
+      @trigger 'renderMenu'
       @send 'viewMode', mode
 
     unfreeze: ->
@@ -149,7 +152,12 @@ module.exports = class MdsWindow
       @send 'unfreezed'
 
   refreshTitle: =>
-    @browserWindow?.setTitle "#{@options?.title || 'mdSlide'} - #{@getShortPath()}#{if @changed then ' *' else ''}"
+    if process.platform == 'darwin'
+      @browserWindow?.setTitle "#{@getShortPath()}#{if @changed then ' *' else ''}"
+      @browserWindow?.setRepresentedFilename @path || ''
+      @browserWindow?.setDocumentEdited @changed
+    else
+      @browserWindow?.setTitle "#{@options?.title || 'mdSlide'} - #{@getShortPath()}#{if @changed then ' *' else ''}"
 
   getShortPath: =>
     return '(untitled)' unless @path?

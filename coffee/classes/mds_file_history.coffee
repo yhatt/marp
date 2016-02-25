@@ -18,14 +18,16 @@ class MdsFileHistory
     menuitems = []
 
     if @history?.length > 0
-      for path, idx in @history
-        menuitems.push
-          label: "#{if idx < 9 then '&' else ''}#{idx + 1}: #{path}"
-          click: (item, w) -> MdsWindow.loadFromFile path, w?.mdsWindow
-    else
-      menuitems = [
-        { label: '(Empty)', enabled: false }
-      ]
+      for full_path, idx in @history
+        item =
+          click: (item, w) -> MdsWindow.loadFromFile full_path, w?.mdsWindow
+
+        if process.platform == 'darwin'
+          item.label = full_path.replace(/\\/g, '/').replace(/.*\//, '')
+        else
+          item.label = "#{if idx < 9 then '&' else ''}#{idx + 1}: #{full_path}"
+
+        menuitems.push item
 
     menuitems
 
@@ -44,6 +46,9 @@ class MdsFileHistory
     dupHistory = []
     dupHistory.push p for p in @history when path != p
     @setHistory [path].concat(dupHistory) if @checkExistance(path)
+
+  clear: =>
+    @setHistory []
 
   filterExistance: =>
     newHistory = []
