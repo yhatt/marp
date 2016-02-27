@@ -12,6 +12,7 @@ class MdsConfig
   @initialConfig:
     fileHistory: []
     fileHistoryMax: 8
+    splitterPosition: 0.5
     viewMode: 'screen'
 
   constructor: ->

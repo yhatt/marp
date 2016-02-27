@@ -99,22 +99,33 @@ $ ->
       return false
 
   # Splitter
-  draggingSplitter = false
+  draggingSplitter      = false
+  draggingSplitPosition = undefined
+
+  setSplitter = (splitPoint) ->
+    splitPoint = Math.min(0.8, Math.max(0.2, parseFloat(splitPoint)))
+
+    $('.pane.markdown').css('flex-grow', splitPoint * 100)
+    $('.pane.preview').css('flex-grow', (1 - splitPoint) * 100)
+
+    return splitPoint
+
   $('.pane-splitter')
     .mousedown ->
       draggingSplitter = true
+      draggingSplitPosition = undefined
+
+    .dblclick ->
+      MdsRenderer.sendToMain 'setConfig', 'splitterPosition', setSplitter(0.5)
 
   window.addEventListener 'mousemove', (e) ->
     if draggingSplitter
-      splitPoint = Math.min(Math.max(0, e.clientX), document.body.clientWidth) / document.body.clientWidth
-      splitPoint = Math.min(0.8, Math.max(0.2, splitPoint))
-
-      $('.pane.markdown').css('flex-grow', splitPoint * 100)
-      $('.pane.preview').css('flex-grow', (1 - splitPoint) * 100)
+      draggingSplitPosition = setSplitter Math.min(Math.max(0, e.clientX), document.body.clientWidth) / document.body.clientWidth
   , false
 
   window.addEventListener 'mouseup', (e) ->
     draggingSplitter = false
+    MdsRenderer.sendToMain 'setConfig', 'splitterPosition', draggingSplitPosition if draggingSplitPosition?
   , false
 
   # Events
@@ -166,6 +177,9 @@ $ ->
         editorStates.preview.closeDevTools()
       else
         editorStates.preview.openDevTools()
+
+    .on 'setSplitter', (spliiterPos) -> setSplitter spliiterPos
+
 
   # Initialize
   editorStates.codeMirror.focus()

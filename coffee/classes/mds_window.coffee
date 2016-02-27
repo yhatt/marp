@@ -88,6 +88,11 @@ module.exports = class MdsWindow
   events:
     previewInitialized: ->
       @trigger 'viewMode', global.mdSlide.config.get('viewMode')
+      @send 'setSplitter', global.mdSlide.config.get('splitterPosition')
+
+    setConfig: (name, value, isSave = true) ->
+      global.mdSlide.config.set name, value
+      global.mdSlide.config.save() if isSave
 
     renderMenu: ->
       global.mdSlide.mainMenu.setAppMenu()
