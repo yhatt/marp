@@ -65,8 +65,11 @@ class MdsFileHistory
   setHistory: (newHistory) =>
     @history = newHistory.slice 0, @max
 
+    osRecentDocument = @history.slice(0)
+    osRecentDocument.reverse() if process.platform == 'win32'
+
     app.clearRecentDocuments()
-    app.addRecentDocument(path) for path in @history
+    app.addRecentDocument(path) for path in osRecentDocument
 
     @saveToConf()
 
