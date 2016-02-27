@@ -22,7 +22,7 @@ packageOpts =
   'version-string':
     ProductName: config.name
     InternalName: config.name
-    FileDescription: config.description
+    FileDescription: config.name
     CompanyName: 'yhatt'
     LegalCopyright: ''
     OriginalFilename: "#{config.name}.exe"
