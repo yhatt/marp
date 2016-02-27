@@ -57,7 +57,6 @@ class MdsConfig
 
     @merge obj
 
-  merge: (object) =>
-    @config = extend(true, @config, object)
+  merge: (object) => @config = extend(@config, object)
 
 module.exports = new MdsConfig

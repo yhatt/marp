@@ -89,3 +89,5 @@ $ ->
     psCss.text previewStyle
 
   .trigger('resize')
+
+  ipc.sendToHost 'initializedSlide'

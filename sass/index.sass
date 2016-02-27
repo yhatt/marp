@@ -23,6 +23,7 @@
       overflow-x: hidden !important
 
   &.preview
+    background: #202020
     border-left: none
 
 .pane-splitter
@@ -73,6 +74,28 @@
       position: absolute
       top: 20px
       left: 20px
+
+.preview-loading
+  position: absolute
+  left: 0
+  top: 0
+  right: 0
+  bottom: 0
+
+  background: #202020
+
+  .throbber
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 32px
+    height: 32px
+    margin-left: -16px
+    margin-top: -16px
+
+body.initialized-slide
+  .preview-loading
+    display: none
 
 body.exporting-pdf
   > :not(#exporting-indicator)

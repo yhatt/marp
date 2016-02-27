@@ -65,6 +65,8 @@ $ ->
       e = event.originalEvent
 
       switch e.channel
+        when 'initializedSlide'
+          $('body').addClass 'initialized-slide'
         when 'rulerChanged'
           editorStates.refreshPage e.args[0]
 
