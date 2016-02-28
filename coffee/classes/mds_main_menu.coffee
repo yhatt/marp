@@ -111,13 +111,13 @@ module.exports = class MdsMainMenu
       {
         label: '&Edit'
         submenu: [
-          { label: '&Undo', accelerator: 'CmdOrCtrl+Z', click: (item, w) -> w.mdsWindow.send 'editCommand', 'undo' if w }
-          { label: '&Redo', accelerator: 'Shift+CmdOrCtrl+Z', click: (item, w) -> w.mdsWindow.send 'editCommand', 'redo' if w }
+          { label: '&Undo', accelerator: 'CmdOrCtrl+Z', click: (item, w) -> w.mdsWindow.send 'editCommand', 'undo' if w and !w.mdsWindow.freeze }
+          { label: '&Redo', accelerator: 'Shift+CmdOrCtrl+Z', click: (item, w) -> w.mdsWindow.send 'editCommand', 'redo' if w and !w.mdsWindow.freeze }
           { type: 'separator' }
           { label: 'Cu&t', accelerator: 'CmdOrCtrl+X', role: 'cut' }
           { label: '&Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
           { label: '&Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' }
-          { label: 'Select &All', accelerator: 'CmdOrCtrl+A', click: (item, w) -> w.mdsWindow.send 'editCommand', 'selectAll' if w }
+          { label: 'Select &All', accelerator: 'CmdOrCtrl+A', click: (item, w) -> w.mdsWindow.send 'editCommand', 'selectAll' if w and !w.mdsWindow.freeze }
         ]
       }
       {
