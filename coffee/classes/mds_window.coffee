@@ -30,7 +30,7 @@ module.exports = class MdsWindow
       bw = new BrowserWindow extend(@constructor.defOptions, @options)
       @_window_id = bw.id
 
-      bw.loadUrl "file://#{__dirname}/../../index.html##{@_window_id}"
+      bw.loadURL "file://#{__dirname}/../../index.html##{@_window_id}"
 
       bw.webContents.on 'did-finish-load', =>
         @_windowLoaded = true
