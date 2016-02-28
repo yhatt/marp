@@ -14,7 +14,7 @@ packageOpts =
   dir: 'dist'
   out: 'packages'
   name: config.name
-  version: '0.36.8'
+  version: '0.36.9'
   prune: true
   overwrite: true
   'app-bundle-id': 'jp.yhatt.mdslide'
