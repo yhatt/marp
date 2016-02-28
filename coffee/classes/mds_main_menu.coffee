@@ -18,7 +18,7 @@ module.exports = class MdsMainMenu
           historyMenu = MdsFileHistory.generateMenuItemTemplate(MdsWindow)
           historyMenu.push { type: 'separator' } if historyMenu.length > 0
           historyMenu.push
-            label: 'Clear Menu'
+            label: '&Clear Menu'
             enabled: historyMenu.length > 0
             click: (item, w) =>
               MdsFileHistory.clear()
