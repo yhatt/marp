@@ -173,8 +173,8 @@ gulp.task 'archive:darwin', (done) ->
                 background: Path.join(__dirname, "resources/darwin/dmg-background.png")
                 'icon-size': 80
                 contents: [
-                  { x: 40, y: 10, type: 'file', path: "#{config.name}.app" }
-                  { x: 180, y: 10, type: 'link', path: '/Applications' }
+                  { x: 210, y: 300, type: 'file', path: "#{config.name}.app" }
+                  { x: 420, y: 300, type: 'link', path: '/Applications' }
                 ]
             })
             .on 'end', globDone
