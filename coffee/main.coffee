@@ -1,13 +1,11 @@
 global.mdSlide or=
   config: require './classes/mds_config'
 
-app       = require 'app'
+app       = require('electron').app
 fs        = require 'fs'
 Path      = require 'path'
 MdsWindow = require './classes/mds_window'
 MainMenu  = require './classes/mds_main_menu'
-
-require('crash-reporter').start()
 
 # Initialize config
 global.mdSlide.config.initialize()

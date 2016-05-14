@@ -1,4 +1,4 @@
-app            = require 'app'
+app            = require('electron').app
 extend         = require 'extend'
 dialog         = require('electron').dialog
 MdsMenu        = require './mds_menu'

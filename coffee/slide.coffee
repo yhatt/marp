@@ -29,65 +29,68 @@ ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
 
 # Initialize
 $ ->
-  # Slize size from css
-  slideSize = do ->
-    sizeElm = $('<div id="slide-size">').hide()
-    $('body').append sizeElm
+  # Get slide size from css
+  sizeElm = $('<div id="slide-size">').hide()
+  $('body').append sizeElm
 
-    ret =
-      width: sizeElm.outerWidth()
-      height: sizeElm.outerHeight()
-      viewWidth: sizeElm.width()
-      viewHeight: sizeElm.height()
+  setTimeout () ->
+    slideSize = do ->
+      ret =
+        width: sizeElm.outerWidth()
+        height: sizeElm.outerHeight()
+        viewWidth: sizeElm.width()
+        viewHeight: sizeElm.height()
 
-    ret.ratio = ret.width / ret.height
+      ret.ratio = ret.width / ret.height
 
-    sizeElm.remove()
-    ret
+      sizeElm.remove()
+      ret
 
-  # Resizing
-  $(window).resize ->
+    # Resizing
+    $(window).resize ->
 
-    # Client area size (excluding margin)
-    cSize =
-      width:  $(window).width() - (slideSize.width - slideSize.viewWidth)
-      height: $(window).height() - (slideSize.height - slideSize.viewHeight)
+      # Client area size (excluding margin)
+      cSize =
+        width:  $(window).width() - (slideSize.width - slideSize.viewWidth)
+        height: $(window).height() - (slideSize.height - slideSize.viewHeight)
 
-    calcedWidth = cSize.height * slideSize.ratio
+      calcedWidth = cSize.height * slideSize.ratio
 
-    # Size for screen preview
-    sSize =
-      width:  if calcedWidth >= cSize.width then cSize.width else calcedWidth
-      height: if calcedWidth >= cSize.width then cSize.width / slideSize.ratio else cSize.height
+      # Size for screen preview
+      sSize =
+        width:  if calcedWidth >= cSize.width then cSize.width else calcedWidth
+        height: if calcedWidth >= cSize.width then cSize.width / slideSize.ratio else cSize.height
 
-    # Size for list preview
-    lSize =
-      width:  cSize.width
-      height: cSize.width / slideSize.ratio
+      # Size for list preview
+      lSize =
+        width:  cSize.width
+        height: cSize.width / slideSize.ratio
 
-    styleGen = (klass, size_obj) ->
-      """
-      body.slide-view.#{klass} .slide_wrapper {
-        width: #{size_obj.width}px;
-        height: #{size_obj.height}px;
-      }
-      body.slide-view.#{klass} .slide_wrapper > .slide {
-        transform: scale(#{size_obj.width / slideSize.width}) translateY(-50%) translateY(#{slideSize.height / 2}px);
-      }
-      """
+      styleGen = (klass, size_obj) ->
+        """
+        body.slide-view.#{klass} .slide_wrapper {
+          width: #{size_obj.width}px;
+          height: #{size_obj.height}px;
+        }
+        body.slide-view.#{klass} .slide_wrapper > .slide {
+          transform: scale(#{size_obj.width / slideSize.width}) translateY(-50%) translateY(#{slideSize.height / 2}px);
+        }
+        """
 
-    previewStyle =
-      """
-      @media not print {
-        #{styleGen 'screen', sSize}
-        #{styleGen 'list', lSize}
-      }
-      """
+      previewStyle =
+        """
+        @media not print {
+          #{styleGen 'screen', sSize}
+          #{styleGen 'list', lSize}
+        }
+        """
 
-    psCss = $('#mds-previewStyle')
-    psCss = $('<style id="mds-previewStyle"></style>').appendTo('head') if psCss.length < 1
-    psCss.text previewStyle
+      psCss = $('#mds-previewStyle')
+      psCss = $('<style id="mds-previewStyle"></style>').appendTo('head') if psCss.length < 1
+      psCss.text previewStyle
 
-  .trigger('resize')
+    .trigger('resize')
 
-  ipc.sendToHost 'initializedSlide'
+    ipc.sendToHost 'initializedSlide'
+
+  , 0

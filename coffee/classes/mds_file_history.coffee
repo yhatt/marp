@@ -1,4 +1,4 @@
-app = require 'app'
+app = require('electron').app
 fs  = require 'fs'
 
 class MdsFileHistory

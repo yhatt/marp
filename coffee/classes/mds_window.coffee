@@ -1,7 +1,7 @@
 clsMdsManager  = require './mds_manager'
 MdsMenu        = require './mds_menu'
 MdsFileHistory = require './mds_file_history'
-BrowserWindow  = require 'browser-window'
+BrowserWindow  = require('electron').BrowserWindow
 extend         = require 'extend'
 fs             = require 'fs'
 Path           = require 'path'
