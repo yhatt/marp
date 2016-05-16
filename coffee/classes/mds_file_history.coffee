@@ -19,7 +19,7 @@ class MdsFileHistory
 
     if @history?.length > 0
       for full_path, idx in @history
-        item =
+        item = do (full_path) ->
           click: (item, w) -> MdsWindow.loadFromFile full_path, w?.mdsWindow
 
         if process.platform == 'darwin'
