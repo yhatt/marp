@@ -172,6 +172,7 @@ $ ->
         when 'list'
           editorStates.preview.send 'setClass', 'slide-view list'
 
+      $('#preview-modes').removeClass('disabled')
       $('.viewmode-btn[data-viewmode]').removeClass('active')
         .filter("[data-viewmode='#{mode}']").addClass('active')
 
