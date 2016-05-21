@@ -14,7 +14,7 @@ packageOpts =
   dir: 'dist'
   out: 'packages'
   name: config.name
-  version: '0.36.9'
+  version: config.dependencies['electron-prebuilt']
   prune: true
   overwrite: true
   'app-bundle-id': 'jp.yhatt.mdslide'
@@ -101,13 +101,13 @@ gulp.task 'dist', ['clean:dist'], ->
 gulp.task 'package', ['clean:packages', 'dist'], (done) ->
   runSequence 'package:win32', 'package:darwin', 'package:linux', done
 
-gulp.task 'package:win32',  (done) ->
+gulp.task 'package:win32', (done) ->
   packageElectron {
     platform: 'win32'
     arch: 'ia32,x64'
     icon: Path.join(__dirname, 'resources/windows/mdslide.ico')
   }, done
-gulp.task 'package:linux',  (done) ->
+gulp.task 'package:linux', (done) ->
   packageElectron {
     platform: 'linux'
     arch: 'ia32,x64'
@@ -133,9 +133,9 @@ gulp.task 'package:darwin', (done) ->
       .on 'end', done
 
 gulp.task 'build',        (done) -> runSequence 'compile:production', 'package', done
-gulp.task 'build:win32',  (done) -> runSequence 'compile:production', 'package:win32', done
-gulp.task 'build:linux',  (done) -> runSequence 'compile:production', 'package:linux', done
-gulp.task 'build:darwin', (done) -> runSequence 'compile:production', 'package:darwin', done
+gulp.task 'build:win32',  (done) -> runSequence 'compile:production', 'dist', 'package:win32', done
+gulp.task 'build:linux',  (done) -> runSequence 'compile:production', 'dist', 'package:linux', done
+gulp.task 'build:darwin', (done) -> runSequence 'compile:production', 'dist', 'package:darwin', done
 
 gulp.task 'archive', ['archive:win32', 'archive:darwin', 'archive:linux']
 
@@ -149,13 +149,13 @@ gulp.task 'archive:win32', (done) ->
 
 gulp.task 'archive:darwin', (done) ->
   appdmg = try
-    require('gulp-appdmg')
+    require('appdmg')
   catch err
     null
 
   unless appdmg
     $.util.log 'Archiving for darwin is supported only OSX.'
-    $.util.log 'In OSX, please install gulp-appdmg (`npm install gulp-appdmg`)'
+    $.util.log 'In OSX, please install appdmg (`npm install appdmg`)'
     return done()
 
   globFolders 'packages/*-darwin-*', (path, globDone) ->
@@ -164,20 +164,23 @@ gulp.task 'archive:darwin', (done) ->
     mkdirp Path.dirname(release_to), (err) ->
       del(release_to)
         .then ->
-          gulp.src []
-            .pipe appdmg({
-              target: release_to
-              basepath: Path.join(__dirname, path)
-              specification:
-                title: config.name
-                background: Path.join(__dirname, "resources/darwin/dmg-background.png")
-                'icon-size': 80
-                contents: [
-                  { x: 210, y: 300, type: 'file', path: "#{config.name}.app" }
-                  { x: 420, y: 300, type: 'link', path: '/Applications' }
-                ]
-            })
-            .on 'end', globDone
+          appdmg {
+            target: release_to
+            basepath: Path.join(__dirname, path)
+            specification:
+              title: config.name
+              background: Path.join(__dirname, "resources/darwin/dmg-background.png")
+              'icon-size': 80
+              window: {
+                position: { x: 90, y: 90 }
+                size: { width: 624, height: 412 }
+              }
+              contents: [
+                { x: 210, y: 300, type: 'file', path: "#{config.name}.app" }
+                { x: 420, y: 300, type: 'link', path: '/Applications' }
+              ]
+          }
+          globDone
   , done
 
 gulp.task 'archive:linux', (done) ->
