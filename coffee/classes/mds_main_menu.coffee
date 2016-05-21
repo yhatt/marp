@@ -22,7 +22,7 @@ module.exports = class MdsMainMenu
             enabled: historyMenu.length > 0
             click: (item, w) =>
               MdsFileHistory.clear()
-              w.mdsWindow.trigger 'renderMenu' if w
+              global.mdSlide.mainMenu.setAppMenu()
 
           return historyMenu
 

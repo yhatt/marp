@@ -94,9 +94,6 @@ module.exports = class MdsWindow
       global.mdSlide.config.set name, value
       global.mdSlide.config.save() if isSave
 
-    renderMenu: ->
-      global.mdSlide.mainMenu.setAppMenu()
-
     load: (buffer = '', path = null) ->
       @trigger 'initializeState', path
       @send 'loadText', buffer
@@ -149,7 +146,6 @@ module.exports = class MdsWindow
       global.mdSlide.config.set('viewMode', mode)
       global.mdSlide.config.save()
 
-      @trigger 'renderMenu'
       @send 'viewMode', mode
 
     unfreeze: ->
