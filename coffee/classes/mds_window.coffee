@@ -34,6 +34,7 @@ module.exports = class MdsWindow
 
       bw.webContents.on 'did-finish-load', =>
         @_windowLoaded = true
+        @send 'setSplitter', global.mdSlide.config.get('splitterPosition')
         @trigger 'load', fileOpts?.buffer || '', @path
 
       bw.on 'close', (e) =>
@@ -88,7 +89,6 @@ module.exports = class MdsWindow
   events:
     previewInitialized: ->
       @trigger 'viewMode', global.mdSlide.config.get('viewMode')
-      @send 'setSplitter', global.mdSlide.config.get('splitterPosition')
 
     setConfig: (name, value, isSave = true) ->
       global.mdSlide.config.set name, value
