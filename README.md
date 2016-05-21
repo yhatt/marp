@@ -61,13 +61,16 @@ If you want to build for Windows in other platforms, please install [Wine](https
 
 ##### OSX
 
-To build for Darwin is only supported in OSX. Please install [gulp-appdmg](https://github.com/Aluxian/gulp-appdmg) to create archive (`.dmg`) for Darwin release.
+To build for Darwin is only supported in OSX. Please install [appdmg](https://github.com/LinusU/node-appdmg) to create archive (`.dmg`) for Darwin release.
 
 ```
-npm install gulp-appdmg
+npm install appdmg
 ```
 
-*Notice:* **Don't add it to development dependency of `package.json`.** The release task would fail in other platforms.
+###### Notices
+
+- **Don't add development dependency of `appdmg` to `package.json`.** The release task would fail in other platforms.
+- *`gulp-appdmg` is no longer in use since v0.0.4.*
 
 ## Licenses
 
