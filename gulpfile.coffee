@@ -164,7 +164,7 @@ gulp.task 'archive:darwin', (done) ->
     mkdirp Path.dirname(release_to), (err) ->
       del(release_to)
         .then ->
-          appdmg {
+          running_appdmg = appdmg {
             target: release_to
             basepath: Path.join(__dirname, path)
             specification:
@@ -180,7 +180,7 @@ gulp.task 'archive:darwin', (done) ->
                 { x: 420, y: 300, type: 'link', path: '/Applications' }
               ]
           }
-          globDone
+          running_appdmg.on 'finish', globDone
   , done
 
 gulp.task 'archive:linux', (done) ->
