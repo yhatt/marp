@@ -47,6 +47,10 @@ $ ->
   editor  = $('#editor')[0]
   preview = $('#preview')[0]
 
+  # Fix minimized preview (#20)
+  # [Note] https://github.com/electron/electron/issues/4882
+  $(preview.shadowRoot).append('<style>object{min-width:0;min-height:0;}</style>')
+
   # Editor settings
   editorCm = CodeMirror.fromTextArea editor,
     mode: 'gfm'
