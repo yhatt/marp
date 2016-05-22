@@ -21,7 +21,7 @@
 // ===== Slide CSS common =====
 
 $slideWidth: 297mm
-$slideHeight: 210mm
+$slideHeight: 209.75mm  // [Win/Linux] 210mm causes injecting blank slide per pages.
 $previewMargin: 20px
 
 html, body
@@ -29,17 +29,6 @@ html, body
 
 body
   margin: 0
-
-#loading
-  font-family: sans-serif
-  position: absolute
-  left: 0
-  right: 0
-  top: 50%
-  font-size: 1rem
-  margin-top: -0.5rem
-  color: #666
-  text-align: center
 
 img.emoji
   height: 1em
@@ -62,6 +51,8 @@ img.emoji
     padding: 30px 20px
 
 +body-slide-mode
+  page-break-inside: avoid
+
   #container
     padding: 0
 
@@ -72,7 +63,6 @@ img.emoji
     width: $slideWidth
     height: $slideHeight
     overflow: hidden
-    page-break-inside: avoid
     page-break-after: always
 
     > .slide
