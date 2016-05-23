@@ -1,4 +1,4 @@
-shell          = require('electron').shell
+{shell}        = require 'electron'
 clsMdsRenderer = require './js/classes/mds_renderer'
 MdsRenderer    = new clsMdsRenderer
 MdsRenderer.requestAccept()

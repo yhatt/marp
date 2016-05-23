@@ -1,5 +1,5 @@
-app = require('electron').app
-fs  = require 'fs'
+{app} = require 'electron'
+fs    = require 'fs'
 
 class MdsFileHistory
   history: []

@@ -1,4 +1,4 @@
-app    = require('electron').app
+{app}  = require 'electron'
 fs     = require 'fs'
 Path   = require 'path'
 extend = require 'extend'

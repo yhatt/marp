@@ -1,11 +1,11 @@
+{BrowserWindow, dialog} = require 'electron'
+
 clsMdsManager  = require './mds_manager'
 MdsMenu        = require './mds_menu'
 MdsFileHistory = require './mds_file_history'
-BrowserWindow  = require('electron').BrowserWindow
 extend         = require 'extend'
 fs             = require 'fs'
 Path           = require 'path'
-dialog         = require('electron').dialog
 MdsManager     = new clsMdsManager
 
 module.exports = class MdsWindow

@@ -1,4 +1,4 @@
-electron = require('electron')
+electron = require 'electron'
 Menu     = electron.Menu || electron.remote.Menu
 MenuItem = electron.MenuItem || electron.remote.MenuItem
 isRemote = !electron.Menu?

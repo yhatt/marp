@@ -1,7 +1,7 @@
 global.mdSlide or=
   config: require './classes/mds_config'
 
-app       = require('electron').app
+{app}     = require 'electron'
 fs        = require 'fs'
 Path      = require 'path'
 MdsWindow = require './classes/mds_window'
