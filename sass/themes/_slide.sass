@@ -20,9 +20,15 @@
 
 // ===== Slide CSS common =====
 
-$slideWidth: 297mm
-$slideHeight: 209.75mm  // [Win/Linux] 210mm causes injecting blank slide per pages.
-$previewMargin: 20px
+$dpi: 96
+$slideWidthMm: 297
+$slideHeightMm: 209.75
+$slideWidthPx: $slideWidthMm * $dpi / 25.4
+$slideHeightPx: $slideHeightMm * $dpi / 25.4
+
+$previewMargin: 20
+$previewWidthPx: $slideWidthPx + ($previewMargin * 2)
+$previewHeightPx: $slideHeightPx + ($previewMargin * 2)
 
 html, body
   height: 100%
@@ -39,13 +45,6 @@ img.emoji
 #container, .slide_wrapper, .slide
   box-sizing: border-box
 
-#slide-size
-  box-sizing: border-box
-  width: $slideWidth
-  height: $slideHeight
-  padding: $previewMargin
-  display: none
-
 +body-markdown-mode
   #container
     padding: 30px 20px
@@ -57,20 +56,19 @@ img.emoji
     padding: 0
 
   .slide_wrapper
-    box-sizing: border-box
+    width: #{floor($slideWidthPx)}px
+    height: #{floor($slideHeightPx)}px
     background: #fff
     position: relative
-    width: $slideWidth
-    height: $slideHeight
     overflow: hidden
     page-break-after: always
 
     > .slide
       box-sizing: border-box
-      width: $slideWidth
-      padding: 0 ($slideWidth * 0.07)
+      width: #{$slideWidthPx}px
+      padding: 0 #{$slideWidthPx * 0.07}px
       transform-origin: 0 0
-      transform: translateY(-50%) translateY($slideHeight / 2)
+      transform: translateY(-50%) translateY(#{$slideHeightPx / 2}px)
 
       > :first-child
         margin-top: 0
@@ -82,15 +80,13 @@ img.emoji
   background: #202020
 
   .slide_wrapper
+    width: calc(var(--screen-width-px) - #{$previewMargin * 2}px)
+    height: calc((var(--screen-width-px) - #{$previewMargin * 2}px) * #{$slideHeightPx} / #{$slideWidthPx})
     border: 1px solid #000
     box-shadow: 0 10px 30px #000
 
-  &.list
-    #container
-      padding: $previewMargin 0
-
-    .slide_wrapper
-      margin: $previewMargin auto 0 auto
+    > .slide
+      transform: scale(calc((var(--screen-width) - #{$previewMargin * 2}) / #{$previewWidthPx})) translateY(-50%) translateY(#{$slideHeightPx / 2}px)
 
   &.screen
     .slide_wrapper
@@ -98,3 +94,19 @@ img.emoji
       left: 50%
       top: 50%
       transform: translate(-50%, -50%)
+
+  &.list
+    #container
+      padding: #{$previewMargin}px 0
+
+    .slide_wrapper
+      margin: #{$previewMargin}px auto 0 auto
+
+@media screen and (min-aspect-ratio: #{floor($previewWidthPx * 1000)}/#{floor($previewHeightPx * 1000)})
+  body.slide-view.screen
+    .slide_wrapper
+      width: calc((var(--screen-height-px) - #{$previewMargin * 2}px) * #{$slideWidthPx} / #{$slideHeightPx})
+      height: calc(var(--screen-height-px) - #{$previewMargin * 2}px)
+
+      > .slide
+        transform: scale(calc((var(--screen-height) - #{$previewMargin * 2}) / #{$previewHeightPx})) translateY(-50%) translateY(#{$slideHeightPx / 2}px)
