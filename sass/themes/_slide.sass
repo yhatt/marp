@@ -30,6 +30,11 @@ $previewMargin: 20
 $previewWidthPx: $slideWidthPx + ($previewMargin * 2)
 $previewHeightPx: $slideHeightPx + ($previewMargin * 2)
 
+$pvCalcWidth: "(var(--screen-width) - #{$previewMargin * 2})"
+$pvCalcHeight: "(var(--screen-height) - #{$previewMargin * 2})"
+$pvCalcWidthPx: "(var(--screen-width-px) - #{$previewMargin * 2}px)"
+$pvCalcHeightPx: "(var(--screen-height-px) - #{$previewMargin * 2}px)"
+
 html, body
   height: 100%
 
@@ -66,27 +71,26 @@ img.emoji
     > .slide
       box-sizing: border-box
       width: #{$slideWidthPx}px
-      padding: 0 #{$slideWidthPx * 0.07}px
       transform-origin: 0 0
-      transform: translateY(-50%) translateY(#{$slideHeightPx / 2}px)
 
-      > :first-child
-        margin-top: 0
+      > .slide_inner
+        > :first-child
+          margin-top: 0
 
-      > :last-child
-        margin-bottom: 0
+        > :last-child
+          margin-bottom: 0
 
 +body-slide-preview
   background: #202020
 
   .slide_wrapper
-    width: calc(var(--screen-width-px) - #{$previewMargin * 2}px)
-    height: calc((var(--screen-width-px) - #{$previewMargin * 2}px) * #{$slideHeightPx} / #{$slideWidthPx})
+    width: calc(#{$pvCalcWidthPx})
+    height: calc(#{$pvCalcWidthPx} * #{$slideHeightPx} / #{$slideWidthPx})
     border: 1px solid #000
     box-shadow: 0 10px 30px #000
 
     > .slide
-      transform: scale(calc((var(--screen-width) - #{$previewMargin * 2}) / #{$slideWidthPx})) translateY(-50%) translateY(#{$slideHeightPx / 2}px)
+      transform: scale(calc(#{$pvCalcWidth} / #{$slideWidthPx}))
 
   &.screen
     .slide_wrapper
@@ -105,8 +109,8 @@ img.emoji
 @media screen and (min-aspect-ratio: #{floor($previewWidthPx * 1000)}/#{floor($previewHeightPx * 1000)})
   body.slide-view.screen
     .slide_wrapper
-      width: calc((var(--screen-height-px) - #{$previewMargin * 2}px) * #{$slideWidthPx} / #{$slideHeightPx})
-      height: calc(var(--screen-height-px) - #{$previewMargin * 2}px)
+      width: calc(#{$pvCalcHeightPx} * #{$slideWidthPx} / #{$slideHeightPx})
+      height: calc(#{$pvCalcHeightPx})
 
       > .slide
-        transform: scale(calc((var(--screen-height) - #{$previewMargin * 2}) / #{$slideHeightPx})) translateY(-50%) translateY(#{$slideHeightPx / 2}px)
+        transform: scale(calc(#{$pvCalcHeight} / #{$slideHeightPx}))

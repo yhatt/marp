@@ -5,8 +5,9 @@
 .markdown-body
   .slide_wrapper:first-child
     .slide
-      > :first-child
-        margin-top: 0
+      > .slide_inner
+        > :first-child
+          margin-top: 0
 
 +body-markdown-mode
   .markdown-body
@@ -17,6 +18,12 @@
 
 // Customize for slide
 +body-slide-mode
+  .slide
+    padding: 0 #{$slideWidthPx * 0.07}px
+
+    > .slide_inner
+      transform: translateY(-50%) translateY(#{$slideHeightPx / 2}px)
+
   .markdown-body
     font-family: 'A-OTF UD Shin Go Pro', 'Noto Sans Japanese', 'Kozuka Gothic Pr6N', 'Kozuka Gothic Pro', 'Meiryo UI', 'Meiryo', 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'
     font-size: 32px

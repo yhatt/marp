@@ -4,8 +4,8 @@ extend      = require 'extend'
 markdownIt  = require 'markdown-it'
 
 module.exports = class MdsMarkdown
-  @slideTagOpen:  '<div class="slide_wrapper"><div class="slide">'
-  @slideTagClose: '</div></div>'
+  @slideTagOpen:  '<div class="slide_wrapper"><div class="slide"><div class="slide_inner">'
+  @slideTagClose: '</div></div></div>'
 
   rulers: []
 
