@@ -23,6 +23,11 @@ ipc.on 'currentPage', (e, page) -> applyCurrentPage page
 ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
 
 # Initialize
+$ ->
+  $(document).on 'click', 'a', (e) ->
+    e.preventDefault()
+    ipc.sendToHost 'linkTo', $(e.target).attr('href')
+
 $(window).on 'load', ->
   $(window).resize applyScreenWidth
   applyScreenWidth()

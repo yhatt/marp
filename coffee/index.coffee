@@ -63,6 +63,10 @@ $ ->
 
   editorStates = new EditorStates editorCm, preview
 
+  # Open link
+  openLink = (link) ->
+    shell.openExternal link if /^https?:\/\/.+/.test(link)
+
   # Markdown preview
   $(editorStates.preview)
     .on 'ipc-message', (event) ->
@@ -73,20 +77,12 @@ $ ->
           $('body').addClass 'initialized-slide'
         when 'rulerChanged'
           editorStates.refreshPage e.args[0]
+        when 'linkTo'
+          openLink e.args[0]
 
     .on 'new-window', (e) ->
       e.preventDefault()
-      shell.openExternal e.originalEvent.url
-
-    .on 'dom-ready', ->
-      will_navigate_url = null
-
-      $(editorStates.preview)
-        .on 'will-navigate', (e) -> will_navigate_url = e.originalEvent.url
-        .on 'did-start-loading', (e) ->
-          preview.stop()
-          shell.openExternal will_navigate_url if will_navigate_url?
-          will_navigate_url = null
+      openLink e.originalEvent.url
 
   # View modes
   $('.viewmode-btn[data-viewmode]').click -> MdsRenderer.sendToMain('viewMode', $(this).attr('data-viewmode'))
