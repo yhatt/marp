@@ -50,6 +50,9 @@ img.emoji
 #container, .slide_wrapper, .slide
   box-sizing: border-box
 
+.slide_page
+  display: none
+
 +body-markdown-mode
   #container
     padding: 30px 20px
@@ -71,6 +74,7 @@ img.emoji
     > .slide
       box-sizing: border-box
       width: #{$slideWidthPx}px
+      height: #{$slideHeightPx}px
       transform-origin: 0 0
 
       > .slide_inner
@@ -79,6 +83,22 @@ img.emoji
 
         > :last-child
           margin-bottom: 0
+
+  .slide_page
+    display: none
+    position: absolute
+    right: 30px
+    bottom: 21px
+    z-index: 10
+    pointer-events: none
+
+  #markdown.page-number
+    .slide_page
+      display: block
+
+    &.page-number-exclude-first-page
+      .slide_page[data-page="1"]
+        display: none
 
 +body-slide-preview
   background: #202020

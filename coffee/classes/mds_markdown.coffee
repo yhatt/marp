@@ -5,7 +5,7 @@ markdownIt  = require 'markdown-it'
 
 module.exports = class MdsMarkdown
   @slideTagOpen:  (page) -> '<div class="slide_wrapper" id="' + page + '"><div class="slide"><div class="slide_inner">'
-  @slideTagClose: '</div></div></div>'
+  @slideTagClose: (page) -> '</div><span class="slide_page" data-page="' + page + '">' + page + '</span></div></div>'
 
   rulers: []
 
@@ -36,7 +36,7 @@ module.exports = class MdsMarkdown
     md.renderer.rules.emoji = (token, idx) -> twemoji.parse(token[idx].content)
     md.renderer.rules.hr    = (token, idx) =>
       ruler.push token[idx].map[0] if ruler = instance?._rulers
-      "#{MdsMarkdown.slideTagClose}#{MdsMarkdown.slideTagOpen(if ruler then ruler.length + 1 else '')}"
+      "#{MdsMarkdown.slideTagClose(ruler.length || '')}#{MdsMarkdown.slideTagOpen(if ruler then ruler.length + 1 else '')}"
 
   @createMarkdownIt: (opts = {}, plugins = {}, after = @defAfter, instance = null) =>
     md = markdownIt(extend(@defOpts, opts))
@@ -60,9 +60,8 @@ module.exports = class MdsMarkdown
     @lastParsed = """
                   #{MdsMarkdown.slideTagOpen(1)}
                   #{@markdown.render markdown}
-                  #{MdsMarkdown.slideTagClose}
+                  #{MdsMarkdown.slideTagClose(@_rulers.length + 1)}
                   """
-
     ret =
       parsed: @lastParsed
       rulerChanged: @rulers.join(",") != @_rulers.join(",")
