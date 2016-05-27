@@ -15,19 +15,8 @@ class EditorStates
   _lockChangedStatus: false
 
   constructor: (@codeMirror, @preview) ->
-    @codeMirror.on 'change', (cm, chg) =>
-      @preview.send 'render', cm.getValue()
-      MdsRenderer.sendToMain 'setChangedStatus', true if !@_lockChangedStatus
-
-    @codeMirror.on 'cursorActivity', (cm) =>
-      window.setTimeout =>
-        @refreshPage()
-      , 5
-
-    $(@preview).on 'did-finish-load', (e) =>
-      @preview.send 'currentPage', 1
-      @preview.send 'render', @codeMirror.getValue()
-      MdsRenderer.sendToMain 'previewInitialized'
+    @initializeEditor()
+    @initializePreview()
 
   refreshPage: (rulers) =>
     @rulers = rulers if rulers?
@@ -43,46 +32,55 @@ class EditorStates
 
     $('#page-indicator').text "Page #{@currentPage} / #{@rulers.length + 1}"
 
-$ ->
-  editor  = $('#editor')[0]
-  preview = $('#preview')[0]
+  initializePreview: =>
+    # Fix minimized preview (#20)
+    # [Note] https://github.com/electron/electron/issues/4882
+    $(@preview.shadowRoot).append('<style>object{min-width:0;min-height:0;}</style>')
 
-  # Fix minimized preview (#20)
-  # [Note] https://github.com/electron/electron/issues/4882
-  $(preview.shadowRoot).append('<style>object{min-width:0;min-height:0;}</style>')
+    $(@preview)
+      .on 'ipc-message', (ev) =>
+        e = ev.originalEvent
 
-  # Editor settings
-  editorCm = CodeMirror.fromTextArea editor,
-    mode: 'gfm'
-    theme: 'mdslide'
-    lineWrapping: true
-    lineNumbers: false
-    dragDrop: false
-    extraKeys:
-      Enter: 'newlineAndIndentContinueMarkdownList'
+        switch e.channel
+          when 'initializedSlide'
+            $('body').addClass 'initialized-slide'
+          when 'rulerChanged'
+            @refreshPage e.args[0]
+          when 'linkTo'
+            @openLink e.args[0]
 
-  editorStates = new EditorStates editorCm, preview
+      .on 'new-window', (e) =>
+        e.preventDefault()
+        @openLink e.originalEvent.url
 
-  # Open link
-  openLink = (link) ->
+      .on 'did-finish-load', (e) =>
+        @preview.send 'currentPage', 1
+        @preview.send 'render', @codeMirror.getValue()
+        MdsRenderer.sendToMain 'previewInitialized'
+
+  openLink: (link) =>
     shell.openExternal link if /^https?:\/\/.+/.test(link)
 
-  # Markdown preview
-  $(editorStates.preview)
-    .on 'ipc-message', (event) ->
-      e = event.originalEvent
+  initializeEditor: =>
+    @codeMirror.on 'change', (cm, chg) =>
+      @preview.send 'render', cm.getValue()
+      MdsRenderer.sendToMain 'setChangedStatus', true if !@_lockChangedStatus
 
-      switch e.channel
-        when 'initializedSlide'
-          $('body').addClass 'initialized-slide'
-        when 'rulerChanged'
-          editorStates.refreshPage e.args[0]
-        when 'linkTo'
-          openLink e.args[0]
+    @codeMirror.on 'cursorActivity', (cm) => window.setTimeout (=> @refreshPage()), 5
 
-    .on 'new-window', (e) ->
-      e.preventDefault()
-      openLink e.originalEvent.url
+$ ->
+  editorStates = new EditorStates(
+    CodeMirror.fromTextArea($('#editor')[0],
+      mode: 'gfm'
+      theme: 'mdslide'
+      lineWrapping: true
+      lineNumbers: false
+      dragDrop: false
+      extraKeys:
+        Enter: 'newlineAndIndentContinueMarkdownList'
+    ),
+    $('#preview')[0]
+  )
 
   # View modes
   $('.viewmode-btn[data-viewmode]').click -> MdsRenderer.sendToMain('viewMode', $(this).attr('data-viewmode'))
@@ -153,6 +151,7 @@ $ ->
     .on 'loadText', (buffer) ->
       editorStates._lockChangedStatus = true
       editorStates.codeMirror.setValue buffer
+      editorStates.codeMirror.clearHistory()
       editorStates._lockChangedStatus = false
 
     .on 'save', (fname, triggerOnSucceeded = null) ->
@@ -182,7 +181,6 @@ $ ->
         editorStates.preview.openDevTools()
 
     .on 'setSplitter', (spliiterPos) -> setSplitter spliiterPos
-
 
   # Initialize
   editorStates.codeMirror.focus()
