@@ -2,12 +2,15 @@ highlightJs = require 'highlight.js'
 twemoji     = require 'twemoji'
 extend      = require 'extend'
 markdownIt  = require 'markdown-it'
+Path        = require 'path'
+fs          = require 'fs'
 
 module.exports = class MdsMarkdown
   @slideTagOpen:  (page) -> '<div class="slide_wrapper" id="' + page + '"><div class="slide"><div class="slide_inner">'
   @slideTagClose: (page) -> '</div><span class="slide_page" data-page="' + page + '">' + page + '</span></div></div>'
 
   rulers: []
+  imageDirs: []
 
   @defHighlighter: (code, lang) ->
     if lang?
@@ -37,6 +40,11 @@ module.exports = class MdsMarkdown
     md.renderer.rules.hr    = (token, idx) =>
       ruler.push token[idx].map[0] if ruler = instance?._rulers
       "#{MdsMarkdown.slideTagClose(ruler.length || '')}#{MdsMarkdown.slideTagOpen(if ruler then ruler.length + 1 else '')}"
+
+    defaultImageRenderer = md.renderer.rules.image
+    md.renderer.rules.image = (tokens, idx, options, env, self) =>
+      instance.overrideImageRenderer tokens, idx, options, env, self
+      defaultImageRenderer           tokens, idx, options, env, self
 
   @createMarkdownIt: (opts = {}, plugins = {}, after = @defAfter, instance = null) =>
     md = markdownIt(extend(@defOpts, opts))
@@ -68,3 +76,16 @@ module.exports = class MdsMarkdown
 
     @rulers = ret.rulers = @_rulers
     ret
+
+  overrideImageRenderer: (tokens, idx, options, env, self) =>
+    if @imageDirs?.length > 0
+      src = tokens[idx].attrs[tokens[idx].attrIndex('src')][1]
+
+      for dir in @imageDirs
+        resolvedPath = Path.resolve(dir, src)
+
+        try
+          unless fs.accessSync(resolvedPath, fs.R_OK)?
+            if fs.lstatSync(resolvedPath).isFile()
+              tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = resolvedPath
+              return

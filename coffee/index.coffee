@@ -12,7 +12,9 @@ require 'codemirror/addon/edit/continuelist'
 class EditorStates
   rulers: []
   currentPage: null
+  previewInitialized: false
   _lockChangedStatus: false
+  _imageDirectories: null
 
   constructor: (@codeMirror, @preview) ->
     @initializeEditor()
@@ -55,8 +57,11 @@ class EditorStates
 
       .on 'did-finish-load', (e) =>
         @preview.send 'currentPage', 1
+        @preview.send 'setImageDirectories', @_imageDirectories if @_imageDirectories
         @preview.send 'render', @codeMirror.getValue()
+
         MdsRenderer.sendToMain 'previewInitialized'
+        @previewInitialized = true
 
   openLink: (link) =>
     shell.openExternal link if /^https?:\/\/.+/.test(link)
@@ -67,6 +72,13 @@ class EditorStates
       MdsRenderer.sendToMain 'setChangedStatus', true if !@_lockChangedStatus
 
     @codeMirror.on 'cursorActivity', (cm) => window.setTimeout (=> @refreshPage()), 5
+
+  setImageDirectories: (directories) =>
+    if @previewInitialized
+      @preview.send 'setImageDirectories', directories
+      @preview.send 'render', @codeMirror.getValue()
+    else
+      @_imageDirectories = directories
 
 $ ->
   editorStates = new EditorStates(
@@ -154,6 +166,8 @@ $ ->
       editorStates.codeMirror.clearHistory()
       editorStates._lockChangedStatus = false
 
+    .on 'setImageDirectories', (directories) -> editorStates.setImageDirectories directories
+
     .on 'save', (fname, triggerOnSucceeded = null) ->
       MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue(), triggerOnSucceeded
       MdsRenderer.sendToMain 'initializeState', fname
@@ -171,8 +185,7 @@ $ ->
       $('.viewmode-btn[data-viewmode]').removeClass('active')
         .filter("[data-viewmode='#{mode}']").addClass('active')
 
-    .on 'editCommand', (command) ->
-      editorStates.codeMirror.execCommand(command)
+    .on 'editCommand', (command) -> editorStates.codeMirror.execCommand(command)
 
     .on 'openDevTool', ->
       if editorStates.preview.isDevToolsOpened()

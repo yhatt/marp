@@ -1,6 +1,6 @@
-clsMdsMarkdown = require './classes/mds_markdown'
-Markdown       = new clsMdsMarkdown
-ipc            = require('electron').ipcRenderer
+MdsMarkdown = require './classes/mds_markdown'
+Markdown    = new MdsMarkdown
+ipc         = require('electron').ipcRenderer
 
 window.jQuery = window.$ = require('jquery')
 
@@ -21,6 +21,7 @@ ipc.on 'render', (e, md) ->
 
 ipc.on 'currentPage', (e, page) -> applyCurrentPage page
 ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
+ipc.on 'setImageDirectories', (e, dirs) -> Markdown.imageDirs = dirs
 
 # Initialize
 $ ->
