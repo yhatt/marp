@@ -1,26 +1,6 @@
 @import '../../node_modules/github-markdown-css/github-markdown'
 @import '../../node_modules/highlight.js/styles/github'
-@import './slide'
-
-.markdown-body
-  .slide_wrapper:first-child
-    .slide
-      > .slide_inner
-        > :first-child
-          margin-top: 0
-
-+body-markdown-mode
-  .markdown-body
-    box-sizing: border-box
-    min-width: 200px
-    max-width: 980px
-    margin: 0 auto
-
-// Customize for slide
-.slide_page
-  font-size: 24px
-  color: #777
-  text-shadow: 0 1px 5px #fff
+@import './markdown'
 
 +body-slide-mode
   .slide
@@ -28,6 +8,11 @@
 
     > .slide_inner
       transform: translateY(-50%) translateY(#{$slideHeightPx / 2}px)
+
+  .slide_page
+    font-size: 24px
+    color: #777
+    text-shadow: 0 1px 5px #fff
 
   .markdown-body
     font-family: 'A-OTF UD Shin Go Pro', 'Noto Sans Japanese', 'Kozuka Gothic Pr6N', 'Kozuka Gothic Pro', 'Meiryo UI', 'Meiryo', 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'

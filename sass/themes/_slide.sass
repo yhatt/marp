@@ -46,7 +46,7 @@ img.emoji
   width: 1em
   margin: 0 .05em 0 .1em
   vertical-align: -0.1em
-  background-color: transparent
+  background-color: transparent !important
 
 #container, .slide_wrapper, .slide
   box-sizing: border-box
@@ -85,6 +85,7 @@ img.emoji
         > :last-child
           margin-bottom: 0
 
+  // Page numbers
   .slide_page
     display: none
     position: absolute
@@ -126,6 +127,9 @@ img.emoji
 
     .slide_wrapper
       margin: #{$previewMargin}px auto 0 auto
+
+      &:first-child
+        margin-top: 0
 
 @media screen and (min-aspect-ratio: #{floor($previewWidthPx * 1000)}/#{floor($previewHeightPx * 1000)})
   body.slide-view.screen
