@@ -27,7 +27,7 @@ ipc.on 'setImageDirectories', (e, dirs) -> Markdown.imageDirs = dirs
 $ ->
   $(document).on 'click', 'a', (e) ->
     e.preventDefault()
-    ipc.sendToHost 'linkTo', $(e.target).attr('href')
+    ipc.sendToHost 'linkTo', $(e.currentTarget).attr('href')
 
 $(window).on 'load', ->
   $(window).resize applyScreenWidth
