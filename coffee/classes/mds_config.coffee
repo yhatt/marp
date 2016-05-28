@@ -14,6 +14,12 @@ class MdsConfig
     fileHistoryMax: 8
     splitterPosition: 0.5
     viewMode: 'screen'
+    windowPosition:
+      x: undefined
+      y: undefined
+      width: 1000
+      height: 420
+      maximized: false
 
   constructor: ->
     return instance if instance?
@@ -56,7 +62,8 @@ class MdsConfig
       elm = elm[key]
 
     @merge obj
+    val
 
-  merge: (object) => @config = extend(@config, object)
+  merge: (object) => @config = extend(true, @config, object)
 
 module.exports = new MdsConfig

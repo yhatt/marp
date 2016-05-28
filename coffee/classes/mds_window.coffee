@@ -11,10 +11,12 @@ MdsManager     = new clsMdsManager
 module.exports = class MdsWindow
   @appWillQuit: false
 
-  @defOptions:
-    width: 1000
-    height: 420
-    icon: Path.join(__dirname, '/../../images/mdslide.png')
+  @defOptions: () ->
+    x:      global.mdSlide.config.get 'windowPosition.x'
+    y:      global.mdSlide.config.get 'windowPosition.y'
+    width:  global.mdSlide.config.get 'windowPosition.width'
+    height: global.mdSlide.config.get 'windowPosition.height'
+    icon:   Path.join(__dirname, '/../../images/mdslide.png')
 
   browserWindow: null
   path: null
@@ -27,8 +29,10 @@ module.exports = class MdsWindow
     @path = fileOpts?.path || null
 
     @browserWindow = do =>
-      bw = new BrowserWindow extend(@constructor.defOptions, @options)
+      bw = new BrowserWindow extend(true, @constructor.defOptions(), @options)
       @_window_id = bw.id
+
+      bw.maximize() if global.mdSlide.config.get 'windowPosition.maximized'
 
       bw.loadURL "file://#{__dirname}/../../index.html##{@_window_id}"
 
@@ -61,6 +65,15 @@ module.exports = class MdsWindow
       bw.on 'closed', =>
         @browserWindow = null
         @_setIsOpen false
+
+      updateWindowPosition = (e) =>
+        unless global.mdSlide.config.set('windowPosition.maximized', bw.isMaximized())
+          global.mdSlide.config.merge { windowPosition: bw.getBounds() }
+
+      bw.on 'move', updateWindowPosition
+      bw.on 'resize', updateWindowPosition
+      bw.on 'maximize', updateWindowPosition
+      bw.on 'unmaximize', updateWindowPosition
 
       bw.mdsWindow = @
       bw

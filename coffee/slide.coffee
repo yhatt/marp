@@ -2,6 +2,8 @@ MdsMarkdown = require './classes/mds_markdown'
 Markdown    = new MdsMarkdown
 ipc         = require('electron').ipcRenderer
 
+# Electron >= 1.2.0 caused failing quietly
+# [Note] https://github.com/electron/electron/issues/5719
 window.jQuery = window.$ = require('jquery')
 
 applyCurrentPage = (page) ->
@@ -29,7 +31,6 @@ $ ->
     e.preventDefault()
     ipc.sendToHost 'linkTo', $(e.currentTarget).attr('href')
 
-$(window).on 'load', ->
   $(window).resize applyScreenWidth
   applyScreenWidth()
 
