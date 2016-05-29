@@ -177,7 +177,7 @@ gulp.task 'archive:darwin', (done) ->
               }
               contents: [
                 { x: 210, y: 300, type: 'file', path: "#{config.name}.app" }
-                { x: 420, y: 300, type: 'link', path: '/Applications' }
+                { x: 410, y: 300, type: 'link', path: '/Applications' }
               ]
           }
           running_appdmg.on 'finish', globDone
