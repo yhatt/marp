@@ -1,7 +1,7 @@
 Marp
 ===
 
-**Markdown slide writer, powered by [Electron](http://electron.atom.io/).**
+**Markdown presentation writer, powered by [Electron](http://electron.atom.io/).**
 
 ![Marp](screenshot.png)
 
@@ -9,11 +9,7 @@ Marp
 
 ### Install
 
-:arrow_forward: **[Download latest archives from release page.](https://github.com/yhatt/marp/releases)**
-
-- **Windows**: Unzip `*.*.*-Marp-win32-[arch].zip` and run `Marp.exe`.
-- **Mac OS X**: Mount `*.*.*-Marp-darwin-x64.dmg`, D&D `Marp` to `Applications` and run it from Applications folder / Launchpad.
-- **Linux**: Unpack `*.*.*-Marp-linux-[arch].tar.gz` and run `Marp`.
+Please refer to [mdSlide](https://github.com/yhatt/mdslide/releases) release page.
 
 ### How to write slides?
 
