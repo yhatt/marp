@@ -3,7 +3,7 @@ Marp
 
 ![](images/marp.png)
 
-Markdown slide writer, powered by [Electron](http://electron.atom.io/)
+Markdown presentation writer, powered by [Electron](http://electron.atom.io/)
 
 <small>Created by Yuki Hattori ( [@yhatt](https://github.com/yhatt) )</small>
 
