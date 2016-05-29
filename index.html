@@ -20,13 +20,7 @@
           </div>
           <div class="pane preview">
             <div class="pane-splitter right"></div>
-            <div class="preview-loading">
-              <svg class="throbber" width="32px" height="32px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M94,50 a44,44,0,1,1,-44,-44" stroke="#aaa" fill="none" stroke-width="12">
-                  <animateTransform attributeName="transform" type="rotate" dur="1s" from="0,50,50" to="360,50,50" repeatCount="indefinite" />
-                </path>
-              </svg>
-            </div>
+            <div class="preview-loading"><img src="./images/throbbers/white.svg" class="throbber" /></div>
             <webview id="preview" autosize="on" preload="./js/slide.js" src="slide.html" blinkFeatures="CSSVariables"></webview>
           </div>
         </div>
@@ -50,11 +44,7 @@
     </div>
     <div id="exporting-indicator">
       <div id="exporting-indicator-modal">
-        <svg class="throbber" width="32px" height="32px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path d="M94,50 a44,44,0,1,1,-44,-44" stroke="#222" fill="none" stroke-width="12">
-            <animateTransform attributeName="transform" type="rotate" dur="1s" from="0,50,50" to="360,50,50" repeatCount="indefinite" />
-          </path>
-        </svg>
+        <img src="./images/throbbers/blue.svg" class="throbber" />
         Exporting slide PDF...
       </div>
     </div>
