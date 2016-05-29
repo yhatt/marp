@@ -1,10 +1,10 @@
 {
-  "name": "mdSlide",
+  "name": "Marp",
   "version": "0.0.6pre",
   "description": "Markdown slide writer, powered by Electron.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yhatt/mdslide"
+    "url": "https://github.com/yhatt/marp"
   },
   "main": "main.js",
   "scripts": {

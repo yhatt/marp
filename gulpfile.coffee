@@ -17,7 +17,7 @@ packageOpts =
   version: config.dependencies['electron-prebuilt']
   prune: true
   overwrite: true
-  'app-bundle-id': 'jp.yhatt.mdslide'
+  'app-bundle-id': 'jp.yhatt.marp'
   'app-version': config.version
   'version-string':
     ProductName: config.name
@@ -105,7 +105,7 @@ gulp.task 'package:win32', (done) ->
   packageElectron {
     platform: 'win32'
     arch: 'ia32,x64'
-    icon: Path.join(__dirname, 'resources/windows/mdslide.ico')
+    icon: Path.join(__dirname, 'resources/windows/marp.ico')
   }, done
 gulp.task 'package:linux', (done) ->
   packageElectron {
@@ -116,7 +116,7 @@ gulp.task 'package:darwin', (done) ->
   packageElectron {
     platform: 'darwin'
     arch: 'x64'
-    icon: Path.join(__dirname, 'resources/darwin/mdslide.icns')
+    icon: Path.join(__dirname, 'resources/darwin/marp.icns')
   }, ->
     gulp.src ["packages/*-darwin-*/#{config.name}.app/Contents/Info.plist"], { base: '.' }
       .pipe $.plist

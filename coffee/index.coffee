@@ -84,7 +84,7 @@ $ ->
   editorStates = new EditorStates(
     CodeMirror.fromTextArea($('#editor')[0],
       mode: 'gfm'
-      theme: 'mdslide'
+      theme: 'marp'
       lineWrapping: true
       lineNumbers: false
       dragDrop: false

@@ -32,15 +32,15 @@ class MdsFileHistory
     menuitems
 
   loadFromConf: =>
-    if global?.mdSlide?.config?
-      @history = global.mdSlide.config.get('fileHistory')
-      @max = global.mdSlide.config.get('fileHistoryMax')
+    if global?.marp?.config?
+      @history = global.marp.config.get('fileHistory')
+      @max = global.marp.config.get('fileHistoryMax')
 
   saveToConf: =>
-    if global?.mdSlide?.config?
-      global.mdSlide.config.set('fileHistory', @history)
-      global.mdSlide.config.set('fileHistoryMax', @max)
-      global.mdSlide.config.save()
+    if global?.marp?.config?
+      global.marp.config.set('fileHistory', @history)
+      global.marp.config.set('fileHistoryMax', @max)
+      global.marp.config.save()
 
   push: (path) =>
     dupHistory = []

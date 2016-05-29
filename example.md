@@ -1,7 +1,7 @@
-mdSlide
+Marp
 ===
 
-![](images/mdslide.png)
+![](images/marp.png)
 
 Markdown slide writer, powered by [Electron](http://electron.atom.io/)
 
@@ -36,19 +36,13 @@ foobar
 foobar
 ```
 
-> *Notice: Ruler (`<hr>`) is not display in mdSlide.*
-
----
-
-# TODO
-
-I want to rename this project. The name of "mdSlide" is conflicted to [presentation gem by Ruby](https://github.com/ymrl/mdslide). :sweat:
+> *Notice: Ruler (`<hr>`) is not display in Marp.*
 
 ---
 
 ## Enjoy writing slides! :+1:
 
-### https://github.com/yhatt/mdslide
+### https://github.com/yhatt/marp
 
 Copyright &copy; 2016 [Yuki Hattori](https://github.com/yhatt)
 This software released under the [MIT License](https://opensource.org/licenses/mit-license.php).

@@ -1,23 +1,23 @@
-mdSlide
+Marp
 ===
 
 **Markdown slide writer, powered by [Electron](http://electron.atom.io/).**
 
-![mdSlide](screenshot.png)
+![Marp](screenshot.png)
 
 ## Usage
 
 ### Install
 
-:arrow_forward: **[Download latest archives from release page.](https://github.com/yhatt/mdslide/releases)**
+:arrow_forward: **[Download latest archives from release page.](https://github.com/yhatt/marp/releases)**
 
-- **Windows**: Unzip `*.*.*-mdSlide-win32-[arch].zip` and run `mdSlide.exe`.
-- **Mac OS X**: Mount `*.*.*-mdSlide-darwin-x64.dmg`, D&D `mdSlide` to `Applications` and run it from Applications folder / Launchpad.
-- **Linux**: Unpack `*.*.*-mdSlide-linux-[arch].tar.gz` and run `mdSlide`.
+- **Windows**: Unzip `*.*.*-Marp-win32-[arch].zip` and run `Marp.exe`.
+- **Mac OS X**: Mount `*.*.*-Marp-darwin-x64.dmg`, D&D `Marp` to `Applications` and run it from Applications folder / Launchpad.
+- **Linux**: Unpack `*.*.*-Marp-linux-[arch].tar.gz` and run `Marp`.
 
 ### How to write slides?
 
-Split slides by horizontal ruler `---`. It's very simple. Please refer to [example.md](https://raw.githubusercontent.com/yhatt/mdslide/master/example.md).
+Split slides by horizontal ruler `---`. It's very simple. Please refer to [example.md](https://raw.githubusercontent.com/yhatt/marp/master/example.md).
 
 ```md
 # Slide 1

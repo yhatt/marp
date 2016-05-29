@@ -21,7 +21,7 @@ module.exports = class MdsMainMenu
             enabled: historyMenu.length > 0
             click: (item, w) =>
               MdsFileHistory.clear()
-              global.mdSlide.mainMenu.setAppMenu()
+              global.marp.mainMenu.setAppMenu()
 
           return historyMenu
 
@@ -30,19 +30,19 @@ module.exports = class MdsMainMenu
           {
             label: '&Markdown view'
             #type: 'radio'
-            #checked: global.mdSlide.config.get('viewMode') == 'markdown'
+            #checked: global.marp.config.get('viewMode') == 'markdown'
             click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'markdown' if w
           }
           {
             label: '1:1 &Slide view'
             #type: 'radio'
-            #checked: global.mdSlide.config.get('viewMode') == 'screen'
+            #checked: global.marp.config.get('viewMode') == 'screen'
             click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'screen' if w
           }
           {
             label: 'Slide &List view'
             #type: 'radio'
-            #checked: global.mdSlide.config.get('viewMode') == 'list'
+            #checked: global.marp.config.get('viewMode') == 'list'
             click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'list' if w
           }
         ]

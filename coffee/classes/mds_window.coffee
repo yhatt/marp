@@ -12,11 +12,11 @@ module.exports = class MdsWindow
   @appWillQuit: false
 
   @defOptions: () ->
-    x:      global.mdSlide.config.get 'windowPosition.x'
-    y:      global.mdSlide.config.get 'windowPosition.y'
-    width:  global.mdSlide.config.get 'windowPosition.width'
-    height: global.mdSlide.config.get 'windowPosition.height'
-    icon:   Path.join(__dirname, '/../../images/mdslide.png')
+    x:      global.marp.config.get 'windowPosition.x'
+    y:      global.marp.config.get 'windowPosition.y'
+    width:  global.marp.config.get 'windowPosition.width'
+    height: global.marp.config.get 'windowPosition.height'
+    icon:   Path.join(__dirname, '/../../images/marp.png')
 
   browserWindow: null
   path: null
@@ -32,13 +32,13 @@ module.exports = class MdsWindow
       bw = new BrowserWindow extend(true, @constructor.defOptions(), @options)
       @_window_id = bw.id
 
-      bw.maximize() if global.mdSlide.config.get 'windowPosition.maximized'
+      bw.maximize() if global.marp.config.get 'windowPosition.maximized'
 
       bw.loadURL "file://#{__dirname}/../../index.html##{@_window_id}"
 
       bw.webContents.on 'did-finish-load', =>
         @_windowLoaded = true
-        @send 'setSplitter', global.mdSlide.config.get('splitterPosition')
+        @send 'setSplitter', global.marp.config.get('splitterPosition')
         @trigger 'load', fileOpts?.buffer || '', @path
 
       bw.on 'close', (e) =>
@@ -52,7 +52,7 @@ module.exports = class MdsWindow
           dialog.showMessageBox @browserWindow,
             type: 'question'
             buttons: ['Yes', 'No', 'Cancel']
-            title: 'mdSlide'
+            title: 'Marp'
             message: 'Are you sure?'
             detail: "#{@getShortPath()} has been modified. Do you want to save the changes?"
           , (result) =>
@@ -67,8 +67,8 @@ module.exports = class MdsWindow
         @_setIsOpen false
 
       updateWindowPosition = (e) =>
-        unless global.mdSlide.config.set('windowPosition.maximized', bw.isMaximized())
-          global.mdSlide.config.merge { windowPosition: bw.getBounds() }
+        unless global.marp.config.set('windowPosition.maximized', bw.isMaximized())
+          global.marp.config.merge { windowPosition: bw.getBounds() }
 
       bw.on 'move', updateWindowPosition
       bw.on 'resize', updateWindowPosition
@@ -85,7 +85,7 @@ module.exports = class MdsWindow
       return if err
 
       MdsFileHistory.push fname
-      global.mdSlide.mainMenu.setAppMenu()
+      global.marp.mainMenu.setAppMenu()
 
       if mdsWindow? and mdsWindow.isBufferEmpty()
         mdsWindow.trigger 'load', txt.toString(), fname
@@ -101,11 +101,11 @@ module.exports = class MdsWindow
 
   events:
     previewInitialized: ->
-      @trigger 'viewMode', global.mdSlide.config.get('viewMode')
+      @trigger 'viewMode', global.marp.config.get('viewMode')
 
     setConfig: (name, value, isSave = true) ->
-      global.mdSlide.config.set name, value
-      global.mdSlide.config.save() if isSave
+      global.marp.config.set name, value
+      global.marp.config.save() if isSave
 
     load: (buffer = '', path = null) ->
       @trigger 'initializeState', path
@@ -159,8 +159,8 @@ module.exports = class MdsWindow
       @refreshTitle()
 
     viewMode: (mode) ->
-      global.mdSlide.config.set('viewMode', mode)
-      global.mdSlide.config.save()
+      global.marp.config.set('viewMode', mode)
+      global.marp.config.save()
 
       @send 'viewMode', mode
 
@@ -174,7 +174,7 @@ module.exports = class MdsWindow
       @browserWindow?.setRepresentedFilename @path || ''
       @browserWindow?.setDocumentEdited @changed
     else
-      @browserWindow?.setTitle "#{@options?.title || 'mdSlide'} - #{@getShortPath()}#{if @changed then ' *' else ''}"
+      @browserWindow?.setTitle "#{@options?.title || 'Marp'} - #{@getShortPath()}#{if @changed then ' *' else ''}"
 
   getShortPath: =>
     return '(untitled)' unless @path?

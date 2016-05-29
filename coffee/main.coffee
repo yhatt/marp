@@ -1,4 +1,4 @@
-global.mdSlide or=
+global.marp or=
   config: require './classes/mds_config'
 
 {app}     = require 'electron'
@@ -8,7 +8,7 @@ MdsWindow = require './classes/mds_window'
 MainMenu  = require './classes/mds_main_menu'
 
 # Initialize config
-global.mdSlide.config.initialize()
+global.marp.config.initialize()
 
 # Parse arguments
 opts =
@@ -32,12 +32,12 @@ for arg in process.argv.slice(1)
   break if break_arg
 
 # Main menu
-global.mdSlide.mainMenu = new MainMenu opts
+global.marp.mainMenu = new MainMenu opts
 
 # Application events
 app.on 'window-all-closed', ->
   if process.platform != 'darwin' or !!MdsWindow.appWillQuit
-    global.mdSlide.config.save()
+    global.marp.config.save()
     app.quit()
 
 app.on 'before-quit', ->
@@ -53,7 +53,7 @@ app.on 'open-file', (e, path) ->
   MdsWindow.loadFromFile path, null
 
 app.on 'ready', ->
-  global.mdSlide.mainMenu.setAppMenu()
+  global.marp.mainMenu.setAppMenu()
 
   unless opts.fileOpened
     if opts.file
