@@ -9,7 +9,11 @@ Marp
 
 ### Install
 
-Please refer to [mdSlide](https://github.com/yhatt/mdslide/releases) release page.
+:arrow_forward: **[Download latest archives from release page.](https://github.com/yhatt/marp/releases)**
+
+- **Windows**: Unzip `*.*.*-Marp-win32-[arch].zip` and run `Marp.exe`.
+- **Mac OS X**: Mount `*.*.*-Marp-darwin-x64.dmg`, D&D `Marp` to `Applications` and run it from Applications folder / Launchpad.
+- **Linux**: Unpack `*.*.*-Marp-linux-[arch].tar.gz` and run `Marp`.
 
 ### How to write slides?
 
