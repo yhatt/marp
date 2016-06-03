@@ -1,8 +1,30 @@
 extend = require 'extend'
 
 module.exports = class MdsMdSetting
+  @generalTransfomer:
+    unit: (v) ->
+      val = undefined
+
+      if m = "#{v}".match(/^(\d+(?:\.\d+)?)((?:px|cm|mm|in|pt|pc)?)$/)
+        val = parseFloat(m[1])
+
+        if m[2] is 'cm'
+          val = val * 960 / 25.4
+        else if m[2] is 'mm'
+          val = val * 96 / 25.4
+        else if m[2] is 'in'
+          val = val * 96
+        else if m[2] is 'pt'
+          val = val * 4 / 3
+        else if m[2] is 'pc'
+          val = val * 16
+
+      Math.floor(val) || undefined
+
   @transformers:
     page_number: (v) -> v is 'true'
+    width: MdsMdSetting.generalTransfomer.unit
+    height: MdsMdSetting.generalTransfomer.unit
 
   @defaultTransformer: null
 
@@ -13,7 +35,7 @@ module.exports = class MdsMdSetting
     MdsMdSetting.defaultTransformer
 
   @validProps:
-    global: []
+    global: ['width', 'height']
     page:   ['page_number']
 
   @isValidProp: (page, prop) =>

@@ -16,6 +16,17 @@ document.addEventListener 'DOMContentLoaded', ->
       size.ratio = size.w / size.h
       size
 
+    applySlideSize = (width, height) ->
+      css = """
+            body {
+              --slide-width: #{width || 'inherit'};
+              --slide-height: #{height || 'inherit'};
+            }
+            """
+
+      $('#mds-slideSizeStyle').text css
+      applyScreenSize()
+
     getScreenSize = ->
       size =
         w: $(window).width()
@@ -25,22 +36,13 @@ document.addEventListener 'DOMContentLoaded', ->
       size.ratio = (size.w - previewMargin * 2) / (size.h - previewMargin * 2)
       size
 
+    applyScreenSize = ->
+      size = getScreenSize()
+      $('#mds-screenSizeStyle').text "body { --screen-width: #{size.w}; --screen-height: #{size.h}; }"
+      $('#container').toggleClass 'height-base', size.ratio > getSlideSize().ratio
+
     applyCurrentPage = (page) ->
       $('#mds-currentPageStyle').text "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
-
-    applyResize = (newSlideSize) ->
-      size = getScreenSize()
-      css  = """
-             body {
-                --screen-width: #{size.w};
-                --screen-height: #{size.h};
-                --slide-width: #{newSlideSize?.width || 'inherit'};
-                --slide-height: #{newSlideSize?.height || 'inherit'};
-             }
-             """
-
-      $('#mds-sizeStyle').text css
-      $('#container').toggleClass 'height-base', size.ratio > getSlideSize().ratio
 
     applyPageNumber = (settings, maxPage) ->
       css = ''
@@ -56,14 +58,14 @@ document.addEventListener 'DOMContentLoaded', ->
     sendPdfOptions = (opts) ->
       slideSize = getSlideSize()
 
-      opts.dpi = +getCSSvar '--dpi'
       opts.exportSize =
-        width:  Math.floor(slideSize.w * 25400 / opts.dpi)
-        height: Math.floor(slideSize.h * 25400 / opts.dpi)
+        width:  Math.floor(slideSize.w * 25400 / 96)
+        height: Math.floor(slideSize.h * 25400 / 96)
 
       ipc.sendToHost 'responsePdfOptions', opts
 
     render = (md) ->
+      applySlideSize md.settings.getGlobal('width'), md.settings.getGlobal('height')
       applyPageNumber(md.settings, md.rulers.length + 1)
 
       $('#markdown').html(md.parsed)
@@ -84,5 +86,5 @@ document.addEventListener 'DOMContentLoaded', ->
       e.preventDefault()
       ipc.sendToHost 'linkTo', $(e.currentTarget).attr('href')
 
-    $(window).resize (e) -> applyResize()
-    applyResize()
+    $(window).resize (e) -> applyScreenSize()
+    applyScreenSize()
