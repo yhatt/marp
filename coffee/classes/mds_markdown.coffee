@@ -91,17 +91,20 @@ module.exports = class MdsMarkdown
 
   renderers:
     image: (tokens, idx, options, env, self) ->
+      src = decodeURIComponent(tokens[idx].attrs[tokens[idx].attrIndex('src')][1])
+
+      existFile = (fname) ->
+        try
+          unless fs.accessSync(fname, fs.R_OK)?
+            return true if fs.lstatSync(fname).isFile()
+        false
+
+      return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = src if existFile(src)
+
       if @imageDirs?.length > 0
-        src = decodeURIComponent(tokens[idx].attrs[tokens[idx].attrIndex('src')][1])
-
         for dir in @imageDirs
-          resolvedPath = Path.resolve(dir, src)
-
-          try
-            unless fs.accessSync(resolvedPath, fs.R_OK)?
-              if fs.lstatSync(resolvedPath).isFile()
-                tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = resolvedPath
-                return
+          imgPath = Path.resolve(dir, src)
+          return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = imgPath if existFile(imgPath)
 
     html_block: (tokens, idx, options, env, self) ->
       {content} = tokens[idx]
