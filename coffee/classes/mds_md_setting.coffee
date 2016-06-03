@@ -1,3 +1,5 @@
+extend = require 'extend'
+
 module.exports = class MdsMdSetting
   @transformers:
     page_number: (v) -> v is 'true'
@@ -21,19 +23,20 @@ module.exports = class MdsMdSetting
   constructor: () ->
     @_settings = []
 
-  set: (fromPage, prop, value) =>
+  set: (fromPage, prop, value, noFollowing = false) =>
     return false unless MdsMdSetting.isValidProp(fromPage, prop)
     return false unless transformer = MdsMdSetting.findTransformer(prop)
 
     transformedValue = transformer(value)
 
-    if (idx = @_findSettingIdx fromPage, prop)?
+    if (idx = @_findSettingIdx fromPage, prop, !!noFollowing)?
       @_settings[idx].value = transformedValue
     else
       @_settings.push
-        page:     fromPage
-        property: prop
-        value:    transformedValue
+        page:        fromPage
+        property:    prop
+        value:       transformedValue
+        noFollowing: !!noFollowing
 
     transformedValue
 
@@ -47,12 +50,20 @@ module.exports = class MdsMdSetting
     props.sort (a, b) -> a.page - b.page
 
     ret = {}
-    ret[obj.property] = obj.value for obj in props
-    ret
+    noFollows = []
+
+    for obj in props
+      if obj.noFollowing
+        noFollows[obj.page] = {} unless noFollows[obj.page]
+        noFollows[obj.page][obj.property] = obj.value
+      else
+        ret[obj.property] = obj.value
+
+    extend ret, noFollows[page] || {}
 
   getAtGlobal: => @getAt 0
 
-  _findSettingIdx: (page, prop) =>
+  _findSettingIdx: (page, prop, noFollowing) =>
     for opts, idx in @_settings
-      return idx if opts.page == page && opts.property == prop
+      return idx if opts.page == page && opts.property == prop && opts.noFollowing == noFollowing
     null

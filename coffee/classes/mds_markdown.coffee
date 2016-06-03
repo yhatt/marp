@@ -111,10 +111,10 @@ module.exports = class MdsMarkdown
       if matched = /^<!-{2,}\s*([\s\S]*?)\s*-{2,}>$/m.exec(content)
 
         for mathcedLine in matched[1].split(/[\r\n]+/)
-          parsed = /^\s*(\$?)(\w+)\s*:\s*(.*)\s*$/.exec(mathcedLine)
+          parsed = /^\s*([\$\*]?)(\w+)\s*:\s*(.*)\s*$/.exec(mathcedLine)
 
           if parsed
             if parsed[1] is '$'
               @_settings.setGlobal parsed[2], parsed[3]
             else
-              @_settings.set (@_rulers.length || 0) + 1, parsed[2], parsed[3]
+              @_settings.set (@_rulers.length || 0) + 1, parsed[2], parsed[3], parsed[1] is '*'
