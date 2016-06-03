@@ -55,6 +55,8 @@ class EditorStates
 
               @previewInitialized = true
               $('body').addClass 'initialized-slide'
+          else
+            MdsRenderer._call_event e.channel, e.args...
 
       .on 'new-window', (e) =>
         e.preventDefault()
@@ -145,17 +147,21 @@ $ ->
   # Events
   MdsRenderer
     .on 'publishPdf', (fname) ->
+      editorStates.preview.send 'requestPdfOptions', { filename: fname }
+
+    .on 'responsePdfOptions', (opts) ->
       editorStates.codeMirror.getInputField().blur()
       $('body').addClass 'exporting-pdf'
 
+      console.log opts
+
       editorStates.preview.printToPDF
         marginsType: 1
-        pageSize: 'A4'
+        pageSize: opts.exportSize
         printBackground: true
-        landscape: true
       , (err, data) ->
         unless err
-          MdsRenderer.sendToMain 'writeFile', fname, data, 'unfreeze'
+          MdsRenderer.sendToMain 'writeFile', opts.filename, data, 'unfreeze'
         else
           MdsRenderer.sendToMain 'unfreeze'
 

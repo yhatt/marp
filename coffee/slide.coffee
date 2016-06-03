@@ -53,6 +53,16 @@ document.addEventListener 'DOMContentLoaded', ->
 
       $('#mds-pageNumberStyle').text css
 
+    sendPdfOptions = (opts) ->
+      slideSize = getSlideSize()
+
+      opts.dpi = +getCSSvar '--dpi'
+      opts.exportSize =
+        width:  Math.floor(slideSize.w * 25400 / opts.dpi)
+        height: Math.floor(slideSize.h * 25400 / opts.dpi)
+
+      ipc.sendToHost 'responsePdfOptions', opts
+
     render = (md) ->
       applyPageNumber(md.settings, md.rulers.length + 1)
 
@@ -67,6 +77,7 @@ document.addEventListener 'DOMContentLoaded', ->
     ipc.on 'currentPage', (e, page) -> applyCurrentPage page
     ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
     ipc.on 'setImageDirectories', (e, dirs) -> Markdown.imageDirs = dirs
+    ipc.on 'requestPdfOptions', (e, opts) -> sendPdfOptions(opts || {})
 
     # Initialize
     $(document).on 'click', 'a', (e) ->
