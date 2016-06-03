@@ -15,19 +15,25 @@ applyScreenWidth = ->
 
   $('#mds-screenWidthStyle').text css
 
+applyPageNumber = (settings, maxPage) ->
+  css = ''
+  page = 0
+
+  while ++page <= maxPage
+    if settings.get(page, 'page_number')
+      content = ".slide_page[data-page=\"#{page}\"] { display: block; }"
+      css    += "body.slide-view #{content} @media print { body #{content} } "
+
+  $('#mds-pageNumberStyle').text css
+
 render = (md) ->
-  s = md.settings
+  applyPageNumber(md.settings, md.rulers.length + 1)
 
-  $('#markdown')
-    .toggleClass('page-number', (s.page_number || s.page_number_exclude_title) || false)
-    .toggleClass('page-number-exclude-first-page', s.page_number_exclude_title || false)
-    .html(md.parsed)
-
+  $('#markdown').html(md.parsed)
   renderNotify(md)
 
 renderNotify = (md) ->
-  ipc.sendToHost 'rulerChanged',     md.rulers   if md.rulerChanged
-  ipc.sendToHost 'mdSettingChanged', md.settings if md.settingChanged
+  ipc.sendToHost 'rulerChanged', md.rulers if md.rulerChanged
 
 ipc.on 'render', (e, md) -> render(Markdown.parse(md))
 ipc.on 'currentPage', (e, page) -> applyCurrentPage page

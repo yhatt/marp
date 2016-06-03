@@ -1,9 +1,10 @@
-highlightJs = require 'highlight.js'
-twemoji     = require 'twemoji'
-extend      = require 'extend'
-markdownIt  = require 'markdown-it'
-Path        = require 'path'
-fs          = require 'fs'
+highlightJs  = require 'highlight.js'
+twemoji      = require 'twemoji'
+extend       = require 'extend'
+markdownIt   = require 'markdown-it'
+Path         = require 'path'
+fs           = require 'fs'
+MdsMdSetting = require './mds_md_setting'
 
 module.exports = class MdsMarkdown
   @slideTagOpen:  (page) -> '<div class="slide_wrapper" id="' + page + '"><div class="slide"><div class="slide_inner">'
@@ -32,10 +33,6 @@ module.exports = class MdsMarkdown
       'markdown-it-emoji':
         shortcuts: {}
 
-  @validSettings:
-    page_number:               (v) -> v is 'true'
-    page_number_exclude_title: (v) -> v is 'true'
-
   @createMarkdownIt: (opts, plugins) ->
     md = markdownIt(opts)
     md.use(require(plugName), plugOpts ? {}) for plugName, plugOpts of plugins
@@ -43,7 +40,7 @@ module.exports = class MdsMarkdown
 
   rulers: []
   imageDirs: []
-  settings: {}
+  settings: new MdsMdSetting
 
   constructor: (settings) ->
     opts      = extend(MdsMarkdown.default.options, settings?.options || {})
@@ -78,30 +75,19 @@ module.exports = class MdsMarkdown
 
   parse: (markdown) =>
     @_rulers    = []
-    @_settings  = {}
+    @_settings  = new MdsMdSetting
     @lastParsed = """
                   #{MdsMarkdown.slideTagOpen(1)}
                   #{@markdown.render markdown}
                   #{MdsMarkdown.slideTagClose(@_rulers.length + 1)}
                   """
-    @_settings  = @verifySetting(@_settings)
     ret =
       parsed: @lastParsed
       rulerChanged: @rulers.join(",") != @_rulers.join(",")
-      settingChanged: JSON.stringify(@settings) != JSON.stringify(@_settings)
 
     @rulers   = ret.rulers   = @_rulers
     @settings = ret.settings = @_settings
     ret
-
-  verifySetting: (dry) =>
-    verified = {}
-
-    for prop, val of dry
-      verifyFunc = MdsMarkdown.validSettings[prop]
-      verified[prop] = verifyFunc(val) if verifyFunc
-
-    verified
 
   renderers:
     image: (tokens, idx, options, env, self) ->
@@ -123,6 +109,12 @@ module.exports = class MdsMarkdown
       return if content.substring(0, 3) isnt '<!-'
 
       if matched = /^<!-{2,}\s*([\s\S]*?)\s*-{2,}>$/m.exec(content)
+
         for mathcedLine in matched[1].split(/[\r\n]+/)
-          parsed = /^\s*(\w+)\s*:\s*(.*)\s*$/.exec(mathcedLine)
-          @_settings[parsed[1]] = parsed[2] if parsed
+          parsed = /^\s*(\$?)(\w+)\s*:\s*(.*)\s*$/.exec(mathcedLine)
+
+          if parsed
+            if parsed[1] is '$'
+              @_settings.setGlobal parsed[2], parsed[3]
+            else
+              @_settings.set (@_rulers.length || 0) + 1, parsed[2], parsed[3]
