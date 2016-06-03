@@ -5,6 +5,8 @@ MdsMenu        = require './mds_menu'
 MdsFileHistory = require './mds_file_history'
 extend         = require 'extend'
 fs             = require 'fs'
+jschardet      = require 'jschardet'
+iconv_lite     = require 'iconv-lite'
 Path           = require 'path'
 MdsManager     = new clsMdsManager
 
@@ -84,15 +86,19 @@ module.exports = class MdsWindow
     fs.readFile fname, (err, txt) =>
       return if err
 
+      {encoding} = jschardet.detect(txt) ? {}
+      if encoding isnt 'UTF-8' && encoding isnt 'ascii' && iconv_lite.encodingExists(encoding)
+        buf = iconv_lite.decode(txt, encoding)
+      else
+        buf = txt.toString()
+
       MdsFileHistory.push fname
       global.marp.mainMenu.setAppMenu()
 
       if mdsWindow? and mdsWindow.isBufferEmpty()
-        mdsWindow.trigger 'load', txt.toString(), fname
+        mdsWindow.trigger 'load', buf, fname
       else
-        new MdsWindow
-          path: fname
-          buffer: txt.toString()
+        new MdsWindow { path: fname, buffer: buf }
 
   loadFromFile: (fname) => MdsWindow.loadFromFile fname, @
 
