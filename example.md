@@ -40,9 +40,96 @@ foobar
 
 ---
 
+# Directives `since v0.0.7`
+
+Marp's Markdown has extended directives to affect slides.
+
+Insert HTML comment as below:
+```html
+<!-- {directive_name}: {value} -->
+```
+
+```html
+<!--
+{first_directive_name}:  {value}
+{second_directive_name}: {value}
+...
+-->
+```
+
+---
+
+## Page Directive
+
+The page directive would apply to **current page and later**.
+You should insert it *to top* when apply to all slides.
+
+### `page_number`
+
+Set `true` to show page number on slides. *See lower right!*
+
+```html
+<!-- page_number: true -->
+```
+
+<!--
+page_number: true
+
+Example is here. Pagination starts from this page.
+If you use multi-line comment, directives should write to each new lines.
+-->
+
+---
+
+## Global Directive
+
+### `$width` / `$height`
+
+Change slide width and height.
+You can use units: `px` (default), `cm`, `mm`, `in`, `pt`, and `pc`.
+
+```html
+<!-- $width: 12in -->
+```
+
+### `$size`
+
+Change slide size by presets.
+Supports `4:3`, `16:9`, `A0`-`A8`, `B0`-`B8` and suffix of `-portrait`.
+
+```html
+<!-- $size: 16:9 -->
+```
+
+<!--
+$size: a4
+
+Example is here. Global Directive is enabled in anywhere.
+It apply the latest value if you write multiple same Global Directives.
+-->
+
+---
+
+#### Pro Tips
+
+Page Directive can apply temporally to only current slide. Try to add `*` to top of Page Directive name!
+
+```
+<!-- *page_number: false -->
+```
+
+<!--
+*page_number: false
+
+Example is here.
+Page number is not shown in current page, but it's shown on later pages.
+-->
+
+---
+
 ## Enjoy writing slides! :+1:
 
 ### https://github.com/yhatt/marp
 
 Copyright &copy; 2016 [Yuki Hattori](https://github.com/yhatt)
-This software released under the [MIT License](https://opensource.org/licenses/mit-license.php).
+This software released under the [MIT License](https://github.com/yhatt/marp/blob/master/LICENSE).
