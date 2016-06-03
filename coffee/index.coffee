@@ -30,26 +30,31 @@ class EditorStates
 
     if @currentPage != page
       @currentPage = page
-      @preview.send 'currentPage', @currentPage
+      @preview.send 'currentPage', @currentPage if @previewInitialized
 
     $('#page-indicator').text "Page #{@currentPage} / #{@rulers.length + 1}"
 
   initializePreview: =>
-    # Fix minimized preview (#20)
-    # [Note] https://github.com/electron/electron/issues/4882
-    $(@preview.shadowRoot).append('<style>object{min-width:0;min-height:0;}</style>')
-
     $(@preview)
+      .on 'dom-ready', =>
+        # Fix minimized preview (#20)
+        # [Note] https://github.com/electron/electron/issues/4882
+        $(@preview.shadowRoot).append('<style>object{min-width:0;min-height:0;}</style>')
+
       .on 'ipc-message', (ev) =>
         e = ev.originalEvent
 
         switch e.channel
-          when 'initializedSlide'
-            $('body').addClass 'initialized-slide'
           when 'rulerChanged'
             @refreshPage e.args[0]
           when 'linkTo'
             @openLink e.args[0]
+          when 'rendered'
+            unless @previewInitialized
+              MdsRenderer.sendToMain 'previewInitialized'
+
+              @previewInitialized = true
+              $('body').addClass 'initialized-slide'
 
       .on 'new-window', (e) =>
         e.preventDefault()
@@ -59,9 +64,6 @@ class EditorStates
         @preview.send 'currentPage', 1
         @preview.send 'setImageDirectories', @_imageDirectories if @_imageDirectories
         @preview.send 'render', @codeMirror.getValue()
-
-        MdsRenderer.sendToMain 'previewInitialized'
-        @previewInitialized = true
 
   openLink: (link) =>
     shell.openExternal link if /^https?:\/\/.+/.test(link)
@@ -197,4 +199,3 @@ $ ->
 
   # Initialize
   editorStates.codeMirror.focus()
-  editorStates.refreshPage()

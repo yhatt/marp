@@ -33,6 +33,7 @@ document.addEventListener 'DOMContentLoaded', ->
       renderNotify(md)
 
     renderNotify = (md) ->
+      ipc.sendToHost 'rendered'
       ipc.sendToHost 'rulerChanged', md.rulers if md.rulerChanged
 
     ipc.on 'render', (e, md) -> render(Markdown.parse(md))
@@ -47,5 +48,3 @@ document.addEventListener 'DOMContentLoaded', ->
 
     $(window).resize applyScreenWidth
     applyScreenWidth()
-
-    ipc.sendToHost 'initializedSlide'
