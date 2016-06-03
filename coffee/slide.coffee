@@ -6,14 +6,41 @@ document.addEventListener 'DOMContentLoaded', ->
   $ = window.jQuery = window.$ = require('jquery')
 
   do ($) ->
+    getCSSvar = (prop) -> document.defaultView.getComputedStyle(document.body).getPropertyValue(prop)
+
+    getSlideSize = ->
+      size =
+        w: +getCSSvar '--slide-width'
+        h: +getCSSvar '--slide-height'
+
+      size.ratio = size.w / size.h
+      size
+
+    getScreenSize = ->
+      size =
+        w: $(window).width()
+        h: $(window).height()
+
+      previewMargin = +getCSSvar '--preview-margin'
+      size.ratio = (size.w - previewMargin * 2) / (size.h - previewMargin * 2)
+      size
+
     applyCurrentPage = (page) ->
       $('#mds-currentPageStyle').text "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
 
-    applyScreenWidth = ->
-      size = { w: $(window).width(), h: $(window).height() }
-      css  = ":root { --screen-width:#{size.w}; --screen-height:#{size.h}; --screen-width-px:#{size.w}px; --screen-height-px:#{size.h}px; }"
+    applyResize = (newSlideSize) ->
+      size = getScreenSize()
+      css  = """
+             body {
+                --screen-width: #{size.w};
+                --screen-height: #{size.h};
+                --slide-width: #{newSlideSize?.width || 'inherit'};
+                --slide-height: #{newSlideSize?.height || 'inherit'};
+             }
+             """
 
-      $('#mds-screenWidthStyle').text css
+      $('#mds-sizeStyle').text css
+      $('#container').toggleClass 'height-base', size.ratio > getSlideSize().ratio
 
     applyPageNumber = (settings, maxPage) ->
       css = ''
@@ -46,5 +73,5 @@ document.addEventListener 'DOMContentLoaded', ->
       e.preventDefault()
       ipc.sendToHost 'linkTo', $(e.currentTarget).attr('href')
 
-    $(window).resize applyScreenWidth
-    applyScreenWidth()
+    $(window).resize (e) -> applyResize()
+    applyResize()

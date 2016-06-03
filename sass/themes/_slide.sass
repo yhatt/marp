@@ -20,20 +20,19 @@
 
 // ===== Slide CSS common =====
 
-$dpi: 96
-$slideWidthMm: 297
-$slideHeightMm: 209.75
-$slideWidthPx: $slideWidthMm * $dpi / 25.4
-$slideHeightPx: $slideHeightMm * $dpi / 25.4
+:root
+  --slide-width: 1122
+  --slide-height: 792
+  --preview-margin: 20
 
-$previewMargin: 20
-$previewWidthPx: $slideWidthPx + ($previewMargin * 2)
-$previewHeightPx: $slideHeightPx + ($previewMargin * 2)
+$slideWidthPx: calc(1px * var(--slide-width))
+$slideHeightPx: calc(1px * var(--slide-height))
+$previewMarginPx: calc(1px * var(--preview-margin))
 
-$pvCalcWidth: "(var(--screen-width) - #{$previewMargin * 2})"
-$pvCalcHeight: "(var(--screen-height) - #{$previewMargin * 2})"
-$pvCalcWidthPx: "(var(--screen-width-px) - #{$previewMargin * 2}px)"
-$pvCalcHeightPx: "(var(--screen-height-px) - #{$previewMargin * 2}px)"
+$previewWidth: calc(var(--screen-width) - var(--preview-margin) * 2)
+$previewHeight: calc(var(--screen-height) - var(--preview-margin) * 2)
+$previewWidthPx: calc(1px * #{$previewWidth})
+$previewHeightPx: calc(1px * #{$previewHeight})
 
 html, body
   height: 100%
@@ -65,8 +64,8 @@ img.emoji
     padding: 0
 
   .slide_wrapper
-    width: #{floor($slideWidthPx)}px
-    height: #{floor($slideHeightPx)}px
+    width: $slideWidthPx
+    height: $slideHeightPx
     background: #fff
     position: relative
     overflow: hidden
@@ -74,8 +73,8 @@ img.emoji
 
     > .slide
       box-sizing: border-box
-      width: #{$slideWidthPx}px
-      height: #{$slideHeightPx}px
+      width: $slideWidthPx
+      height: $slideHeightPx
       transform-origin: 0 0
 
       > .slide_inner
@@ -97,13 +96,13 @@ img.emoji
   background: #202020
 
   .slide_wrapper
-    width: calc(#{$pvCalcWidthPx})
-    height: calc(#{$pvCalcWidthPx} * #{$slideHeightPx} / #{$slideWidthPx})
+    width: $previewWidthPx
+    height: calc(#{$previewWidthPx} * var(--slide-height) / var(--slide-width))
     border: 1px solid #000
     box-shadow: 0 10px 30px #000
 
     > .slide
-      transform: scale(calc(#{$pvCalcWidth} / #{$slideWidthPx}))
+      transform: scale(calc(#{$previewWidth} / var(--slide-width)))
 
   &.screen
     .slide_wrapper
@@ -112,21 +111,20 @@ img.emoji
       top: 50%
       transform: translate(-50%, -50%)
 
+    #container.height-base
+      .slide_wrapper
+        width: calc(#{$previewHeightPx} * var(--slide-width) / var(--slide-height))
+        height: #{$previewHeightPx}
+
+        > .slide
+          transform: scale(calc(#{$previewHeight} / var(--slide-height)))
+
   &.list
     #container
-      padding: #{$previewMargin}px 0
+      padding: $previewMarginPx 0
 
     .slide_wrapper
-      margin: #{$previewMargin}px auto 0 auto
+      margin: $previewMarginPx auto 0 auto
 
       &:first-child
         margin-top: 0
-
-@media screen and (min-aspect-ratio: #{floor($previewWidthPx * 1000)}/#{floor($previewHeightPx * 1000)})
-  body.slide-view.screen
-    .slide_wrapper
-      width: calc(#{$pvCalcHeightPx} * #{$slideWidthPx} / #{$slideHeightPx})
-      height: calc(#{$pvCalcHeightPx})
-
-      > .slide
-        transform: scale(calc(#{$pvCalcHeight} / #{$slideHeightPx}))
