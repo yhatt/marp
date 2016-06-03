@@ -209,3 +209,4 @@ $ ->
 
   # Initialize
   editorStates.codeMirror.focus()
+  editorStates.refreshPage()
