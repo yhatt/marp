@@ -6,6 +6,12 @@ document.addEventListener 'DOMContentLoaded', ->
   $ = window.jQuery = window.$ = require('jquery')
 
   do ($) ->
+    setStyle = (identifier, css) ->
+      id  = "mds-#{identifier}Style"
+      elm = $("##{id}")
+      elm = $("<style id=\"#{id}\"></style>").appendTo(document.head) if elm.length <= 0
+      elm.text(css)
+
     getCSSvar = (prop) -> document.defaultView.getComputedStyle(document.body).getPropertyValue(prop)
 
     getSlideSize = ->
@@ -17,14 +23,13 @@ document.addEventListener 'DOMContentLoaded', ->
       size
 
     applySlideSize = (width, height) ->
-      css = """
-            body {
-              --slide-width: #{width || 'inherit'};
-              --slide-height: #{height || 'inherit'};
-            }
-            """
-
-      $('#mds-slideSizeStyle').text css
+      setStyle 'slideSize',
+        """
+        body {
+          --slide-width: #{width || 'inherit'};
+          --slide-height: #{height || 'inherit'};
+        }
+        """
       applyScreenSize()
 
     getScreenSize = ->
@@ -38,11 +43,11 @@ document.addEventListener 'DOMContentLoaded', ->
 
     applyScreenSize = ->
       size = getScreenSize()
-      $('#mds-screenSizeStyle').text "body { --screen-width: #{size.w}; --screen-height: #{size.h}; }"
+      setStyle 'screenSize', "body { --screen-width: #{size.w}; --screen-height: #{size.h}; }"
       $('#container').toggleClass 'height-base', size.ratio > getSlideSize().ratio
 
     applyCurrentPage = (page) ->
-      $('#mds-currentPageStyle').text "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
+      setStyle 'currentPage', "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
 
     applyPageNumber = (settings, maxPage) ->
       css = ''
@@ -53,7 +58,7 @@ document.addEventListener 'DOMContentLoaded', ->
           content = ".slide_page[data-page=\"#{page}\"] { display: block; }"
           css    += "body.slide-view #{content} @media print { body #{content} } "
 
-      $('#mds-pageNumberStyle').text css
+      setStyle 'pageNumber', css
 
     sendPdfOptions = (opts) ->
       slideSize = getSlideSize()
