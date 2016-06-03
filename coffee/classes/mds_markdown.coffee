@@ -56,7 +56,7 @@ module.exports = class MdsMarkdown
       image:      rules.image
       html_block: rules.html_block
 
-    extend rules, {
+    extend rules,
       emoji: (token, idx) ->
         twemoji.parse(token[idx].content)
 
@@ -71,7 +71,6 @@ module.exports = class MdsMarkdown
       html_block: (args...) =>
         @renderers.html_block.apply(@, args)
         defaultRenderers.html_block.apply(@, args)
-    }
 
   parse: (markdown) =>
     @_rulers    = []

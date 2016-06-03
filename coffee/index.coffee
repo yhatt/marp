@@ -84,6 +84,8 @@ class EditorStates
     else
       @_imageDirectories = directories
 
+  insertImage: (filePath) => @codeMirror.replaceSelection("![](#{filePath})\n")
+
 $ ->
   editorStates = new EditorStates(
     CodeMirror.fromTextArea($('#editor')[0],
@@ -108,11 +110,13 @@ $ ->
     .on 'dragend',   -> false
     .on 'drop',      (e) =>
       e.preventDefault()
+      return false unless (f = e.originalEvent.dataTransfer?.files?[0])?
 
-      file = e.originalEvent.dataTransfer?.files?[0]?.path
-      MdsRenderer.sendToMain 'loadFromFile', file if file?
-
-      return false
+      if f.type.startsWith('image')
+        editorStates.insertImage f.path
+      else if f.type.startsWith('text') || f.type is ''
+        MdsRenderer.sendToMain 'loadFromFile', f.path if f.path?
+      false
 
   # Splitter
   draggingSplitter      = false
