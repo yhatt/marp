@@ -15,12 +15,21 @@ applyScreenWidth = ->
 
   $('#mds-screenWidthStyle').text css
 
-ipc.on 'render', (e, md) ->
-  markdown = Markdown.parse(md)
-  document.getElementById('markdown').innerHTML = markdown.parsed
+render = (md) ->
+  s = md.settings
 
-  ipc.sendToHost 'rulerChanged', markdown.rulers if markdown.rulerChanged
+  $('#markdown')
+    .toggleClass('page-number', (s.page_number || s.page_number_exclude_title) || false)
+    .toggleClass('page-number-exclude-first-page', s.page_number_exclude_title || false)
+    .html(md.parsed)
 
+  renderNotify(md)
+
+renderNotify = (md) ->
+  ipc.sendToHost 'rulerChanged',     md.rulers   if md.rulerChanged
+  ipc.sendToHost 'mdSettingChanged', md.settings if md.settingChanged
+
+ipc.on 'render', (e, md) -> render(Markdown.parse(md))
 ipc.on 'currentPage', (e, page) -> applyCurrentPage page
 ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
 ipc.on 'setImageDirectories', (e, dirs) -> Markdown.imageDirs = dirs
