@@ -75,4 +75,4 @@ npm install appdmg
 ## Licenses
 
 Copyright &copy; 2016 [Yuki Hattori](https://github.com/yhatt).
-This software released under the [MIT License](https://opensource.org/licenses/mit-license.php).
+This software released under the [MIT License](https://github.com/yhatt/marp/blob/master/LICENSE).
