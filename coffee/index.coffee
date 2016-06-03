@@ -1,4 +1,5 @@
 {shell}        = require 'electron'
+MdsMenu        = require './js/classes/mds_menu'
 clsMdsRenderer = require './js/classes/mds_renderer'
 MdsRenderer    = new clsMdsRenderer
 MdsRenderer.requestAccept()
@@ -19,6 +20,18 @@ class EditorStates
   constructor: (@codeMirror, @preview) ->
     @initializeEditor()
     @initializePreview()
+
+    @menu = new MdsMenu [
+      { label: '&Undo', accelerator: 'CmdOrCtrl+Z', click: (i, w) => @codeMirror.execCommand 'undo' if w and !w.mdsWindow.freeze }
+      { label: '&Redo', accelerator: 'Shift+CmdOrCtrl+Z', click: (i, w) => @codeMirror.execCommand 'redo' if w and !w.mdsWindow.freeze }
+      { type: 'separator' }
+      { label: 'Cu&t', accelerator: 'CmdOrCtrl+X', role: 'cut' }
+      { label: '&Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
+      { label: '&Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' }
+      { label: 'Select &All', accelerator: 'CmdOrCtrl+A', click: (i, w) => @codeMirror.execCommand 'selectAll' if w and !w.mdsWindow.freeze }
+      { type: 'separator', platform: 'darwin' }
+      { label: 'Services', role: 'services', submenu: [], platform: 'darwin' }
+    ]
 
   refreshPage: (rulers) =>
     @rulers = rulers if rulers?
@@ -71,6 +84,12 @@ class EditorStates
     shell.openExternal link if /^https?:\/\/.+/.test(link)
 
   initializeEditor: =>
+    @codeMirror.on 'contextmenu', (cm, e) =>
+      e.preventDefault()
+      @codeMirror.focus()
+      @menu.popup()
+      false
+
     @codeMirror.on 'change', (cm, chg) =>
       @preview.send 'render', cm.getValue()
       MdsRenderer.sendToMain 'setChangedStatus', true if !@_lockChangedStatus
