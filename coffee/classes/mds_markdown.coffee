@@ -92,7 +92,7 @@ module.exports = class MdsMarkdown
   renderers:
     image: (tokens, idx, options, env, self) ->
       if @imageDirs?.length > 0
-        src = tokens[idx].attrs[tokens[idx].attrIndex('src')][1]
+        src = decodeURIComponent(tokens[idx].attrs[tokens[idx].attrIndex('src')][1])
 
         for dir in @imageDirs
           resolvedPath = Path.resolve(dir, src)
