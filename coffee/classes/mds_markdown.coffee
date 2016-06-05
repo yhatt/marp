@@ -3,8 +3,8 @@ twemoji      = require 'twemoji'
 extend       = require 'extend'
 markdownIt   = require 'markdown-it'
 Path         = require 'path'
-fs           = require 'fs'
 MdsMdSetting = require './mds_md_setting'
+{exist}      = require './mds_file'
 
 module.exports = class MdsMarkdown
   @slideTagOpen:  (page) -> '<div class="slide_wrapper" id="' + page + '"><div class="slide"><div class="slide_inner">'
@@ -92,18 +92,12 @@ module.exports = class MdsMarkdown
     image: (tokens, idx, options, env, self) ->
       src = decodeURIComponent(tokens[idx].attrs[tokens[idx].attrIndex('src')][1])
 
-      existFile = (fname) ->
-        try
-          unless fs.accessSync(fname, fs.R_OK)?
-            return true if fs.lstatSync(fname).isFile()
-        false
-
-      return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = src if existFile(src)
+      return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = src if exist(src)
 
       if @imageDirs?.length > 0
         for dir in @imageDirs
           imgPath = Path.resolve(dir, src)
-          return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = imgPath if existFile(imgPath)
+          return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = imgPath if exist(imgPath)
 
     html_block: (tokens, idx, options, env, self) ->
       {content} = tokens[idx]

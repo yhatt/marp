@@ -1,5 +1,5 @@
-{app} = require 'electron'
-fs    = require 'fs'
+{app}   = require 'electron'
+{exist} = require './mds_file'
 
 class MdsFileHistory
   history: []
@@ -45,22 +45,15 @@ class MdsFileHistory
   push: (path) =>
     dupHistory = []
     dupHistory.push p for p in @history when path != p
-    @setHistory [path].concat(dupHistory) if @checkExistance(path)
+    @setHistory [path].concat(dupHistory) if exist(path)
 
   clear: =>
     @setHistory []
 
   filterExistance: =>
     newHistory = []
-    newHistory.push path for path in @history when @checkExistance path
+    newHistory.push path for path in @history when exist(path)
     @setHistory newHistory
-
-  checkExistance: (filePath) =>
-    try
-      fs.accessSync(filePath, fs.F_OK)
-      return true
-    catch
-      return false
 
   setHistory: (newHistory) =>
     @history = newHistory.slice 0, @max

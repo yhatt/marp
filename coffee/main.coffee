@@ -2,10 +2,10 @@ global.marp or=
   config: require './classes/mds_config'
 
 {app}     = require 'electron'
-fs        = require 'fs'
 Path      = require 'path'
 MdsWindow = require './classes/mds_window'
 MainMenu  = require './classes/mds_main_menu'
+{exist}   = require './classes/mds_file'
 
 # Initialize config
 global.marp.config.initialize()
@@ -21,13 +21,9 @@ for arg in process.argv.slice(1)
     when '--development', '--dev'
       opts.development = true
     else
-      resolved_file = Path.resolve(arg)
-
-      try
-        unless fs.accessSync(resolved_file, fs.R_OK)?
-          if fs.lstatSync(resolved_file).isFile()
-            opts.file = resolved_file
-            break_arg = true
+      if exist(resolved_file = Path.resolve(arg))
+        opts.file = resolved_file
+        break_arg = true
 
   break if break_arg
 
