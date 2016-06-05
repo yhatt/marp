@@ -90,13 +90,17 @@ img.emoji
         > :last-child
           margin-bottom: 0
 
-  .slide_page
-    display: none
-    position: absolute
-    right: 30px
-    bottom: 21px
-    z-index: 10
-    pointer-events: none
+    .slide_page
+      display: none
+      position: absolute
+      right: 30px
+      bottom: 21px
+      z-index: 10
+      pointer-events: none
+
+    &[data-page_number="true"]
+      .slide_page
+        display: block
 
 @media print
   body .slide_wrapper

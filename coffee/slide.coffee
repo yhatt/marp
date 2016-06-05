@@ -49,16 +49,28 @@ document.addEventListener 'DOMContentLoaded', ->
     applyCurrentPage = (page) ->
       setStyle 'currentPage', "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
 
-    applyPageNumber = (settings, maxPage) ->
-      css = ''
-      page = 0
+    render = (md) ->
+      applySlideSize md.settings.getGlobal('width'), md.settings.getGlobal('height')
 
-      while ++page <= maxPage
-        if settings.get(page, 'page_number')
-          content = ".slide_page[data-page=\"#{page}\"] { display: block; }"
-          css    += "body.slide-view #{content} @media print { body #{content} } "
+      mdElm = $('#markdown').html(md.parsed)
+      mdElm
+        .children('.slide_wrapper')
+        .each ->
+          # Page directives for themes
+          page = $(@)[0].id
+          $(@).attr("data-#{prop}", val) for prop, val of md.settings.getAt(+page, false)
 
-      setStyle 'pageNumber', css
+          # Detect only headings
+          inner = $(@).find('.slide > .slide_inner')
+          heads = $(inner).children(':header').length
+
+          $(@).addClass('only-headings') if heads > 0 && $(inner).children(':visible').length == heads
+
+      renderNotify(md)
+
+    renderNotify = (md) ->
+      ipc.sendToHost 'rendered'
+      ipc.sendToHost 'rulerChanged', md.rulers if md.rulerChanged
 
     sendPdfOptions = (opts) ->
       slideSize = getSlideSize()
@@ -68,17 +80,6 @@ document.addEventListener 'DOMContentLoaded', ->
         height: Math.floor(slideSize.h * 25400 / 96)
 
       ipc.sendToHost 'responsePdfOptions', opts
-
-    render = (md) ->
-      applySlideSize md.settings.getGlobal('width'), md.settings.getGlobal('height')
-      applyPageNumber(md.settings, md.rulers.length + 1)
-
-      $('#markdown').html(md.parsed)
-      renderNotify(md)
-
-    renderNotify = (md) ->
-      ipc.sendToHost 'rendered'
-      ipc.sendToHost 'rulerChanged', md.rulers if md.rulerChanged
 
     ipc.on 'render', (e, md) -> render(Markdown.parse(md))
     ipc.on 'currentPage', (e, page) -> applyCurrentPage page
