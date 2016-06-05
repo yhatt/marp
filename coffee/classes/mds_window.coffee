@@ -13,6 +13,8 @@ module.exports = class MdsWindow
   @appWillQuit: false
 
   @defOptions: () ->
+    title:  'Marp'
+    show:   false
     x:      global.marp.config.get 'windowPosition.x'
     y:      global.marp.config.get 'windowPosition.y'
     width:  global.marp.config.get 'windowPosition.width'
@@ -41,6 +43,7 @@ module.exports = class MdsWindow
         @_windowLoaded = true
         @send 'setSplitter', global.marp.config.get('splitterPosition')
         @trigger 'load', fileOpts?.buffer || '', @path
+        bw.show()
 
       bw.on 'close', (e) =>
         if @freeze
