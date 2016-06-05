@@ -1,8 +1,10 @@
-{shell}        = require 'electron'
-MdsMenu        = require './js/classes/mds_menu'
-clsMdsRenderer = require './js/classes/mds_renderer'
-MdsRenderer    = new clsMdsRenderer
+{shell, webFrame} = require 'electron'
+MdsMenu           = require './js/classes/mds_menu'
+clsMdsRenderer    = require './js/classes/mds_renderer'
+MdsRenderer       = new clsMdsRenderer
 MdsRenderer.requestAccept()
+
+webFrame.setZoomLevelLimits(1, 1)
 
 CodeMirror = require 'codemirror'
 require 'codemirror/mode/xml/xml'
