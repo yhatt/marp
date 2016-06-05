@@ -2,7 +2,7 @@ type_is = (type, obj) -> obj? and type == Object.prototype.toString.call(obj).sl
 
 ipc = require('electron').ipcMain;
 
-module.exports = class MdsManager
+class MdsManager
   WINDOW_PENDING: 1
   WINDOW_ACCEPTED: 2
 
@@ -49,3 +49,5 @@ module.exports = class MdsManager
         w.send 'MdsManagerSendEvent', evt, { from: target.from, to: send_target }, args
 
     e.sender.send 'MdsRendererEventSent', evt
+
+module.exports = new MdsManager

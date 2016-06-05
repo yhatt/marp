@@ -1,6 +1,6 @@
 {BrowserWindow, dialog} = require 'electron'
 
-clsMdsManager  = require './mds_manager'
+MdsManager     = require './mds_manager'
 MdsMenu        = require './mds_menu'
 MdsFileHistory = require './mds_file_history'
 extend         = require 'extend'
@@ -8,7 +8,6 @@ fs             = require 'fs'
 jschardet      = require 'jschardet'
 iconv_lite     = require 'iconv-lite'
 Path           = require 'path'
-MdsManager     = new clsMdsManager
 
 module.exports = class MdsWindow
   @appWillQuit: false
