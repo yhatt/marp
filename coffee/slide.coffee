@@ -64,7 +64,7 @@ document.addEventListener 'DOMContentLoaded', ->
           inner = $(@).find('.slide > .slide_inner')
           heads = $(inner).children(':header').length
 
-          $(@).addClass('only-headings') if heads > 0 && $(inner).children(':visible').length == heads
+          $(@).addClass('only-headings') if heads > 0 && $(inner).children().length == heads
 
       renderNotify(md)
 
