@@ -6,6 +6,13 @@ document.addEventListener 'DOMContentLoaded', ->
   $ = window.jQuery = window.$ = require('jquery')
 
   do ($) ->
+    themes = {}
+    themes.current = -> $('#theme-css').attr('href')
+    themes.default = themes.current()
+    themes.apply = (path = null) ->
+      toApply = path || themes.default
+      $('#theme-css').attr('href', toApply) if toApply isnt themes.current()
+
     setStyle = (identifier, css) ->
       id  = "mds-#{identifier}Style"
       elm = $("##{id}")
@@ -50,6 +57,7 @@ document.addEventListener 'DOMContentLoaded', ->
       setStyle 'currentPage', "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
 
     render = (md) ->
+      themes.apply md.settings.getGlobal('theme')
       applySlideSize md.settings.getGlobal('width'), md.settings.getGlobal('height')
 
       mdElm = $('#markdown').html(md.parsed)

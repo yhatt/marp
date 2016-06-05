@@ -1,4 +1,6 @@
-extend = require 'extend'
+extend  = require 'extend'
+path    = require 'path'
+{exist} = require './mds_file'
 
 module.exports = class MdsMdSetting
   @generalTransfomer:
@@ -25,6 +27,9 @@ module.exports = class MdsMdSetting
     page_number: (v) -> v is 'true'
     width: MdsMdSetting.generalTransfomer.unit
     height: MdsMdSetting.generalTransfomer.unit
+    theme: (v) ->
+      basefile = "css/themes/#{path.basename(v)}.css"
+      if exist(path.resolve(__dirname, "../../#{basefile}")) then basefile else null
 
   @findTransformer: (prop) =>
     for transformerProp, transformer of MdsMdSetting.transformers
@@ -90,7 +95,7 @@ module.exports = class MdsMdSetting
     null
 
   @validProps:
-    global: ['width', 'height', 'size']
+    global: ['width', 'height', 'size', 'theme']
     page:   ['page_number']
 
   @isValidProp: (page, prop) =>

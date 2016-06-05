@@ -176,8 +176,6 @@ $ ->
       editorStates.codeMirror.getInputField().blur()
       $('body').addClass 'exporting-pdf'
 
-      console.log opts
-
       editorStates.preview.printToPDF
         marginsType: 1
         pageSize: opts.exportSize
