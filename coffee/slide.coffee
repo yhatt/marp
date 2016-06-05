@@ -63,6 +63,12 @@ document.addEventListener 'DOMContentLoaded', ->
       applySlideSize md.settings.getGlobal('width'), md.settings.getGlobal('height')
 
       mdElm = $('#markdown').html(md.parsed)
+
+      mdElm.find('img[alt*="%"]').each ->
+        for opt in $(@).attr('alt').split(/\s+/)
+          if m = opt.match(/^(\d+(?:\.\d+)?)%$/)
+            $(@).css('zoom', parseFloat(m[1]) / 100.0)
+
       mdElm
         .children('.slide_wrapper')
         .each ->
