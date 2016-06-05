@@ -8,6 +8,7 @@
   },
   "main": "main.js",
   "scripts": {
+    "start": "gulp run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

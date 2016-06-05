@@ -37,12 +37,7 @@ foobar
 
 ```
 npm install
-```
-
-And run below gulp task to execute:
-
-```
-gulp run
+npm start
 ```
 
 ### Create release builds
