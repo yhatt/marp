@@ -1,5 +1,4 @@
-MdsMarkdown = require './classes/mds_markdown'
-Markdown    = new MdsMarkdown
+Markdown    = new (require './classes/mds_markdown')
 ipc         = require('electron').ipcRenderer
 
 document.addEventListener 'DOMContentLoaded', ->
@@ -11,7 +10,10 @@ document.addEventListener 'DOMContentLoaded', ->
     themes.default = themes.current()
     themes.apply = (path = null) ->
       toApply = path || themes.default
-      $('#theme-css').attr('href', toApply) if toApply isnt themes.current()
+
+      if toApply isnt themes.current()
+        $('#theme-css').attr('href', toApply)
+        setTimeout applyScreenSize, 20
 
     setStyle = (identifier, css) ->
       id  = "mds-#{identifier}Style"
