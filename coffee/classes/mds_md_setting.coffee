@@ -1,6 +1,5 @@
 extend  = require 'extend'
 path    = require 'path'
-{exist} = require './mds_file'
 
 module.exports = class MdsMdSetting
   @generalTransfomer:
@@ -28,8 +27,8 @@ module.exports = class MdsMdSetting
     width: MdsMdSetting.generalTransfomer.unit
     height: MdsMdSetting.generalTransfomer.unit
     theme: (v) ->
-      basefile = "css/themes/#{path.basename(v)}.css"
-      if exist(basefile) then basefile else null
+      basename = path.basename(v)
+      return if basename in ['default', 'gaia'] then "css/themes/#{basename}.css" else null
     template: (v) -> v
 
   @findTransformer: (prop) =>
