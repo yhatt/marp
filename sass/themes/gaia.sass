@@ -1,0 +1,165 @@
+/*
+ * Gaia - Marp slide theme.
+ * Copyright (C) 2016 Yuki Hattori.
+ *
+ * Gaia was inspired by AZUSA Keynote templates (by @sanographix).
+ * https://github.com/sanographix/azusa-keynote
+ */
+
+@import './markdown'
+@import '../../node_modules/highlight.js/styles/sunburst'
+@import url(https://fonts.googleapis.com/css?family=Lato:400,900);
+
+$bg-color: #fff8e1
+$text-color: #455a64
+$highlight-color: #0288d1
+
+=color-template($bg, $text, $highlight)
+  color: $text
+
+  > .slide
+    background-color: $bg
+
+  mark
+    color: $highlight
+
+  a
+    color: $highlight
+
+  code
+    background: rgba($text, .8)
+    color: $bg
+
+  pre
+    background: $text
+
+    code
+      background: transparent
+
+  blockquote
+    &::after, &::before
+      color: $text
+
+  table
+    th, td
+      border-color: $text
+
+    thead
+      th
+        background: $text
+        color: $bg
+
+    tbody
+      tr:nth-child(odd)
+        td, th
+          background: rgba($text, .1)
+
++body-slide-mode
+  .markdown-body
+    font-size: calc(0.045px * var(--slide-height))
+    font-family: 'Lato', 'Avenir Next', 'Avenir', 'Trebuchet MS', 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Meiryo UI', sans-serif
+    line-height: 1.3
+    letter-spacing: 1.25px
+    word-wrap: break-word
+
+  .slide_wrapper
+    > .slide
+      background-image: linear-gradient(135deg, rgba(#000, 0), rgba(#000, .02) 50%, rgba(#fff, 0) 50%, rgba(#fff, .05))
+      padding: calc(0.1px * var(--slide-height)) calc(0.08px * var(--slide-width))
+
+    &.only-headings, &.only-blockquotes
+      > .slide
+        justify-content: center
+
+    h1, h2, h3, h5, h5
+      font-weight: bold
+
+    h1, h2, h3, h4, h5, h6
+      margin: 0 0 .5em 0
+
+    &.only-headings
+      h1, h2, h3, h4, h5, h6
+        text-align: center
+
+    h1
+      font-size: 1.8em
+    h2
+      font-size: 1.5em
+    h3
+      font-size: 1.4em
+    h4
+      font-size: 1.1em
+    h5
+      font-size: 1em
+    h6
+      font-size: 0.9em
+
+    // Styling
+    mark
+      background: transparent
+
+    code
+      display: inline-block
+      padding: 0.1em 0.2em
+      margin: -0.1em 0.05em
+      letter-spacing: 0
+      font-size: 0.75em
+      vertical-align: middle
+
+    pre
+      overflow: auto
+
+      code
+        display: block
+        margin: 0
+        padding: 0.5em 0.75em
+        font-size: 0.7em
+
+    ul, ol
+      > li
+        margin: 0.6em 0
+        > p
+          margin: 0
+
+    ol
+      list-style-type: decimal
+
+    blockquote
+      position: relative
+      margin: calc(0.04px * var(--slide-height))
+
+      &::after, &::before
+        position: absolute
+        display: block
+        content: '“'
+        font-family: 'Times New Roman', serif
+        font-size: calc(0.04px * var(--slide-height))
+        font-weight: bold
+        opacity: 0.8
+
+      &::before
+        top: 0
+        left: calc(-0.04px * var(--slide-height))
+
+      &::after
+        right: calc(-0.04px * var(--slide-height))
+        bottom: 0
+        transform: rotate(180deg)
+
+    table
+      border-spacing: 0
+      border-collapse: collapse
+
+      th, td
+        padding: 0.2em 0.4em
+        border-width: 1px
+        border-style: solid
+
+    +color-template($bg-color, $text-color, $highlight-color)
+
+    &[data-template~="invert"]
+      +color-template($text-color, $bg-color, #4fc3f7)
+
+    &[data-template~="gaia"]
+      +color-template($highlight-color, $bg-color, #81d4fa)
+

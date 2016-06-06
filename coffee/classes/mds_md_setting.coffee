@@ -30,6 +30,7 @@ module.exports = class MdsMdSetting
     theme: (v) ->
       basefile = "css/themes/#{path.basename(v)}.css"
       if exist(path.resolve(__dirname, "../../#{basefile}")) then basefile else null
+    template: (v) -> v
 
   @findTransformer: (prop) =>
     for transformerProp, transformer of MdsMdSetting.transformers
@@ -96,7 +97,7 @@ module.exports = class MdsMdSetting
 
   @validProps:
     global: ['width', 'height', 'size', 'theme']
-    page:   ['page_number']
+    page:   ['page_number', 'template']
 
   @isValidProp: (page, prop) =>
     target = if page > 0 then 'page' else 'global'
