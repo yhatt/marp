@@ -152,9 +152,9 @@ module.exports = class MdsMainMenu
           {
             label: 'Open &Examples'
             submenu: [
-              { label: '&Marp basic example', click: (item, w) -> MdsWindow.loadFromFile './example.md', w?.mdsWindow }
+              { label: '&Marp basic example', click: (item, w) -> MdsWindow.loadFromFile './example.md', w?.mdsWindow, true }
               { type: 'separator' }
-              { label: '&Gaia theme', click: (item, w) -> MdsWindow.loadFromFile './examples/gaia.md', w?.mdsWindow }
+              { label: '&Gaia theme', click: (item, w) -> MdsWindow.loadFromFile './examples/gaia.md', w?.mdsWindow, true }
             ]
           }
         ]

@@ -84,7 +84,7 @@ module.exports = class MdsWindow
 
     @_setIsOpen true
 
-  @loadFromFile: (fname, mdsWindow) ->
+  @loadFromFile: (fname, mdsWindow, ignoreRecent = false) ->
     fs.readFile fname, (err, txt) =>
       return if err
 
@@ -94,15 +94,16 @@ module.exports = class MdsWindow
       else
         buf = txt.toString()
 
-      MdsFileHistory.push fname
-      global.marp.mainMenu.setAppMenu()
+      unless ignoreRecent
+        MdsFileHistory.push fname
+        global.marp.mainMenu.setAppMenu()
 
       if mdsWindow? and mdsWindow.isBufferEmpty()
         mdsWindow.trigger 'load', buf, fname
       else
         new MdsWindow { path: fname, buffer: buf }
 
-  loadFromFile: (fname) => MdsWindow.loadFromFile fname, @
+  loadFromFile: (fname, ignoreRecent = false) => MdsWindow.loadFromFile fname, @, ignoreRecent
 
   trigger: (evt, args...) =>
     @events[evt]?.apply(@, args)
