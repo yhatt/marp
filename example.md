@@ -1,11 +1,11 @@
 Marp
 ===
 
-![](images/marp.png)
+# ![](images/marp.png)
 
-Markdown presentation writer, powered by [Electron](http://electron.atom.io/)
+##### Markdown presentation writer, powered by [Electron](http://electron.atom.io/)
 
-<small>Created by Yuki Hattori ( [@yhatt](https://github.com/yhatt) )</small>
+###### Created by Yuki Hattori ( [@yhatt](https://github.com/yhatt) )
 
 ---
 
@@ -40,7 +40,7 @@ foobar
 
 ---
 
-# Directives `since v0.0.7`
+# Directives
 
 Marp's Markdown has extended directives to affect slides.
 
@@ -81,7 +81,43 @@ If you use multi-line comment, directives should write to each new lines.
 
 ---
 
+### `template`
+
+Set to use template of theme.
+
+The `template` directive just enables that using theme supports templates.
+
+```html
+<!--
+$theme: gaia
+template: invert
+-->
+
+Example: Set "invert" template of Gaia theme.
+```
+
+---
+
 ## Global Directive
+
+### `$theme`
+
+Change slide theme.
+
+```
+<!-- $theme: gaia -->
+```
+
+
+##### Suported themes (v0.0.8)
+
+|Theme name|Value|Directive|
+|:-:|:-:|:-|
+|***Default***|default|`<!-- $theme: default -->`
+|**Gaia**|gaia|`<!-- $theme: gaia -->`
+
+
+---
 
 ### `$width` / `$height`
 
@@ -95,7 +131,7 @@ You can use units: `px` (default), `cm`, `mm`, `in`, `pt`, and `pc`.
 ### `$size`
 
 Change slide size by presets.
-Supports `4:3`, `16:9`, `A0`-`A8`, `B0`-`B8` and suffix of `-portrait`.
+Presets: `4:3`, `16:9`, `A0`-`A8`, `B0`-`B8` and suffix of `-portrait`.
 
 ```html
 <!-- $size: 16:9 -->
@@ -116,6 +152,7 @@ Page Directive can apply temporally to only current slide. Try to add `*` to top
 
 ```
 <!-- *page_number: false -->
+<!-- *template: invert -->
 ```
 
 <!--
