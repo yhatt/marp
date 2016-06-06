@@ -1,5 +1,6 @@
 {app, dialog, shell}  = require 'electron'
 extend                = require 'extend'
+path                  = require 'path'
 MdsMenu               = require './mds_menu'
 MdsWindow             = require './mds_window'
 MdsFileHistory        = require './mds_file_history'
@@ -152,9 +153,23 @@ module.exports = class MdsMainMenu
           {
             label: 'Open &Examples'
             submenu: [
-              { label: '&Marp basic example', click: (item, w) -> MdsWindow.loadFromFile './example.md', w?.mdsWindow, true }
+              {
+                label: '&Marp basic example',
+                click: (item, w) ->
+                  MdsWindow.loadFromFile(
+                    path.join(__dirname, '../../example.md'),
+                    w?.mdsWindow, true
+                  )
+              }
               { type: 'separator' }
-              { label: '&Gaia theme', click: (item, w) -> MdsWindow.loadFromFile './examples/gaia.md', w?.mdsWindow, true }
+              {
+                label: '&Gaia theme',
+                click: (item, w) ->
+                  MdsWindow.loadFromFile(
+                    path.join(__dirname, '../../examples/gaia.md'),
+                    w?.mdsWindow, true
+                  )
+              }
             ]
           }
         ]

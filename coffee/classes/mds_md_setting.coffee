@@ -29,7 +29,7 @@ module.exports = class MdsMdSetting
     height: MdsMdSetting.generalTransfomer.unit
     theme: (v) ->
       basefile = "css/themes/#{path.basename(v)}.css"
-      if exist(path.resolve(__dirname, "../../#{basefile}")) then basefile else null
+      if exist(basefile) then basefile else null
     template: (v) -> v
 
   @findTransformer: (prop) =>
