@@ -14,7 +14,7 @@ Marp
 - **Slides can write by Markdown.**
 - Cross-platform. Supported Windows, Mac, and Linux
 - Live Preview with 3 modes
-- Simplized slide design (based on Github style)
+- Slide themes (`default`, `gaia`)
 - Supports emoji :heart:
 - Export your slides to PDF
 
