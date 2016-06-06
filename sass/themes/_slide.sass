@@ -85,10 +85,12 @@ img.emoji
 
       > .slide_inner
         > :first-child
-          margin-top: 0
+          &, & > :first-child
+            margin-top: 0 !important
 
         > :last-child
-          margin-bottom: 0
+          &, & > :last-child
+            margin-bottom: 0 !important
 
     .slide_page
       display: none
@@ -146,7 +148,7 @@ img.emoji
       padding: $previewMarginPx 0
 
     .slide_wrapper
-      margin: $previewMarginPx auto 0 auto
+      margin: $previewMarginPx auto 0 auto !important
 
       &:first-child
-        margin-top: 0
+        margin-top: 0 !important

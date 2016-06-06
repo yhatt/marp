@@ -76,11 +76,14 @@ document.addEventListener 'DOMContentLoaded', ->
           page = $(@)[0].id
           $(@).attr("data-#{prop}", val) for prop, val of md.settings.getAt(+page, false)
 
-          # Detect only headings
+          # Detect only elements
           inner = $(@).find('.slide > .slide_inner')
-          heads = $(inner).children(':header').length
 
+          heads = $(inner).children(':header').length
           $(@).addClass('only-headings') if heads > 0 && $(inner).children().length == heads
+
+          quotes = $(inner).children('blockquote').length
+          $(@).addClass('only-blockquotes') if quotes > 0 && $(inner).children().length == quotes
 
       renderNotify(md)
 
