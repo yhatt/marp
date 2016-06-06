@@ -1,8 +1,8 @@
-{app, dialog}  = require 'electron'
-extend         = require 'extend'
-MdsMenu        = require './mds_menu'
-MdsWindow      = require './mds_window'
-MdsFileHistory = require './mds_file_history'
+{app, dialog, shell}  = require 'electron'
+extend                = require 'extend'
+MdsMenu               = require './mds_menu'
+MdsWindow             = require './mds_window'
+MdsFileHistory        = require './mds_file_history'
 
 module.exports = class MdsMainMenu
   opts: {}
@@ -140,6 +140,23 @@ module.exports = class MdsMainMenu
           { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' }
           { type: 'separator' }
           { label: 'Bring All to Front', role: 'front' }
+        ]
+      }
+      {
+        label: 'Help'
+        role: 'help'
+        submenu: [
+          { label: 'Visit Marp &Website', click: -> shell.openExternal('https://yhatt.github.io/marp/') }
+          { label: '&Release Notes', click: -> shell.openExternal('https://github.com/yhatt/marp/releases') }
+          { type: 'separator' }
+          {
+            label: 'Open &Examples'
+            submenu: [
+              { label: '&Marp basic example', click: (item, w) -> MdsWindow.loadFromFile './example.md', w?.mdsWindow }
+              { type: 'separator' }
+              { label: '&Gaia theme', click: (item, w) -> MdsWindow.loadFromFile './examples/gaia.md', w?.mdsWindow }
+            ]
+          }
         ]
       }
     ]
