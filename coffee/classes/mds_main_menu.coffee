@@ -144,7 +144,7 @@ module.exports = class MdsMainMenu
         ]
       }
       {
-        label: 'Help'
+        label: '&Help'
         role: 'help'
         submenu: [
           { label: 'Visit Marp &Website', click: -> shell.openExternal('https://yhatt.github.io/marp/') }
