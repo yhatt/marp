@@ -9,7 +9,9 @@ module.exports = class MdsMainMenu
   window: null
   menu: null
 
+  @useAppMenu: process.platform is 'darwin'
   @instances: new Map
+  @currentMenuId: null
 
   constructor: (@states) ->
     @mdsWindow = require './mds_window'
@@ -18,19 +20,31 @@ module.exports = class MdsMainMenu
 
     MdsMainMenu.instances.set @window_id, @
     @listenWindow()
+    @updateMenu()
 
   listenWindow: () =>
     return false unless @window?
 
-    @window.on 'focus', => @applyMenu()
-    @window.on 'blur', => MdsMainMenu.instances.get(null).applyMenu()
+    resetAppMenu = ->
+      MdsMainMenu.currentMenuId = null
+      MdsMainMenu.instances.get(null).applyMenu() if MdsMainMenu.useAppMenu
+
+    @window.on 'focus', =>
+      MdsMainMenu.currentMenuId = @window_id
+      @applyMenu() if MdsMainMenu.useAppMenu
+
+    @window.on 'blur', resetAppMenu
+
     @window.on 'closed', =>
       MdsMainMenu.instances.delete(@window_id)
-      MdsMainMenu.instances.get(null).applyMenu()
+      resetAppMenu()
 
   applyMenu: () =>
-    @updateMenu() unless @menu?
-    @menu.object.setAppMenu(@menu.options)
+    if MdsMainMenu.useAppMenu
+      if @window_id == MdsMainMenu.currentMenuId
+        @menu.object.setAppMenu(@menu.options)
+    else
+      @menu.object.setMenu(@window, @menu.options) if @window?
 
   @updateMenuToAll: () =>
     @instances.forEach (m) -> m.updateMenu()
@@ -84,10 +98,10 @@ module.exports = class MdsMainMenu
               label: 'Open &Recent'
               submenu: [{ replacement: 'fileHistory' }]
             }
-            { label: '&Save', enabled: @window?, accelerator: 'CmdOrCtrl+S', click: (item, w) -> w.mdsWindow.trigger 'save' if w }
-            { label: 'Save &As...', enabled: @window?, click: (item, w) -> w.mdsWindow.trigger 'saveAs' if w }
+            { label: '&Save', enabled: @window?, accelerator: 'CmdOrCtrl+S', click: => @window.mdsWindow.trigger 'save' }
+            { label: 'Save &As...', enabled: @window?, click: => @window.mdsWindow.trigger 'saveAs' }
             { type: 'separator' }
-            { label: '&Export Slides as PDF...', enabled: @window?, accelerator: 'CmdOrCtrl+Shift+E', click: (item, w) -> w.mdsWindow.trigger 'exportPdfDialog' if w }
+            { label: '&Export Slides as PDF...', enabled: @window?, accelerator: 'CmdOrCtrl+Shift+E', click: => @window.mdsWindow.trigger 'exportPdfDialog' }
             { type: 'separator', platform: '!darwin' }
             { label: 'Close', role: 'close', platform: '!darwin' }
           ]
@@ -95,13 +109,28 @@ module.exports = class MdsMainMenu
         {
           label: '&Edit'
           submenu: [
-            { label: '&Undo', enabled: @window?, accelerator: 'CmdOrCtrl+Z', click: (item, w) -> w.mdsWindow.send 'editCommand', 'undo' if w and !w.mdsWindow.freeze }
-            { label: '&Redo', enabled: @window?, accelerator: 'Shift+CmdOrCtrl+Z', click: (item, w) -> w.mdsWindow.send 'editCommand', 'redo' if w and !w.mdsWindow.freeze }
+            {
+              label: '&Undo'
+              enabled: @window?
+              accelerator: 'CmdOrCtrl+Z'
+              click: => @window.mdsWindow.send 'editCommand', 'undo' unless @window.mdsWindow.freeze
+            }
+            {
+              label: '&Redo'
+              enabled: @window?
+              accelerator: 'Shift+CmdOrCtrl+Z'
+              click: => @window.mdsWindow.send 'editCommand', 'redo' unless @window.mdsWindow.freeze
+            }
             { type: 'separator' }
             { label: 'Cu&t', accelerator: 'CmdOrCtrl+X', role: 'cut' }
             { label: '&Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
             { label: '&Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' }
-            { label: 'Select &All', enabled: @window?, accelerator: 'CmdOrCtrl+A', click: (item, w) -> w.mdsWindow.send 'editCommand', 'selectAll' if w and !w.mdsWindow.freeze }
+            {
+              label: 'Select &All'
+              enabled: @window?
+              accelerator: 'CmdOrCtrl+A'
+              click: => @window.mdsWindow.send 'editCommand', 'selectAll' unless @window.mdsWindow.freeze
+            }
           ]
         }
         {
@@ -113,7 +142,7 @@ module.exports = class MdsMainMenu
               label: 'Toggle &Full Screen'
               enabled: @window?
               accelerator: do -> if process.platform == 'darwin' then 'Ctrl+Command+F' else 'F11'
-              click: (item, w) -> w.setFullScreen !w.isFullScreen() if w
+              click: => @window.setFullScreen !@window.isFullScreen()
             }
           ]
         }
@@ -163,8 +192,8 @@ module.exports = class MdsMainMenu
           label: '&Dev'
           visible: @states.development? and !!@states.development
           submenu: [
-            { label: 'Toggle &Dev Tools', enabled: @window?, accelerator: 'Alt+Ctrl+I', click: (item, w) -> w.toggleDevTools() if w }
-            { label: 'Toggle &Markdown Dev Tools', enabled: @window?, accelerator: 'Alt+Ctrl+Shift+I', click: (item, w) -> w.mdsWindow.send 'openDevTool' if w }
+            { label: 'Toggle &Dev Tools', enabled: @window?, accelerator: 'Alt+Ctrl+I', click: => @window.toggleDevTools() }
+            { label: 'Toggle &Markdown Dev Tools', enabled: @window?, accelerator: 'Alt+Ctrl+Shift+I', click: => @window.mdsWindow.send 'openDevTool' }
           ]
         }
       ]
@@ -177,7 +206,7 @@ module.exports = class MdsMainMenu
             historyMenu.push
               label: '&Clear Menu'
               enabled: historyMenu.length > 0
-              click: (item, w) =>
+              click: =>
                 MdsFileHistory.clear()
                 MdsMainMenu.updateMenuToAll()
                 @applyMenu()
@@ -190,21 +219,22 @@ module.exports = class MdsMainMenu
               enabled: @window?
               type: if @window? then 'radio' else 'normal'
               checked: @states.viewMode == 'markdown'
-              click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'markdown' if w
+              click: => @window.mdsWindow.trigger 'viewMode', 'markdown'
             }
             {
               label: '1:1 &Slide view'
               enabled: @window?
               type: if @window? then 'radio' else 'normal'
               checked: @states.viewMode == 'screen'
-              click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'screen' if w
+              click: => @window.mdsWindow.trigger 'viewMode', 'screen'
             }
             {
               label: 'Slide &List view'
               enabled: @window?
               type: if @window? then 'radio' else 'normal'
               checked: @states.viewMode == 'list'
-              click: (item, w) -> w.mdsWindow.trigger 'viewMode', 'list' if w
+              click: => @window.mdsWindow.trigger 'viewMode', 'list'
             }
           ]
 
+    @applyMenu()

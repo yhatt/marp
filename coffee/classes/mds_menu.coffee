@@ -58,5 +58,8 @@ module.exports = class MdsMenu
       MdsMenu.appMenu = @
       Menu.setApplicationMenu MdsMenu.appMenu.getMenu(opts)
 
+  setMenu: (win, opts = {}) =>
+    win.setMenu @getMenu(opts) unless isRemote
+
   popup: (opts = {}) =>
     @getMenu(opts).popup(electron.remote.getCurrentWindow()) if isRemote

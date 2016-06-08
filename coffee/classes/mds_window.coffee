@@ -44,8 +44,6 @@ module.exports = class MdsWindow
         development: global.marp.development
         viewMode: @viewMode
 
-      @menu.applyMenu()
-
       bw.maximize() if global.marp.config.get 'windowPosition.maximized'
 
       bw.loadURL "file://#{__dirname}/../../index.html##{@_window_id}"
@@ -108,7 +106,6 @@ module.exports = class MdsWindow
       unless ignoreRecent
         MdsFileHistory.push fname
         MdsMainMenu.updateMenuToAll()
-        mdsWindow.menu.applyMenu() if mdsWindow?
 
       if mdsWindow? and mdsWindow.isBufferEmpty()
         mdsWindow.trigger 'load', buf, fname
@@ -187,7 +184,6 @@ module.exports = class MdsWindow
 
       @menu.states.viewMode = mode
       @menu.updateMenu()
-      @menu.applyMenu()
 
     unfreeze: ->
       @freeze = false

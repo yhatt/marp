@@ -27,10 +27,6 @@ for arg in process.argv.slice(1)
 
   break if break_arg
 
-# Main menu
-global.marp.mainMenu = new MainMenu
-  development: global.marp.development
-
 # Application events
 app.on 'window-all-closed', ->
   if process.platform != 'darwin' or !!MdsWindow.appWillQuit
@@ -50,7 +46,8 @@ app.on 'open-file', (e, path) ->
   MdsWindow.loadFromFile path, null
 
 app.on 'ready', ->
-  global.marp.mainMenu.applyMenu()
+  global.marp.mainMenu = new MainMenu
+    development: global.marp.development
 
   unless opts.fileOpened
     if opts.file
