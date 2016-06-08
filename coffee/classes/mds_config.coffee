@@ -32,7 +32,7 @@ class MdsConfig
   load: (conf = @configFile, initialize = false) =>
     try
       fs.accessSync(conf, fs.F_OK)
-      @config = extend(true, MdsConfig.initialConfig, JSON.parse(fs.readFileSync(conf).toString()))
+      @config = extend(true, {}, MdsConfig.initialConfig, JSON.parse(fs.readFileSync(conf).toString()))
     catch
       if initialize
         console.log 'Failed reading config file. Config initialized.'
@@ -52,7 +52,7 @@ class MdsConfig
     return @get(names.slice(1).join('.'), _target[names[0]]) if names.length > 1
     _target[names[0]]
 
-  set: (name, val) =>
+  set: (name, val, override = false) =>
     names = name.split '.'
     obj   = {}
     elm   = obj
@@ -61,9 +61,9 @@ class MdsConfig
       elm[key] = if i == names.length - 1 then val else {}
       elm = elm[key]
 
-    @merge obj
+    @merge obj, override
     val
 
-  merge: (object) => @config = extend(true, @config, object)
+  merge: (object, override = false) => if override then extend(@config, object) else extend(true, @config, object)
 
 module.exports = new MdsConfig

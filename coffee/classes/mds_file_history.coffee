@@ -38,7 +38,7 @@ class MdsFileHistory
 
   saveToConf: =>
     if global?.marp?.config?
-      global.marp.config.set('fileHistory', @history)
+      global.marp.config.set('fileHistory', @history, true)
       global.marp.config.set('fileHistoryMax', @max)
       global.marp.config.save()
 

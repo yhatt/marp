@@ -12,7 +12,7 @@ Path           = require 'path'
 module.exports = class MdsWindow
   @appWillQuit: false
 
-  @defOptions: () ->
+  @defOptions:
     title:  'Marp'
     show:   false
     x:      global.marp.config.get 'windowPosition.x'
@@ -32,7 +32,7 @@ module.exports = class MdsWindow
     @path = fileOpts?.path || null
 
     @browserWindow = do =>
-      bw = new BrowserWindow extend(true, @constructor.defOptions(), @options)
+      bw = new BrowserWindow extend(true, {}, MdsWindow.defOptions, @options)
       @_window_id = bw.id
 
       bw.maximize() if global.marp.config.get 'windowPosition.maximized'

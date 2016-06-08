@@ -43,8 +43,8 @@ module.exports = class MdsMarkdown
   settings: new MdsMdSetting
 
   constructor: (settings) ->
-    opts      = extend(MdsMarkdown.default.options, settings?.options || {})
-    plugins   = extend(MdsMarkdown.default.plugins, settings?.plugins || {})
+    opts      = extend({}, MdsMarkdown.default.options, settings?.options || {})
+    plugins   = extend({}, MdsMarkdown.default.plugins, settings?.plugins || {})
     @markdown = MdsMarkdown.createMarkdownIt.call(@, opts, plugins)
     @afterCreate()
 

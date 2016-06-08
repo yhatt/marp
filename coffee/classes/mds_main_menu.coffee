@@ -12,7 +12,7 @@ module.exports = class MdsMainMenu
   constructor: (@opts) ->
 
   setAppMenu: (menuOptsOriginal = {}) =>
-    menuOpts = extend true, menuOptsOriginal,
+    menuOpts = extend true, {}, menuOptsOriginal,
       replacements:
         fileHistory: do =>
           historyMenu = MdsFileHistory.generateMenuItemTemplate(MdsWindow)
@@ -51,7 +51,7 @@ module.exports = class MdsMainMenu
     @getMenu(menuOpts).setAppMenu(menuOpts)
 
   getMenu: (additionalOpts = {}) =>
-    @menu = new MdsMenu @generateTemplate(extend(@opts, additionalOpts))
+    @menu = new MdsMenu @generateTemplate(extend({}, @opts, additionalOpts))
 
   generateTemplate: (opts = @opts) =>
     menuTpl = [
