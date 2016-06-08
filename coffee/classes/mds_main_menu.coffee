@@ -54,7 +54,7 @@ module.exports = class MdsMainMenu
     @menu = new MdsMenu @generateTemplate(extend({}, @opts, additionalOpts))
 
   generateTemplate: (opts = @opts) =>
-    menuTpl = [
+    [
       {
         label: app.getName()
         platform: 'darwin'
@@ -174,14 +174,12 @@ module.exports = class MdsMainMenu
           }
         ]
       }
-    ]
-
-    if opts.development? and !!opts.development
-      menuTpl.push
+      {
         label: '&Dev'
+        visible: opts.development? and !!opts.development
         submenu: [
           { label: 'Toggle &Dev Tools', accelerator: 'Alt+Ctrl+I', click: (item, w) -> w.toggleDevTools() if w }
           { label: 'Toggle &Markdown Dev Tools', accelerator: 'Alt+Ctrl+Shift+I', click: (item, w) -> w.mdsWindow.send 'openDevTool' if w }
         ]
-
-    return menuTpl
+      }
+    ]

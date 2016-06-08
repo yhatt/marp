@@ -12,7 +12,7 @@ module.exports = class MdsMenu
   @filterTemplate: (tpl, opts = {}) =>
     newTpl = []
     for item in tpl
-      filtered = false
+      filtered = item.visible? && !item.visible || false
 
       # Platform filter
       if item.platform?
