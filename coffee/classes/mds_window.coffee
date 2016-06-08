@@ -13,7 +13,7 @@ Path           = require 'path'
 module.exports = class MdsWindow
   @appWillQuit: false
 
-  @defOptions:
+  @defOptions: () ->
     title:  'Marp'
     show:   false
     x:      global.marp.config.get 'windowPosition.x'
@@ -36,7 +36,7 @@ module.exports = class MdsWindow
     @viewMode = global.marp.config.get('viewMode')
 
     @browserWindow = do =>
-      bw = new BrowserWindow extend(true, {}, MdsWindow.defOptions, @options)
+      bw = new BrowserWindow extend(true, {}, MdsWindow.defOptions(), @options)
       @_window_id = bw.id
 
       @menu = new MdsMainMenu
