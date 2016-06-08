@@ -102,14 +102,11 @@ Example: Set "invert" template of Gaia theme.
 
 ### `$theme`
 
-Change slide theme.
+Change slide theme. You can also change from `View -> Theme` menu.
 
 ```
 <!-- $theme: gaia -->
 ```
-
-
-##### Suported themes (v0.0.8)
 
 |Theme name|Value|Directive|
 |:-:|:-:|:-|
