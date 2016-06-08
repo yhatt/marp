@@ -2,6 +2,7 @@
 
 MdsManager     = require './mds_manager'
 MdsMenu        = require './mds_menu'
+MdsMainMenu    = require './mds_main_menu'
 MdsFileHistory = require './mds_file_history'
 extend         = require 'extend'
 fs             = require 'fs'
@@ -28,12 +29,22 @@ module.exports = class MdsWindow
 
   _closeConfirmed: false
 
+  viewMode: null
+
   constructor: (fileOpts = {}, @options = {}) ->
     @path = fileOpts?.path || null
+    @viewMode = global.marp.config.get('viewMode')
 
     @browserWindow = do =>
       bw = new BrowserWindow extend(true, {}, MdsWindow.defOptions, @options)
       @_window_id = bw.id
+
+      @menu = new MdsMainMenu
+        window: bw
+        development: global.marp.development
+        viewMode: @viewMode
+
+      @menu.applyMenu()
 
       bw.maximize() if global.marp.config.get 'windowPosition.maximized'
 
@@ -96,7 +107,8 @@ module.exports = class MdsWindow
 
       unless ignoreRecent
         MdsFileHistory.push fname
-        global.marp.mainMenu.setAppMenu()
+        MdsMainMenu.updateMenuToAll()
+        mdsWindow.menu.applyMenu() if mdsWindow?
 
       if mdsWindow? and mdsWindow.isBufferEmpty()
         mdsWindow.trigger 'load', buf, fname
@@ -110,7 +122,7 @@ module.exports = class MdsWindow
 
   events:
     previewInitialized: ->
-      @trigger 'viewMode', global.marp.config.get('viewMode')
+      @trigger 'viewMode', @viewMode
 
     setConfig: (name, value, isSave = true) ->
       global.marp.config.set name, value
@@ -172,6 +184,10 @@ module.exports = class MdsWindow
       global.marp.config.save()
 
       @send 'viewMode', mode
+
+      @menu.states.viewMode = mode
+      @menu.updateMenu()
+      @menu.applyMenu()
 
     unfreeze: ->
       @freeze = false

@@ -1,5 +1,6 @@
 global.marp or=
   config: require './classes/mds_config'
+  development: false
 
 {app}     = require 'electron'
 Path      = require 'path'
@@ -13,13 +14,12 @@ global.marp.config.initialize()
 # Parse arguments
 opts =
   file: null
-  development: false
 
 for arg in process.argv.slice(1)
   break_arg = false
   switch arg
     when '--development', '--dev'
-      opts.development = true
+      global.marp.development = true
     else
       if exist(resolved_file = Path.resolve(arg))
         opts.file = resolved_file
@@ -28,7 +28,8 @@ for arg in process.argv.slice(1)
   break if break_arg
 
 # Main menu
-global.marp.mainMenu = new MainMenu opts
+global.marp.mainMenu = new MainMenu
+  development: global.marp.development
 
 # Application events
 app.on 'window-all-closed', ->
@@ -49,7 +50,7 @@ app.on 'open-file', (e, path) ->
   MdsWindow.loadFromFile path, null
 
 app.on 'ready', ->
-  global.marp.mainMenu.setAppMenu()
+  global.marp.mainMenu.applyMenu()
 
   unless opts.fileOpened
     if opts.file
