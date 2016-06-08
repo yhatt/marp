@@ -9,6 +9,7 @@
 @import './markdown'
 @import '../../node_modules/highlight.js/styles/sunburst'
 @import url(https://fonts.googleapis.com/css?family=Lato:400,900);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,700);
 
 $bg-color: #fff8e1
 $text-color: #455a64
@@ -100,12 +101,13 @@ $highlight-color: #0288d1
       background: transparent
 
     code
+      font-family: 'Roboto Mono', monospace;
       display: inline-block
       padding: 0.1em 0.2em
       margin: -0.1em 0.05em
       letter-spacing: 0
       font-size: 0.75em
-      vertical-align: middle
+      vertical-align: baseline
 
     pre
       overflow: auto
