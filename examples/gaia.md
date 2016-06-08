@@ -29,13 +29,17 @@
 
 # How to use
 
+#### From menu
+
+Select menu: *View :arrow_right: Theme :arrow_right: Gaia*
+
+#### Use directive
+
 Set `gaia` theme by `$theme` Global Directive.
 
 ```
 <!-- $theme: gaia -->
 ```
-
-*That's all!* :tada:
 
 ---
 

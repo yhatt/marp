@@ -136,7 +136,16 @@ module.exports = class MdsMainMenu
         {
           label: '&View'
           submenu: [
-            { replacement: 'slideViews' }
+            {
+              label: '&Preview Style'
+              enabled: @window?
+              submenu: [{ replacement: 'slideViews' }]
+            }
+            {
+              label: '&Theme'
+              enabled: @window?
+              submenu: [{ replacement: 'themes' }]
+            }
             { type: 'separator' }
             {
               label: 'Toggle &Full Screen'
@@ -215,25 +224,42 @@ module.exports = class MdsMainMenu
 
           slideViews: [
             {
-              label: '&Markdown view'
+              label: '&Markdown'
               enabled: @window?
               type: if @window? then 'radio' else 'normal'
               checked: @states.viewMode == 'markdown'
               click: => @window.mdsWindow.trigger 'viewMode', 'markdown'
             }
             {
-              label: '1:1 &Slide view'
+              label: '1:1 &Slide'
               enabled: @window?
               type: if @window? then 'radio' else 'normal'
               checked: @states.viewMode == 'screen'
               click: => @window.mdsWindow.trigger 'viewMode', 'screen'
             }
             {
-              label: 'Slide &List view'
+              label: 'Slide &List'
               enabled: @window?
               type: if @window? then 'radio' else 'normal'
               checked: @states.viewMode == 'list'
               click: => @window.mdsWindow.trigger 'viewMode', 'list'
+            }
+          ]
+
+          themes: [
+            {
+              label: '&Default'
+              enabled: @window?
+              type: if @window? then 'radio' else 'normal'
+              checked: !@states?.theme || @states.theme == 'default'
+              click: => @window.mdsWindow.send 'setTheme', 'default' unless @window.mdsWindow.freeze
+            }
+            {
+              label: '&Gaia'
+              enabled: @window?
+              type: if @window? then 'radio' else 'normal'
+              checked: @states.theme == 'gaia'
+              click: => @window.mdsWindow.send 'setTheme', 'gaia' unless @window.mdsWindow.freeze
             }
           ]
 

@@ -15,6 +15,10 @@ document.addEventListener 'DOMContentLoaded', ->
         $('#theme-css').attr('href', toApply)
         setTimeout applyScreenSize, 20
 
+        return toApply.match(/([^\/]+)\.css$/)[1]
+
+      false
+
     setStyle = (identifier, css) ->
       id  = "mds-#{identifier}Style"
       elm = $("##{id}")
@@ -59,7 +63,7 @@ document.addEventListener 'DOMContentLoaded', ->
       setStyle 'currentPage', "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
 
     render = (md) ->
-      themes.apply md.settings.getGlobal('theme')
+      md.changedTheme = themes.apply md.settings.getGlobal('theme')
       applySlideSize md.settings.getGlobal('width'), md.settings.getGlobal('height')
 
       mdElm = $('#markdown').html(md.parsed)
@@ -88,8 +92,9 @@ document.addEventListener 'DOMContentLoaded', ->
       renderNotify(md)
 
     renderNotify = (md) ->
-      ipc.sendToHost 'rendered'
+      ipc.sendToHost 'rendered', md
       ipc.sendToHost 'rulerChanged', md.rulers if md.rulerChanged
+      ipc.sendToHost 'themeChanged', md.changedTheme if md.changedTheme
 
     sendPdfOptions = (opts) ->
       slideSize = getSlideSize()

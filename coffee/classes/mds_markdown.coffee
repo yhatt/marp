@@ -73,15 +73,17 @@ module.exports = class MdsMarkdown
         defaultRenderers.html_block.apply(@, args)
 
   parse: (markdown) =>
-    @_rulers    = []
-    @_settings  = new MdsMdSetting
-    @lastParsed = """
-                  #{MdsMarkdown.slideTagOpen(1)}
-                  #{@markdown.render markdown}
-                  #{MdsMarkdown.slideTagClose(@_rulers.length + 1)}
-                  """
+    @_rulers          = []
+    @_settings        = new MdsMdSetting
+    @settingsPosition = []
+    @lastParsed       = """
+                        #{MdsMarkdown.slideTagOpen(1)}
+                        #{@markdown.render markdown}
+                        #{MdsMarkdown.slideTagClose(@_rulers.length + 1)}
+                        """
     ret =
       parsed: @lastParsed
+      settingsPosition: @settingsPosition
       rulerChanged: @rulers.join(",") != @_rulers.join(",")
 
     @rulers   = ret.rulers   = @_rulers
@@ -101,16 +103,32 @@ module.exports = class MdsMarkdown
 
     html_block: (tokens, idx, options, env, self) ->
       {content} = tokens[idx]
-
       return if content.substring(0, 3) isnt '<!-'
 
-      if matched = /^<!-{2,}\s*([\s\S]*?)\s*-{2,}>$/m.exec(content)
+      if matched = /^(<!-{2,}\s*)([\s\S]*?)\s*-{2,}>$/m.exec(content)
+        spaceLines = matched[1].split("\n")
+        lineIndex  = tokens[idx].map[0] + spaceLines.length - 1
+        startFrom  = spaceLines[spaceLines.length - 1].length
 
-        for mathcedLine in matched[1].split(/[\r\n]+/)
-          parsed = /^\s*([\$\*]?)(\w+)\s*:\s*(.*)\s*$/.exec(mathcedLine)
+        for mathcedLine in matched[2].split("\n")
+          parsed = /^(\s*)(([\$\*]?)(\w+)\s*:\s*(.*))\s*$/.exec(mathcedLine)
 
           if parsed
-            if parsed[1] is '$'
-              @_settings.setGlobal parsed[2], parsed[3]
+            startFrom += parsed[1].length
+            pageIdx = @_rulers.length || 0
+
+            if parsed[3] is '$'
+              @_settings.setGlobal parsed[4], parsed[5]
             else
-              @_settings.set (@_rulers.length || 0) + 1, parsed[2], parsed[3], parsed[1] is '*'
+              @_settings.set pageIdx + 1, parsed[4], parsed[5], parsed[3] is '*'
+
+            @settingsPosition.push
+              pageIdx: pageIdx
+              lineIdx: lineIndex
+              from: startFrom
+              length: parsed[2].length
+              property: "#{parsed[3]}#{parsed[4]}"
+              value: parsed[5]
+
+          lineIndex++
+          startFrom = 0

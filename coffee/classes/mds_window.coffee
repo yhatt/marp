@@ -185,6 +185,10 @@ module.exports = class MdsWindow
       @menu.states.viewMode = mode
       @menu.updateMenu()
 
+    themeChanged: (theme) ->
+      @menu.states.theme = theme
+      @menu.updateMenu()
+
     unfreeze: ->
       @freeze = false
       @send 'unfreezed'

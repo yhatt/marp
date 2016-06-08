@@ -16,6 +16,8 @@ class EditorStates
   rulers: []
   currentPage: null
   previewInitialized: false
+  lastRendered: {}
+
   _lockChangedStatus: false
   _imageDirectories: null
 
@@ -65,6 +67,7 @@ class EditorStates
           when 'linkTo'
             @openLink e.args[0]
           when 'rendered'
+            @lastRendered = e.args[0]
             unless @previewInitialized
               MdsRenderer.sendToMain 'previewInitialized'
 
@@ -225,6 +228,26 @@ $ ->
         editorStates.preview.openDevTools()
 
     .on 'setSplitter', (spliiterPos) -> setSplitter spliiterPos
+
+    .on 'setTheme', (theme) ->
+      latestPos = null
+
+      for obj in editorStates.lastRendered.settingsPosition
+        latestPos = obj if obj.property is '$theme'
+
+      if latestPos?
+        editorStates.codeMirror.replaceRange(
+          "$theme: #{theme}",
+          CodeMirror.Pos(latestPos.lineIdx, latestPos.from),
+          CodeMirror.Pos(latestPos.lineIdx, latestPos.from + latestPos.length),
+        )
+      else
+        editorStates.codeMirror.replaceRange(
+          "<!-- $theme: #{theme} -->\n\n",
+          CodeMirror.Pos(editorStates.codeMirror.firstLine(), 0)
+        )
+
+    .on 'themeChanged', (theme) -> MdsRenderer.sendToMain 'themeChanged', theme
 
   # Initialize
   editorStates.codeMirror.focus()
