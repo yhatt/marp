@@ -106,7 +106,9 @@ document.addEventListener 'DOMContentLoaded', ->
       # Load slide resources
       $('body').addClass 'to-pdf'
 
-      ipc.sendToHost 'responsePdfOptions', opts
+      setTimeout ->
+        ipc.sendToHost 'responsePdfOptions', opts
+      , 0
 
     ipc.on 'render', (e, md) -> render(Markdown.parse(md))
     ipc.on 'currentPage', (e, page) -> applyCurrentPage page
