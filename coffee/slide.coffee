@@ -60,7 +60,7 @@ document.addEventListener 'DOMContentLoaded', ->
       $('#container').toggleClass 'height-base', size.ratio > getSlideSize().ratio
 
     applyCurrentPage = (page) ->
-      setStyle 'currentPage', "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ display:none; }}"
+      setStyle 'currentPage', "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ width: 0 !important; height: 0 !important; border: none !important; box-shadow: none !important; }}"
 
     render = (md) ->
       md.changedTheme = themes.apply md.settings.getGlobal('theme')
