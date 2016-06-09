@@ -110,6 +110,24 @@ class EditorStates
 
   insertImage: (filePath) => @codeMirror.replaceSelection("![](#{filePath})\n")
 
+  updateGlobalSetting: (prop, value) =>
+    latestPos = null
+
+    for obj in (@lastRendered?.settingsPosition || [])
+      latestPos = obj if obj.property is prop
+
+    if latestPos?
+      @codeMirror.replaceRange(
+        "#{prop}: #{value}",
+        CodeMirror.Pos(latestPos.lineIdx, latestPos.from),
+        CodeMirror.Pos(latestPos.lineIdx, latestPos.from + latestPos.length),
+      )
+    else
+      @codeMirror.replaceRange(
+        "<!-- #{prop}: #{value} -->\n\n",
+        CodeMirror.Pos(@codeMirror.firstLine(), 0)
+      )
+
 loadingState = 'loading'
 
 $ ->
@@ -240,25 +258,7 @@ $ ->
         editorStates.preview.openDevTools()
 
     .on 'setSplitter', (spliiterPos) -> setSplitter spliiterPos
-
-    .on 'setTheme', (theme) ->
-      latestPos = null
-
-      for obj in editorStates.lastRendered.settingsPosition
-        latestPos = obj if obj.property is '$theme'
-
-      if latestPos?
-        editorStates.codeMirror.replaceRange(
-          "$theme: #{theme}",
-          CodeMirror.Pos(latestPos.lineIdx, latestPos.from),
-          CodeMirror.Pos(latestPos.lineIdx, latestPos.from + latestPos.length),
-        )
-      else
-        editorStates.codeMirror.replaceRange(
-          "<!-- $theme: #{theme} -->\n\n",
-          CodeMirror.Pos(editorStates.codeMirror.firstLine(), 0)
-        )
-
+    .on 'setTheme', (theme) -> editorStates.updateGlobalSetting '$theme', theme
     .on 'themeChanged', (theme) -> MdsRenderer.sendToMain 'themeChanged', theme
     .on 'resourceState', (state) -> loadingState = state
 

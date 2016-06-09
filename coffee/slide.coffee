@@ -1,10 +1,12 @@
-Markdown    = new (require './classes/mds_markdown')
+clsMarkdown = require './classes/mds_markdown'
 ipc         = require('electron').ipcRenderer
 
 document.addEventListener 'DOMContentLoaded', ->
   $ = window.jQuery = window.$ = require('jquery')
 
   do ($) ->
+    Markdown = new clsMarkdown({ afterRender: clsMarkdown.generateAfterRender($) })
+
     themes = {}
     themes.current = -> $('#theme-css').attr('href')
     themes.default = themes.current()
@@ -16,7 +18,6 @@ document.addEventListener 'DOMContentLoaded', ->
         setTimeout applyScreenSize, 20
 
         return toApply.match(/([^\/]+)\.css$/)[1]
-
       false
 
     setStyle = (identifier, css) ->
@@ -60,38 +61,24 @@ document.addEventListener 'DOMContentLoaded', ->
       $('#container').toggleClass 'height-base', size.ratio > getSlideSize().ratio
 
     applyCurrentPage = (page) ->
-      setStyle 'currentPage', "@media not print { body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})){ width: 0 !important; height: 0 !important; border: none !important; box-shadow: none !important; }}"
+      setStyle 'currentPage',
+        """
+        @media not print {
+          body.slide-view.screen .slide_wrapper:not(:nth-of-type(#{page})) {
+            width: 0 !important;
+            height: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+        }
+        """
 
     render = (md) ->
-      md.changedTheme = themes.apply md.settings.getGlobal('theme')
       applySlideSize md.settings.getGlobal('width'), md.settings.getGlobal('height')
+      md.changedTheme = themes.apply md.settings.getGlobal('theme')
 
-      mdElm = $('#markdown').html(md.parsed)
+      $('#markdown').html(md.parsed)
 
-      mdElm.find('img[alt*="%"]').each ->
-        for opt in $(@).attr('alt').split(/\s+/)
-          if m = opt.match(/^(\d+(?:\.\d+)?)%$/)
-            $(@).css('zoom', parseFloat(m[1]) / 100.0)
-
-      mdElm
-        .children('.slide_wrapper')
-        .each ->
-          # Page directives for themes
-          page = $(@)[0].id
-          $(@).attr("data-#{prop}", val) for prop, val of md.settings.getAt(+page, false)
-
-          # Detect only elements
-          inner = $(@).find('.slide > .slide_inner')
-
-          heads = $(inner).children(':header').length
-          $(@).addClass('only-headings') if heads > 0 && $(inner).children().length == heads
-
-          quotes = $(inner).children('blockquote').length
-          $(@).addClass('only-blockquotes') if quotes > 0 && $(inner).children().length == quotes
-
-      renderNotify(md)
-
-    renderNotify = (md) ->
       ipc.sendToHost 'rendered', md
       ipc.sendToHost 'rulerChanged', md.rulers if md.rulerChanged
       ipc.sendToHost 'themeChanged', md.changedTheme if md.changedTheme
@@ -105,10 +92,7 @@ document.addEventListener 'DOMContentLoaded', ->
 
       # Load slide resources
       $('body').addClass 'to-pdf'
-
-      setTimeout ->
-        ipc.sendToHost 'responsePdfOptions', opts
-      , 0
+      setTimeout (-> ipc.sendToHost 'responsePdfOptions', opts), 0
 
     ipc.on 'render', (e, md) -> render(Markdown.parse(md))
     ipc.on 'currentPage', (e, page) -> applyCurrentPage page

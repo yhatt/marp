@@ -41,15 +41,18 @@ module.exports = class MdsWindow
       bw = new BrowserWindow extend(true, {}, MdsWindow.defOptions(), @options)
       @_window_id = bw.id
 
-      bw.webContents.session.webRequest.onCompleted (details) =>
+      loadCmp = (details) =>
         setTimeout =>
           @_watchingResources.delete(details.id)
           @updateResourceState()
         , 500
 
-      bw.webContents.session.webRequest.onResponseStarted (details) =>
+      bw.webContents.session.webRequest.onCompleted loadCmp
+      bw.webContents.session.webRequest.onErrorOccurred loadCmp
+      bw.webContents.session.webRequest.onBeforeRequest (details, callback) =>
         @_watchingResources.add(details.id)
         @updateResourceState()
+        callback({})
 
       @menu = new MdsMainMenu
         window: bw
@@ -220,6 +223,7 @@ module.exports = class MdsWindow
   updateResourceState: =>
     newState = if @_watchingResources.size <= 0 then 'loaded' else 'loading'
     @send 'resourceState', newState if @resourceState isnt newState
+
     @resourceState = newState
 
   isOpen: => @_isOpen

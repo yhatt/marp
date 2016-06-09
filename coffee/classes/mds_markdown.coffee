@@ -38,14 +38,43 @@ module.exports = class MdsMarkdown
     md.use(require(plugName), plugOpts ? {}) for plugName, plugOpts of plugins
     md
 
+  @generateAfterRender: ($) ->
+    (md) ->
+      mdElm = $("<div>#{md.parsed}</div>")
+
+      mdElm.find('img[alt*="%"]').each ->
+        for opt in $(@).attr('alt').split(/\s+/)
+          if m = opt.match(/^(\d+(?:\.\d+)?)%$/)
+            $(@).css('zoom', parseFloat(m[1]) / 100.0)
+
+      mdElm
+        .children('.slide_wrapper')
+        .each ->
+          # Page directives for themes
+          page = $(@)[0].id
+          $(@).attr("data-#{prop}", val) for prop, val of md.settings.getAt(+page, false)
+
+          # Detect only elements
+          inner = $(@).find('.slide > .slide_inner')
+
+          heads = $(inner).children(':header').length
+          $(@).addClass('only-headings') if heads > 0 && $(inner).children().length == heads
+
+          quotes = $(inner).children('blockquote').length
+          $(@).addClass('only-blockquotes') if quotes > 0 && $(inner).children().length == quotes
+
+      md.parsed = mdElm.html()
+
   rulers: []
   imageDirs: []
   settings: new MdsMdSetting
+  afterRender: null
 
   constructor: (settings) ->
-    opts      = extend({}, MdsMarkdown.default.options, settings?.options || {})
-    plugins   = extend({}, MdsMarkdown.default.plugins, settings?.plugins || {})
-    @markdown = MdsMarkdown.createMarkdownIt.call(@, opts, plugins)
+    opts         = extend({}, MdsMarkdown.default.options, settings?.options || {})
+    plugins      = extend({}, MdsMarkdown.default.plugins, settings?.plugins || {})
+    @afterRender = settings?.afterRender || null
+    @markdown    = MdsMarkdown.createMarkdownIt.call(@, opts, plugins)
     @afterCreate()
 
   afterCreate: =>
@@ -88,6 +117,8 @@ module.exports = class MdsMarkdown
 
     @rulers   = ret.rulers   = @_rulers
     @settings = ret.settings = @_settings
+
+    @afterRender(ret) if @afterRender?
     ret
 
   renderers:
