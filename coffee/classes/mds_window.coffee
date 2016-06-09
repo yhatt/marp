@@ -26,8 +26,10 @@ module.exports = class MdsWindow
   path: null
   changed: false
   freeze: false
+  resourceState: null
 
   _closeConfirmed: false
+  _watchingResources: new Set
 
   viewMode: null
 
@@ -38,6 +40,16 @@ module.exports = class MdsWindow
     @browserWindow = do =>
       bw = new BrowserWindow extend(true, {}, MdsWindow.defOptions(), @options)
       @_window_id = bw.id
+
+      bw.webContents.session.webRequest.onCompleted (details) =>
+        setTimeout =>
+          @_watchingResources.delete(details.id)
+          @updateResourceState()
+        , 500
+
+      bw.webContents.session.webRequest.onResponseStarted (details) =>
+        @_watchingResources.add(details.id)
+        @updateResourceState()
 
       @menu = new MdsMainMenu
         window: bw
@@ -204,6 +216,11 @@ module.exports = class MdsWindow
   getShortPath: =>
     return '(untitled)' unless @path?
     @path.replace(/\\/g, '/').replace(/.*\//, '')
+
+  updateResourceState: =>
+    newState = if @_watchingResources.size <= 0 then 'loaded' else 'loading'
+    @send 'resourceState', newState if @resourceState isnt newState
+    @resourceState = newState
 
   isOpen: => @_isOpen
   _setIsOpen: (state) =>

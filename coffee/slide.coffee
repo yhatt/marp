@@ -103,6 +103,9 @@ document.addEventListener 'DOMContentLoaded', ->
         width:  Math.floor(slideSize.w * 25400 / 96)
         height: Math.floor(slideSize.h * 25400 / 96)
 
+      # Load slide resources
+      $('body').addClass 'to-pdf'
+
       ipc.sendToHost 'responsePdfOptions', opts
 
     ipc.on 'render', (e, md) -> render(Markdown.parse(md))
@@ -110,6 +113,7 @@ document.addEventListener 'DOMContentLoaded', ->
     ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
     ipc.on 'setImageDirectories', (e, dirs) -> Markdown.imageDirs = dirs
     ipc.on 'requestPdfOptions', (e, opts) -> sendPdfOptions(opts || {})
+    ipc.on 'unfreeze', -> $('body').removeClass('to-pdf')
 
     # Initialize
     $(document).on 'click', 'a', (e) ->

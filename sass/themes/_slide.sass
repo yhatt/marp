@@ -2,11 +2,11 @@
 
 =body-markdown-mode
   @media not print
-    body:not(.slide-view)
+    body:not(.slide-view):not(.to-pdf)
       @content
 
 =body-slide-mode
-  body.slide-view
+  body.slide-view, body.to-pdf
     @content
 
   @media print
@@ -51,6 +51,9 @@ img.emoji
   box-sizing: border-box
 
 .slide_page
+  display: none
+
+#to-pdf-wrapper
   display: none
 
 +body-markdown-mode
@@ -115,6 +118,26 @@ img.emoji
 @media print
   body .slide_wrapper
     max-height: 100vh
+
+@media not print
+  body.to-pdf
+    #to-pdf-wrapper
+      display: block
+      position: fixed
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      background: #202020
+
+      img
+        position: absolute
+        top: 50%
+        left: 50%
+        width: 51px
+        height: 30px
+        margin-left: -25.5px
+        margin-top: -15px
 
 +body-slide-preview
   background: #202020

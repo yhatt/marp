@@ -110,6 +110,8 @@ class EditorStates
 
   insertImage: (filePath) => @codeMirror.replaceSelection("![](#{filePath})\n")
 
+loadingState = 'loading'
+
 $ ->
   editorStates = new EditorStates(
     CodeMirror.fromTextArea($('#editor')[0],
@@ -172,26 +174,36 @@ $ ->
     MdsRenderer.sendToMain 'setConfig', 'splitterPosition', draggingSplitPosition if draggingSplitPosition?
   , false
 
+  responsePdfOpts = null
+
   # Events
   MdsRenderer
     .on 'publishPdf', (fname) ->
-      editorStates.preview.send 'requestPdfOptions', { filename: fname }
-
-    .on 'responsePdfOptions', (opts) ->
       editorStates.codeMirror.getInputField().blur()
       $('body').addClass 'exporting-pdf'
 
-      editorStates.preview.printToPDF
-        marginsType: 1
-        pageSize: opts.exportSize
-        printBackground: true
-      , (err, data) ->
-        unless err
-          MdsRenderer.sendToMain 'writeFile', opts.filename, data, 'unfreeze'
+      editorStates.preview.send 'requestPdfOptions', { filename: fname }
+
+    .on 'responsePdfOptions', (opts) ->
+      # Wait loading resources
+      startPublish = ->
+        if loadingState is 'loading'
+          setTimeout startPublish, 250
         else
-          MdsRenderer.sendToMain 'unfreeze'
+          editorStates.preview.printToPDF
+            marginsType: 1
+            pageSize: opts.exportSize
+            printBackground: true
+          , (err, data) ->
+            unless err
+              MdsRenderer.sendToMain 'writeFile', opts.filename, data, 'unfreeze'
+            else
+              MdsRenderer.sendToMain 'unfreeze'
+
+      setTimeout startPublish, 500
 
     .on 'unfreezed', ->
+      editorStates.preview.send 'unfreeze'
       $('body').removeClass 'exporting-pdf'
 
     .on 'loadText', (buffer) ->
@@ -248,6 +260,7 @@ $ ->
         )
 
     .on 'themeChanged', (theme) -> MdsRenderer.sendToMain 'themeChanged', theme
+    .on 'resourceState', (state) -> loadingState = state
 
   # Initialize
   editorStates.codeMirror.focus()
