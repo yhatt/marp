@@ -265,3 +265,11 @@ $ ->
   # Initialize
   editorStates.codeMirror.focus()
   editorStates.refreshPage()
+
+  reportInitialize = ->
+    if MdsRenderer.isAccepted()
+      MdsRenderer.sendToMain 'rendererContentInitialized'
+    else
+      setTimeout reportInitialize, 100
+
+  setTimeout reportInitialize, 50

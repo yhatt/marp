@@ -48,8 +48,8 @@ document.addEventListener 'DOMContentLoaded', ->
 
     getScreenSize = ->
       size =
-        w: $(window).width()
-        h: $(window).height()
+        w: document.documentElement.clientWidth
+        h: document.documentElement.clientHeight
 
       previewMargin = +getCSSvar '--preview-margin'
       size.ratio = (size.w - previewMargin * 2) / (size.h - previewMargin * 2)
