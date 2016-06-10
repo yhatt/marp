@@ -44,7 +44,7 @@
     "github-markdown-css": "^2.2.1",
     "highlight.js": "^9.1.0",
     "iconv-lite": "^0.4.13",
-    "jquery": "^2.2.0",
+    "jquery": "^3.0.0",
     "jschardet": "^1.4.1",
     "markdown-it": "^6.0.1",
     "markdown-it-emoji": "^1.1.0",
