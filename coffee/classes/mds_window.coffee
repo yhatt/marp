@@ -68,6 +68,8 @@ module.exports = class MdsWindow
         @send 'setSplitter', global.marp.config.get('splitterPosition')
         @trigger 'load', fileOpts?.buffer || '', @path
 
+      bw.once 'ready-to-show', => bw.show()
+
       bw.on 'close', (e) =>
         if @freeze
           e.preventDefault()
@@ -132,9 +134,6 @@ module.exports = class MdsWindow
     @events[evt]?.apply(@, args)
 
   events:
-    rendererContentInitialized: ->
-      @browserWindow.show()
-
     previewInitialized: ->
       @trigger 'viewMode', @viewMode
 

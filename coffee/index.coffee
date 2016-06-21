@@ -130,7 +130,7 @@ class EditorStates
 
 loadingState = 'loading'
 
-$ ->
+do ->
   editorStates = new EditorStates(
     CodeMirror.fromTextArea($('#editor')[0],
       mode: 'gfm'
@@ -265,11 +265,3 @@ $ ->
   # Initialize
   editorStates.codeMirror.focus()
   editorStates.refreshPage()
-
-  reportInitialize = ->
-    if MdsRenderer.isAccepted()
-      MdsRenderer.sendToMain 'rendererContentInitialized'
-    else
-      setTimeout reportInitialize, 100
-
-  setTimeout reportInitialize, 50
