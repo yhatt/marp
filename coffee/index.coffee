@@ -32,6 +32,7 @@ class EditorStates
       { label: 'Cu&t', accelerator: 'CmdOrCtrl+X', role: 'cut' }
       { label: '&Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
       { label: '&Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' }
+      { label: '&Delete', role: 'delete' }
       { label: 'Select &All', accelerator: 'CmdOrCtrl+A', click: (i, w) => @codeMirror.execCommand 'selectAll' if w and !w.mdsWindow.freeze }
       { type: 'separator', platform: 'darwin' }
       { label: 'Services', role: 'services', submenu: [], platform: 'darwin' }

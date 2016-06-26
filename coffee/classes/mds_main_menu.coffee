@@ -125,6 +125,7 @@ module.exports = class MdsMainMenu
             { label: 'Cu&t', accelerator: 'CmdOrCtrl+X', role: 'cut' }
             { label: '&Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
             { label: '&Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' }
+            { label: '&Delete', role: 'delete' }
             {
               label: 'Select &All'
               enabled: @window?
