@@ -50,7 +50,7 @@ img.emoji
 #container, .slide_wrapper, .slide
   box-sizing: border-box
 
-.slide_page
+.slide_page, .slide_bg
   display: none
 
 +body-markdown-mode
@@ -84,6 +84,9 @@ img.emoji
       transform-origin: 0 0
 
       > .slide_inner
+        position: relative
+        z-index: 2
+
         > :first-child
           &, & > :first-child
             margin-top: 0 !important
@@ -103,6 +106,28 @@ img.emoji
     &[data-page_number="true"]
       .slide_page
         display: block
+
+    .slide_bg
+      position: absolute
+      left: 0
+      top: 0
+      right: 0
+      bottom: 0
+      display: flex
+      z-index: 1
+
+      .slide_bg_img
+        flex: 1 1 auto
+        background-size: cover
+        background-repeat: no-repeat
+        background-position: center center
+        opacity: 0.4
+
+        &[data-alt~="fit"]
+          background-size: contain
+
+        &[data-alt~="original"]
+          opacity: 1
 
   .markdown-body
     img
