@@ -43,12 +43,18 @@ module.exports = class MdsMarkdown
       mdElm = $("<div>#{md.parsed}</div>")
 
       mdElm.find('p > img[alt~="bg"]').each ->
-        p   = $(@).parent()
-        bg  = $(@).parents('.slide_wrapper').find('.slide_bg')
-        src = $(@)[0].src
+        $t  = $(@)
+        p   = $t.parent()
+        bg  = $t.parents('.slide_wrapper').find('.slide_bg')
+        src = $t[0].src
+        alt = $t.attr('alt')
+        elm = $('<div class="slide_bg_img"></div>').css('backgroundImage', "url(#{src})").attr('data-alt', alt)
 
-        $('<div class="slide_bg_img"></div>').css('backgroundImage', "url(#{src})").attr('data-alt', $(@).attr('alt')).appendTo(bg)
-        $(@).remove()
+        for opt in alt.split(/\s+/)
+          elm.css('backgroundSize', "#{m[1]}%") if m = opt.match(/^(\d+(?:\.\d+)?)%$/)
+
+        elm.appendTo(bg)
+        $t.remove()
         p.remove() if p.children(':not(br)').length == 0 && /^\s*$/.test(p.text())
 
       mdElm.find('img[alt*="%"]').each ->
