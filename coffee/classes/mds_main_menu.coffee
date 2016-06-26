@@ -65,7 +65,7 @@ module.exports = class MdsMainMenu
             { label: 'Hide Others', accelerator: 'Command+Alt+H', role: 'hideothers' }
             { label: 'Show All', role: 'unhide' }
             { type: 'separator' }
-            { label: 'Quit', accelerator: 'Command+Q', click: -> app.quit() }
+            { label: 'Quit', role: 'quit' }
           ]
         }
         {
@@ -150,9 +150,8 @@ module.exports = class MdsMainMenu
             { type: 'separator' }
             {
               label: 'Toggle &Full Screen'
-              enabled: @window?
               accelerator: do -> if process.platform == 'darwin' then 'Ctrl+Command+F' else 'F11'
-              click: => @window.setFullScreen !@window.isFullScreen()
+              role: 'togglefullscreen'
             }
           ]
         }
