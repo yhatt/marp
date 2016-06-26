@@ -30,6 +30,7 @@ module.exports = class MdsMdSetting
       basename = path.basename(v)
       return if basename in ['default', 'gaia'] then "css/themes/#{basename}.css" else null
     template: (v) -> v
+    footer: (v) -> v
 
   @findTransformer: (prop) =>
     for transformerProp, transformer of MdsMdSetting.transformers
@@ -96,7 +97,7 @@ module.exports = class MdsMdSetting
 
   @validProps:
     global: ['width', 'height', 'size', 'theme']
-    page:   ['page_number', 'template']
+    page:   ['page_number', 'template', 'footer']
 
   @isValidProp: (page, prop) =>
     target = if page > 0 then 'page' else 'global'

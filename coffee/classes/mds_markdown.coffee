@@ -8,7 +8,7 @@ MdsMdSetting = require './mds_md_setting'
 
 module.exports = class MdsMarkdown
   @slideTagOpen:  (page) -> '<div class="slide_wrapper" id="' + page + '"><div class="slide"><div class="slide_bg"></div><div class="slide_inner">'
-  @slideTagClose: (page) -> '</div><span class="slide_page" data-page="' + page + '">' + page + '</span></div></div>'
+  @slideTagClose: (page, foot) -> '</div><footer class="slide_footer"></footer><span class="slide_page" data-page="' + page + '">' + page + '</span></div></div>'
 
   @highlighter: (code, lang) ->
     if lang?
@@ -65,18 +65,22 @@ module.exports = class MdsMarkdown
       mdElm
         .children('.slide_wrapper')
         .each ->
+          $t = $(@)
+
           # Page directives for themes
-          page = $(@)[0].id
-          $(@).attr("data-#{prop}", val) for prop, val of md.settings.getAt(+page, false)
+          page = $t[0].id
+          for prop, val of md.settings.getAt(+page, false)
+            $t.attr("data-#{prop}", val)
+            $t.find('footer.slide_footer:last').text(val) if prop == 'footer'
 
           # Detect only elements
-          inner = $(@).find('.slide > .slide_inner')
+          inner = $t.find('.slide > .slide_inner')
 
           heads = $(inner).children(':header').length
-          $(@).addClass('only-headings') if heads > 0 && $(inner).children().length == heads
+          $t.addClass('only-headings') if heads > 0 && $(inner).children().length == heads
 
           quotes = $(inner).children('blockquote').length
-          $(@).addClass('only-blockquotes') if quotes > 0 && $(inner).children().length == quotes
+          $t.addClass('only-blockquotes') if quotes > 0 && $(inner).children().length == quotes
 
       md.parsed = mdElm.html()
 
