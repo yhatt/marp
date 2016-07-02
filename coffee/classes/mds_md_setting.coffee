@@ -3,6 +3,7 @@ path    = require 'path'
 
 module.exports = class MdsMdSetting
   @generalTransfomer:
+    bool: (v) -> v is 'true'
     unit: (v) ->
       val = undefined
 
@@ -23,7 +24,7 @@ module.exports = class MdsMdSetting
       Math.floor(val) || undefined
 
   @transformers:
-    page_number: (v) -> v is 'true'
+    page_number: MdsMdSetting.generalTransfomer.bool
     width: MdsMdSetting.generalTransfomer.unit
     height: MdsMdSetting.generalTransfomer.unit
     theme: (v) ->
@@ -31,6 +32,7 @@ module.exports = class MdsMdSetting
       return if basename in ['default', 'gaia'] then "css/themes/#{basename}.css" else null
     template: (v) -> v
     footer: (v) -> v
+    prerender: MdsMdSetting.generalTransfomer.bool
 
   @findTransformer: (prop) =>
     for transformerProp, transformer of MdsMdSetting.transformers
@@ -97,7 +99,7 @@ module.exports = class MdsMdSetting
 
   @validProps:
     global: ['width', 'height', 'size', 'theme']
-    page:   ['page_number', 'template', 'footer']
+    page:   ['page_number', 'template', 'footer', 'prerender']
 
   @isValidProp: (page, prop) =>
     target = if page > 0 then 'page' else 'global'
