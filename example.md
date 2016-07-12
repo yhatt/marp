@@ -146,7 +146,7 @@ Example: Set "invert" template of Gaia theme.
 
 #### Pro Tips
 
-Page directive can be selectively applied current slide by prefixing the page directive with `*`.
+Page directive can be selectively applied to the current slide by prefixing the page directive with `*`.
 
 ```
 <!-- *page_number: false -->
