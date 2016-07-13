@@ -37,7 +37,7 @@ app.on 'before-quit', ->
   MdsWindow.appWillQuit = true
 
 app.on 'activate', (e, hasVisibleWindows) ->
-  new MdsWindow unless hasVisibleWindows
+  new MdsWindow if app.isReady() and not hasVisibleWindows
 
 app.on 'open-file', (e, path) ->
   e.preventDefault()
