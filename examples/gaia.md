@@ -11,7 +11,7 @@
 
 > In Greek mythology, **Gaia** also spelled **Gaea**, was the personification of the Earth and one of the Greek primordial deities.
 >
-> <small>-- *[Gaia (mythology) - Wikpedia, the free encyclopedia](https://en.wikipedia.org/wiki/Gaia_%28mythology%29)*</small>
+> <small>-- *[Gaia (mythology) - Wikipedia, the free encyclopedia](https://en.wikipedia.org/wiki/Gaia_%28mythology%29)*</small>
 
 ---
 <!-- page_number: true -->
