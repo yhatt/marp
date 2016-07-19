@@ -73,14 +73,15 @@ module.exports = class MdsMarkdown
             $t.attr("data-#{prop}", val)
             $t.find('footer.slide_footer:last').text(val) if prop == 'footer'
 
-          # Detect only elements
+          # Detect "only-***" elements
           inner = $t.find('.slide > .slide_inner')
+          innerContents = inner.children().filter(':not(base, link, meta, noscript, script, style, template, title)')
 
-          heads = $(inner).children(':header').length
-          $t.addClass('only-headings') if heads > 0 && $(inner).children().length == heads
+          headsLength = inner.children(':header').length
+          $t.addClass('only-headings') if headsLength > 0 && innerContents.length == headsLength
 
-          quotes = $(inner).children('blockquote').length
-          $t.addClass('only-blockquotes') if quotes > 0 && $(inner).children().length == quotes
+          quotesLength = inner.children('blockquote').length
+          $t.addClass('only-blockquotes') if quotesLength > 0 && innerContents.length == quotesLength
 
       md.parsed = mdElm.html()
 
