@@ -12,7 +12,7 @@ Marp
 :arrow_forward: **[Download latest archives from release page.](https://github.com/yhatt/marp/releases)**
 
 - **Windows**: Unzip `*.*.*-Marp-win32-[arch].zip` and run `Marp.exe`.
-- **Mac OS X**: Mount `*.*.*-Marp-darwin-x64.dmg`, D&D `Marp` to `Applications` and run it from Applications folder / Launchpad.
+- **Mac OS X**: Mount `*.*.*-Marp-darwin-x64.dmg`, D&D `Marp` to `Applications` and run it from Applications folder / Launchpad. Or use [Homebrew](http://brew.sh) [Cask](https://caskroom.github.io): `brew cask install marp`
 - **Linux**: Unpack `*.*.*-Marp-linux-[arch].tar.gz` and run `Marp`.
 
 ### How to write slides?
