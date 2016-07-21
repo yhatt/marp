@@ -77,6 +77,8 @@ gulp.task 'compile:sass', ->
     .pipe $.sass()
     .pipe $.sourcemaps.write()
     .pipe gulp.dest('css')
+  gulp.src ['resources/katex/fonts/*']
+    .pipe gulp.dest('css/fonts')
 
 gulp.task 'compile:coffee:production', ['clean:js'], ->
   gulp.src 'coffee/**/*.coffee'
@@ -91,6 +93,8 @@ gulp.task 'compile:sass:production', ['clean:css'], ->
     .pipe $.cssnano
       zindex: false
     .pipe gulp.dest('css')
+  gulp.src ['resources/katex/fonts/*']
+    .pipe gulp.dest('css/fonts')
 
 gulp.task 'dist', ['clean:dist'], ->
   gulp.src([
