@@ -1,17 +1,25 @@
 clsMarkdown = require './classes/mds_markdown'
 ipc         = require('electron').ipcRenderer
+Path        = require 'path'
+
+resolvePathFromMarp = (path = './') -> Path.resolve(__dirname, '../', path)
 
 document.addEventListener 'DOMContentLoaded', ->
   $ = window.jQuery = window.$ = require('jquery')
 
   do ($) ->
+    # First, resolve Marp resources path
+    $("[data-marp-path-resolver]").each ->
+      for target in $(@).attr('data-marp-path-resolver').split(/\s+/)
+        $(@).attr(target, resolvePathFromMarp($(@).attr(target)))
+
     Markdown = new clsMarkdown({ afterRender: clsMarkdown.generateAfterRender($) })
 
     themes = {}
     themes.current = -> $('#theme-css').attr('href')
     themes.default = themes.current()
     themes.apply = (path = null) ->
-      toApply = path || themes.default
+      toApply = resolvePathFromMarp(path || themes.default)
 
       if toApply isnt themes.current()
         $('#theme-css').attr('href', toApply)
@@ -94,10 +102,12 @@ document.addEventListener 'DOMContentLoaded', ->
       $('body').addClass 'to-pdf'
       setTimeout (-> ipc.sendToHost 'responsePdfOptions', opts), 0
 
+    setImageDirectory = (dir) -> $('head > base').attr('href', dir || './')
+
     ipc.on 'render', (e, md) -> render(Markdown.parse(md))
     ipc.on 'currentPage', (e, page) -> applyCurrentPage page
     ipc.on 'setClass', (e, classes) -> $('body').attr 'class', classes
-    ipc.on 'setImageDirectories', (e, dirs) -> Markdown.imageDirs = dirs
+    ipc.on 'setImageDirectory', (e, dir) -> setImageDirectory(dir)
     ipc.on 'requestPdfOptions', (e, opts) -> sendPdfOptions(opts || {})
     ipc.on 'unfreeze', -> $('body').removeClass('to-pdf')
 

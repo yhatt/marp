@@ -19,7 +19,7 @@ class EditorStates
   lastRendered: {}
 
   _lockChangedStatus: false
-  _imageDirectories: null
+  _imageDirectory: null
 
   constructor: (@codeMirror, @preview) ->
     @initializeEditor()
@@ -83,7 +83,7 @@ class EditorStates
 
       .on 'did-finish-load', (e) =>
         @preview.send 'currentPage', 1
-        @preview.send 'setImageDirectories', @_imageDirectories if @_imageDirectories
+        @preview.send 'setImageDirectory', @_imageDirectory
         @preview.send 'render', @codeMirror.getValue()
 
   openLink: (link) =>
@@ -102,12 +102,12 @@ class EditorStates
 
     @codeMirror.on 'cursorActivity', (cm) => window.setTimeout (=> @refreshPage()), 5
 
-  setImageDirectories: (directories) =>
+  setImageDirectory: (directory) =>
     if @previewInitialized
-      @preview.send 'setImageDirectories', directories
+      @preview.send 'setImageDirectory', directory
       @preview.send 'render', @codeMirror.getValue()
     else
-      @_imageDirectories = directories
+      @_imageDirectory = directory
 
   insertImage: (filePath) => @codeMirror.replaceSelection("![](#{filePath})\n")
 
@@ -231,7 +231,7 @@ do ->
       editorStates.codeMirror.clearHistory()
       editorStates._lockChangedStatus = false
 
-    .on 'setImageDirectories', (directories) -> editorStates.setImageDirectories directories
+    .on 'setImageDirectory', (directories) -> editorStates.setImageDirectory directories
 
     .on 'save', (fname, triggerOnSucceeded = null) ->
       MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue(), triggerOnSucceeded

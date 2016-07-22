@@ -102,7 +102,6 @@ module.exports = class MdsMarkdown
     {rules} = md.renderer
 
     defaultRenderers =
-      image:      rules.image
       html_block: rules.html_block
 
     extend rules,
@@ -112,10 +111,6 @@ module.exports = class MdsMarkdown
       hr: (token, idx) =>
         ruler.push token[idx].map[0] if ruler = @_rulers
         "#{MdsMarkdown.slideTagClose(ruler.length || '')}#{MdsMarkdown.slideTagOpen(if ruler then ruler.length + 1 else '')}"
-
-      image: (args...) =>
-        @renderers.image.apply(@, args)
-        defaultRenderers.image.apply(@, args)
 
       html_block: (args...) =>
         @renderers.html_block.apply(@, args)
@@ -142,16 +137,6 @@ module.exports = class MdsMarkdown
     ret
 
   renderers:
-    image: (tokens, idx, options, env, self) ->
-      src = decodeURIComponent(tokens[idx].attrs[tokens[idx].attrIndex('src')][1])
-
-      return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = src if exist(src)
-
-      if @imageDirs?.length > 0
-        for dir in @imageDirs
-          imgPath = Path.resolve(dir, src)
-          return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = imgPath if exist(imgPath)
-
     html_block: (tokens, idx, options, env, self) ->
       {content} = tokens[idx]
       return if content.substring(0, 3) isnt '<!-'
