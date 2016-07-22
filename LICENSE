@@ -2,6 +2,14 @@ The MIT License (MIT)
 
 Copyright (c) 2016 Yuki Hattori (yukihattori1116@gmail.com)
 
+This software also uses portions of the KaTeX and underscore.js projects, which are
+MIT licensed with the following copyrights:
+
+KaTeX Copyright (c) 2015 Khan Academy
+
+underscore.js Copyright (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative
+Reporters & Editors
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
