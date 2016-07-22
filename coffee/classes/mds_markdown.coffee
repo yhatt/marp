@@ -32,6 +32,7 @@ module.exports = class MdsMarkdown
       'markdown-it-mark': {}
       'markdown-it-emoji':
         shortcuts: {}
+      'markdown-it-katex': {}
 
   @createMarkdownIt: (opts, plugins) ->
     md = markdownIt(opts)
