@@ -48,6 +48,7 @@
     "jschardet": "^1.4.1",
     "markdown-it": "^6.0.1",
     "markdown-it-emoji": "^1.1.0",
+    "markdown-it-katex": "^2.0.1",
     "markdown-it-mark": "^2.0.0",
     "path": "^0.12.7",
     "photon": "git+https://github.com/connors/photon.git",
