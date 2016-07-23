@@ -185,8 +185,8 @@ module.exports = class MdsWindow
       @changed = !!changed
       @refreshTitle()
 
-      dirs = if filePath then [Path.dirname(filePath)] else []
-      @send 'setImageDirectories', dirs
+      dir = if filePath then "#{Path.dirname(filePath)}#{Path.sep}" else null
+      @send 'setImageDirectory', dir
 
     setChangedStatus: (changed) ->
       @changed = !!changed

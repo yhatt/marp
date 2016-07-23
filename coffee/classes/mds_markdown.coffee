@@ -87,7 +87,6 @@ module.exports = class MdsMarkdown
       md.parsed = mdElm.html()
 
   rulers: []
-  imageDirs: []
   settings: new MdsMdSetting
   afterRender: null
 
@@ -145,13 +144,7 @@ module.exports = class MdsMarkdown
   renderers:
     image: (tokens, idx, options, env, self) ->
       src = decodeURIComponent(tokens[idx].attrs[tokens[idx].attrIndex('src')][1])
-
-      return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = src if exist(src)
-
-      if @imageDirs?.length > 0
-        for dir in @imageDirs
-          imgPath = Path.resolve(dir, src)
-          return tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = imgPath if exist(imgPath)
+      tokens[idx].attrs[tokens[idx].attrIndex('src')][1] = src if exist(src)
 
     html_block: (tokens, idx, options, env, self) ->
       {content} = tokens[idx]

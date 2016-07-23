@@ -67,7 +67,7 @@ document.write('Hello, world!');
 |align to left|align to center|align to right|
 |:arrow_left: left|:arrow_left: center :arrow_right:|right :arrow_right:
 
-![70% center](./images/marp.png)
+![70% center](../images/marp.png)
 
 ---
 <!-- *template: gaia -->
@@ -172,6 +172,6 @@ Change color scheme *by `template` page directive.*
 
 #### `<!-- $theme: gaia -->` of Marp
 
-###### [![](./images/marp.png)](https://yhatt.github.io/marp)
+###### [![](../images/marp.png)](https://yhatt.github.io/marp)
 
 #### https://yhatt.github.io/marp
