@@ -14,9 +14,10 @@ Marp
 - **Slides are written in Markdown.**
 - Cross-platform. Supports Windows, Mac, and Linux
 - Live Preview with 3 modes
-- Slide themes (`default`, `gaia`)
+- Slide themes (`default`, `gaia`) and custom background images
 - Supports emoji :heart:
 - Export your slides to PDF
+- Render maths in your slides
 
 ---
 
@@ -144,7 +145,31 @@ Example: Set "invert" template of Gaia theme.
 
 ---
 
-#### Pro Tips
+### `footer`
+
+Add a footer to all the presentation slides
+
+```html
+<!-- footer: This is a footer -->
+```
+
+Example: Adds "This is a footer" in the bottom of each slide
+
+---
+
+### `prerender`
+
+Pre-renders a slide, which can prevent issues with very large background images.
+
+```html
+<!-- prerender: true -->
+```
+
+---
+
+## Pro Tips
+
+#### Apply page directive to current slide only
 
 Page directive can be selectively applied to the current slide by prefixing the page directive with `*`.
 
@@ -159,6 +184,33 @@ Page directive can be selectively applied to the current slide by prefixing the 
 Example is here.
 Page number is not shown in current page, but it's shown on later pages.
 -->
+
+---
+
+#### Slide background Images
+
+You can set an image background for a slide
+
+```html
+![bg](images/marp.png)
+```
+
+![bg](images/marp.png)
+
+---
+
+#### Maths Typsetting
+
+Mathematics is typeset using the `KaTeX` package. Use `$` for inline maths, such as $ax^2+bc+c$, and `$$` for block maths:
+
+$$I_{xx}=\int\int_Ry^2f(x,y)\cdot{}dydx$$
+
+```html
+This is inline: $ax^2+bx+c$, and this is block:
+
+$$I_{xx}=\int\int_Ry^2f(x,y)\cdot{}dydx$$
+
+```
 
 ---
 
