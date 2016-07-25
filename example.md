@@ -147,7 +147,7 @@ Example: Set "invert" template of Gaia theme.
 
 ### `footer`
 
-Add a footer to all the presentation slides
+Add a footer to the current slide and all of the following slides
 
 ```html
 <!-- footer: This is a footer -->
@@ -189,15 +189,26 @@ Page number is not shown in current page, but it's shown on later pages.
 
 #### Slide background Images
 
-You can set an image background for a slide
+You can set an image as a slide background.
 
 ```html
-![bg](images/marp.png)
+![bg](mybackground.png)
 ```
 
-![bg](images/marp.png)
+Options can be provided after `bg`, for example `![bg original](path)`. 
+
+Options include:
+
+- `original` to include the image without any effects
+- `x%` to include the  image at `x` percent of the slide size
+
+Include multiple`![bg](path)` tags to stack background images horizontally.
+
+![bg original](images/background.png)
 
 ---
+
+Multiple background images will be stacked horizontally.
 
 #### Maths Typsetting
 
