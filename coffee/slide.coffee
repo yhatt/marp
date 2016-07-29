@@ -13,7 +13,8 @@ document.addEventListener 'DOMContentLoaded', ->
       for target in $(@).attr('data-marp-path-resolver').split(/\s+/)
         $(@).attr(target, resolvePathFromMarp($(@).attr(target)))
 
-    Markdown = new clsMarkdown({ afterRender: clsMarkdown.generateAfterRender($), twemojiBase: 'images/twemoji/' })
+    twemojiBasePath = Path.resolve(__dirname, '../images/twemoji/') + '/'
+    Markdown = new clsMarkdown({ afterRender: clsMarkdown.generateAfterRender($), twemojiBase: twemojiBasePath })
 
     themes = {}
     themes.current = -> $('#theme-css').attr('href')
