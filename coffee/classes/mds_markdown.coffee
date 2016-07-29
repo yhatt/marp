@@ -93,6 +93,7 @@ module.exports = class MdsMarkdown
   constructor: (settings) ->
     opts         = extend({}, MdsMarkdown.default.options, settings?.options || {})
     plugins      = extend({}, MdsMarkdown.default.plugins, settings?.plugins || {})
+    twemoji.base = settings?.twemojiBase || twemoji.base
     @afterRender = settings?.afterRender || null
     @markdown    = MdsMarkdown.createMarkdownIt.call(@, opts, plugins)
     @afterCreate()
