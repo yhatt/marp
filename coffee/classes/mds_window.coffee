@@ -109,26 +109,26 @@ module.exports = class MdsWindow
 
     @_setIsOpen true
 
-  @loadFromFile: (fname, mdsWindow, ignoreRecent = false) ->
+  @loadFromFile: (fname, mdsWindow, options = {}) ->
     fs.readFile fname, (err, txt) =>
       return if err
 
-      {encoding} = jschardet.detect(txt) ? {}
-      if encoding isnt 'UTF-8' && encoding isnt 'ascii' && iconv_lite.encodingExists(encoding)
-        buf = iconv_lite.decode(txt, encoding)
+      encoding = options?.encoding || jschardet.detect(txt)?.encoding
+      buf = if encoding isnt 'UTF-8' and encoding isnt 'ascii' and iconv_lite.encodingExists(encoding)
+        iconv_lite.decode(txt, encoding)
       else
-        buf = txt.toString()
+        txt.toString()
 
-      unless ignoreRecent
+      unless options?.ignoreRecent
         MdsFileHistory.push fname
         MdsMainMenu.updateMenuToAll()
 
-      if mdsWindow? and mdsWindow.isBufferEmpty()
+      if mdsWindow? and (options?.override or mdsWindow.isBufferEmpty())
         mdsWindow.trigger 'load', buf, fname
       else
         new MdsWindow { path: fname, buffer: buf }
 
-  loadFromFile: (fname, ignoreRecent = false) => MdsWindow.loadFromFile fname, @, ignoreRecent
+  loadFromFile: (fname, options = {}) => MdsWindow.loadFromFile fname, @, options
 
   trigger: (evt, args...) =>
     @events[evt]?.apply(@, args)
@@ -145,7 +145,18 @@ module.exports = class MdsWindow
       @trigger 'initializeState', path
       @send 'loadText', buffer
 
-    loadFromFile: (fname) -> @loadFromFile fname
+    loadFromFile: (fname, options = {}) -> @loadFromFile fname, options
+
+    reopen: (options = {}) ->
+      return if @freeze or !@path
+      return if @changed and dialog.showMessageBox(@browserWindow,
+        type: 'question'
+        buttons: ['OK', 'Cancel']
+        title: 'Marp'
+        message: 'Are you sure?'
+        detail: 'You will lose your changes on Marp. Reopen anyway?')
+
+      @loadFromFile @path, extend({ override: true }, options)
 
     save: (triggerOnSucceeded = null) ->
       if @path then @send('save', @path, triggerOnSucceeded) else @trigger('saveAs', triggerOnSucceeded)
@@ -182,11 +193,12 @@ module.exports = class MdsWindow
 
     initializeState: (filePath = null, changed = false) ->
       @path = filePath
-      @changed = !!changed
-      @refreshTitle()
+      @trigger 'setChangedStatus', changed
 
       dir = if filePath then "#{Path.dirname(filePath)}#{Path.sep}" else null
       @send 'setImageDirectory', dir
+
+      @menu.updateMenu()
 
     setChangedStatus: (changed) ->
       @changed = !!changed
