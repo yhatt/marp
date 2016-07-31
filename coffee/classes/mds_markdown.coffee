@@ -34,6 +34,10 @@ module.exports = class MdsMarkdown
         shortcuts: {}
       'markdown-it-katex': {}
 
+    twemoji:
+      callback: (icon, opts) -> "#{opts.base}#{opts.size}#{Path.sep}#{icon}#{opts.ext}"
+      base: Path.resolve(__dirname, '../../images/twemoji/') + Path.sep
+
   @createMarkdownIt: (opts, plugins) ->
     md = markdownIt(opts)
     md.use(require(plugName), plugOpts ? {}) for plugName, plugOpts of plugins
@@ -89,10 +93,12 @@ module.exports = class MdsMarkdown
   rulers: []
   settings: new MdsMdSetting
   afterRender: null
+  twemojiOpts: {}
 
   constructor: (settings) ->
     opts         = extend({}, MdsMarkdown.default.options, settings?.options || {})
     plugins      = extend({}, MdsMarkdown.default.plugins, settings?.plugins || {})
+    @twemojiOpts = extend({}, MdsMarkdown.default.twemoji, settings?.twemoji || {})
     @afterRender = settings?.afterRender || null
     @markdown    = MdsMarkdown.createMarkdownIt.call(@, opts, plugins)
     @afterCreate()
@@ -106,8 +112,8 @@ module.exports = class MdsMarkdown
       html_block: rules.html_block
 
     extend rules,
-      emoji: (token, idx) ->
-        twemoji.parse(token[idx].content)
+      emoji: (token, idx) =>
+        twemoji.parse(token[idx].content, @twemojiOpts)
 
       hr: (token, idx) =>
         ruler.push token[idx].map[0] if ruler = @_rulers
