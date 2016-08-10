@@ -195,7 +195,7 @@ You can set an image as a slide background.
 ![bg](mybackground.png)
 ```
 
-Options can be provided after `bg`, for example `![bg original](path)`. 
+Options can be provided after `bg`, for example `![bg original](path)`.
 
 Options include:
 
@@ -207,8 +207,6 @@ Include multiple`![bg](path)` tags to stack background images horizontally.
 ![bg original](images/background.png)
 
 ---
-
-Multiple background images will be stacked horizontally.
 
 #### Maths Typsetting
 
