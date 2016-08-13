@@ -107,6 +107,7 @@ gulp.task 'dist', ['clean:dist'], ->
     '*.html'
     'package.json'
     'example.md'
+    'LICENSE'
   ], { base: '.' })
     .pipe gulp.dest('dist')
     .pipe $.install
