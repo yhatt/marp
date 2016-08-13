@@ -175,6 +175,11 @@ do ->
 
     return splitPoint
 
+  setEditorConfig = (editorConfig) ->
+    editor = $(editorStates.codeMirror?.getWrapperElement())
+    editor.css('font-family', editorConfig.fontFamily) if editor?
+    editor.css('font-size', editorConfig.fontSize) if editor?
+
   $('.pane-splitter')
     .mousedown ->
       draggingSplitter = true
@@ -258,6 +263,7 @@ do ->
       else
         editorStates.preview.openDevTools()
 
+    .on 'setEditorConfig', (editorConfig) -> setEditorConfig editorConfig
     .on 'setSplitter', (spliiterPos) -> setSplitter spliiterPos
     .on 'setTheme', (theme) -> editorStates.updateGlobalSetting '$theme', theme
     .on 'themeChanged', (theme) -> MdsRenderer.sendToMain 'themeChanged', theme
