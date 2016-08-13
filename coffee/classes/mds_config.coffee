@@ -10,6 +10,9 @@ class MdsConfig
   configFile: Path.join(app.getPath('userData'), 'config.json')
 
   @initialConfig:
+    editor:
+      fontFamily: 'Osaka-mono, "MS Gothic", monospace'
+      fontSize: '14px'
     fileHistory: []
     fileHistoryMax: 8
     splitterPosition: 0.5

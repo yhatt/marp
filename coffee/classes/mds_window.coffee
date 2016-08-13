@@ -66,6 +66,7 @@ module.exports = class MdsWindow
       bw.webContents.on 'did-finish-load', =>
         @_windowLoaded = true
         @send 'setSplitter', global.marp.config.get('splitterPosition')
+        @send 'setEditorConfig', global.marp.config.get('editor')
         @trigger 'load', fileOpts?.buffer || '', @path
 
       bw.once 'ready-to-show', => bw.show()
