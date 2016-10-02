@@ -40,6 +40,10 @@ npm install
 npm start
 ```
 
+### Customizing Slide CSS
+
+It's easy, include a `<link>` tag at the top of your presentation, or alternatively a `<style>` tag that contains all of your styles. All CSS should be targeting either `.slide` or elements inside of `.slide`. For reference, check out the gaia theme in the sass folder.
+
 ### Create release builds
 
 ```
