@@ -1,0 +1,36 @@
+<div id="landing">
+  <div class="container">
+    <div class="row">
+      <div class="landing-space col-xs-12"></div>
+
+      <div class="col-xs-12{% if page.screenShot %} col-sm-6{% endif %}">
+        <table class="landing-logo">
+          <tr>
+            {% if page.icon %}
+            <td class="landing-icon">
+              <img src="{{ page.icon }}" alt="{{ page.title }}" />
+            </td>
+            {% endif %}
+            <td class="landing-description">
+              <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+              <h2>{% if page.subTitle %}{{ page.subTitle }}{% else %}{{ site.subTitle }}{% endif %}</h2>
+            </td>
+          </tr>
+        </table>
+
+        <div class="landing-contents">
+          {{ content }}
+        </div>
+      </div>
+
+      {% if page.screenShot %}
+      <div class="landing-contents col-xs-12 hidden-sm hidden-md hidden-lg"></div>
+      <div class="landing-screenshot-container col-xs-12 col-sm-6">
+        <img class="landing-screenshot" src="{{ page.screenShot }}" alt="{% if page.title %}{{ page.title }}{% if page.subTitle %} - {{ page.subTitle }}{% endif %}{% else %}{{ site.title }}{% if site.subTitle %} - {{ site.subTitle }}{% endif %}{% endif %}">
+      </div>
+      {% endif %}
+
+      <div class="landing-space col-xs-12"></div>
+    </div>
+  </div>
+</div>

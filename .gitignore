@@ -44,3 +44,9 @@ css/
 dist/
 packages/
 releases/
+
+# Github pages
+docs/Gemfile.lock
+docs/.sass-cache/
+docs/_site/
+docs/_drafts/

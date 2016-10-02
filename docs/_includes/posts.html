@@ -1,0 +1,11 @@
+{% for post in site.posts reversed %}
+  {% if include.category == post.category %}
+    <div class="post">
+      <div class="container">
+        <div class="row">
+          {{ post.content }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}
