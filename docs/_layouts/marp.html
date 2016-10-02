@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  {% include head.html %}
+</head>
+<body>
+  {% include header.html %}
+  {% include landing.html %}
+
+  <div id="posts">
+    {% include posts.html category=page.category %}
+  </div>
+
+  {% include footer.html %}
+</body>
+</html>
