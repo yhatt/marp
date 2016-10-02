@@ -29,7 +29,7 @@ class EditorStates
       { label: '&Undo', accelerator: 'CmdOrCtrl+Z', click: (i, w) => @codeMirror.execCommand 'undo' if w and !w.mdsWindow.freeze }
       {
         label: '&Redo'
-        accelerator: do -> if /^win/.test(process.platform) then 'Control+Y' else 'Shift+CmdOrCtrl+Z'
+        accelerator: do -> if process.platform is 'win32' then 'Control+Y' else 'Shift+CmdOrCtrl+Z'
         click: (i, w) => @codeMirror.execCommand 'redo' if w and !w.mdsWindow.freeze
       }
       { type: 'separator' }
