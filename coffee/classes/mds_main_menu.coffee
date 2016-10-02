@@ -123,7 +123,7 @@ module.exports = class MdsMainMenu
             {
               label: '&Redo'
               enabled: @window?
-              accelerator: 'Shift+CmdOrCtrl+Z'
+              accelerator: do -> if /^win/.test(process.platform) then 'Control+Y' else 'Shift+CmdOrCtrl+Z'
               click: => @window.mdsWindow.send 'editCommand', 'redo' unless @window.mdsWindow.freeze
             }
             { type: 'separator' }
