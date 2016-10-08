@@ -15,7 +15,7 @@ global.marp.config.initialize()
 opts =
   file: null
 
-for arg in process.argv.slice(1)
+for arg in process.argv.slice(process.defaultApp ? 2 : 1)
   break_arg = false
   switch arg
     when '--development', '--dev'
