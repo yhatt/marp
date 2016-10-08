@@ -16,8 +16,8 @@ Marp
 - Live Preview with 3 modes
 - Slide themes (`default`, `gaia`) and custom background images
 - Supports emoji :heart:
-- Export your slides to PDF
 - Render maths in your slides
+- Export your slides to PDF
 
 ---
 
@@ -204,7 +204,7 @@ Options include:
 
 Include multiple`![bg](path)` tags to stack background images horizontally.
 
-![bg original](images/background.png)
+![bg](images/background.png)
 
 ---
 
