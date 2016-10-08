@@ -11,7 +11,7 @@ class MdsConfig
 
   @initialConfig:
     editor:
-      fontFamily: 'Osaka-mono, "MS Gothic", monospace'
+      fontFamily: 'Consolas, monaco, monospace'
       fontSize: '14px'
     fileHistory: []
     fileHistoryMax: 8

@@ -40,7 +40,7 @@
   "dependencies": {
     "codemirror": "^5.11.0",
     "extend": "^3.0.0",
-    "github-markdown-css": "^2.2.1",
+    "github-markdown-css": "^2.4.1",
     "highlight.js": "^9.1.0",
     "iconv-lite": "^0.4.13",
     "jquery": "^3.0.0",
