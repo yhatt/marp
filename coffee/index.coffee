@@ -113,7 +113,7 @@ class EditorStates
     else
       @_imageDirectory = directory
 
-  insertImage: (filePath) => @codeMirror.replaceSelection("![](#{filePath})\n")
+  insertImage: (filePath) => @codeMirror.replaceSelection("![](#{filePath.replace(/ /g, '%20')})\n")
 
   updateGlobalSetting: (prop, value) =>
     latestPos = null
