@@ -208,7 +208,3 @@ gulp.task 'archive:linux', (done) ->
   , done
 
 gulp.task 'release', (done) -> runSequence 'build', 'archive', 'clean', done
-
-gulp.task 'run', ['compile'], ->
-  gulp.src '.'
-    .pipe $.runElectron(['--development'])

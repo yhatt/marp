@@ -8,7 +8,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "gulp run",
+    "start": "gulp compile && electron . --development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -28,7 +28,6 @@
     "gulp-load-plugins": "^1.2.0",
     "gulp-plist": "^0.1.0",
     "gulp-plumber": "^1.0.1",
-    "gulp-run-electron": "^2.0.0",
     "gulp-sass": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-tar": "^1.8.0",
