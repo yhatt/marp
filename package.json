@@ -50,7 +50,7 @@
     "markdown-it-katex": "^2.0.1",
     "markdown-it-mark": "^2.0.0",
     "path": "^0.12.7",
-    "photon": "git+https://github.com/connors/photon.git",
-    "twemoji": "^2.0.5"
+    "photon": "github:connors/photon",
+    "twemoji": "github:twitter/twemoji#v2.2.1"
   }
 }

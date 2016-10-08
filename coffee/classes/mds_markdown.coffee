@@ -35,8 +35,9 @@ module.exports = class MdsMarkdown
       'markdown-it-katex': {}
 
     twemoji:
-      callback: (icon, opts) -> "#{opts.base}#{opts.size}#{Path.sep}#{icon}#{opts.ext}"
-      base: Path.resolve(__dirname, '../../images/twemoji/') + Path.sep
+      base: Path.resolve(__dirname, '../../node_modules/twemoji/2') + Path.sep
+      size: 'svg'
+      ext: '.svg'
 
   @createMarkdownIt: (opts, plugins) ->
     md = markdownIt(opts)
