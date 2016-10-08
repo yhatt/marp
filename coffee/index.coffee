@@ -27,7 +27,11 @@ class EditorStates
 
     @menu = new MdsMenu [
       { label: '&Undo', accelerator: 'CmdOrCtrl+Z', click: (i, w) => @codeMirror.execCommand 'undo' if w and !w.mdsWindow.freeze }
-      { label: '&Redo', accelerator: 'Shift+CmdOrCtrl+Z', click: (i, w) => @codeMirror.execCommand 'redo' if w and !w.mdsWindow.freeze }
+      {
+        label: '&Redo'
+        accelerator: do -> if process.platform is 'win32' then 'Control+Y' else 'Shift+CmdOrCtrl+Z'
+        click: (i, w) => @codeMirror.execCommand 'redo' if w and !w.mdsWindow.freeze
+      }
       { type: 'separator' }
       { label: 'Cu&t', accelerator: 'CmdOrCtrl+X', role: 'cut' }
       { label: '&Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' }
