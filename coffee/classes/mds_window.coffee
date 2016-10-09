@@ -87,7 +87,7 @@ module.exports = class MdsWindow
             detail: "#{@getShortPath()} has been modified. Do you want to save the changes?"
           , (result) =>
             switch result
-              when 0 then @trigger 'save', 'forceClose'
+              when 0 then @trigger 'save', { succeeded: 'forceClose' }
               when 1 then @trigger 'forceClose'
               else
                 MdsWindow.appWillQuit = false
@@ -159,26 +159,37 @@ module.exports = class MdsWindow
 
       @loadFromFile @path, extend({ override: true }, options)
 
-    save: (triggerOnSucceeded = null) ->
-      if @path then @send('save', @path, triggerOnSucceeded) else @trigger('saveAs', triggerOnSucceeded)
+    save: (triggers = {}) ->
+      if @path then @send('save', @path, triggers) else @trigger('saveAs', triggers)
 
-    saveAs: (triggerOnSucceeded = null) ->
+    saveAs: (triggers = {}) ->
       dialog.showSaveDialog @browserWindow,
         title: 'Save as...'
         filters: [{ name: 'Markdown file', extensions: ['md'] }]
       , (fname) =>
         if fname?
-          @send 'save', fname, triggerOnSucceeded
+          @send 'save', fname, triggers
         else
           MdsWindow.appWillQuit = false
 
-    writeFile: (fileName, data, triggerOnSucceeded = null) ->
+    writeFile: (fileName, data, triggers = {}) ->
       fs.writeFile fileName, data, (err) =>
         unless err
           console.log "Write file to #{fileName}."
-          @trigger triggerOnSucceeded if triggerOnSucceeded?
+          @trigger triggers.succeeded if triggers.succeeded?
         else
+          console.log err
+          dialog.showMessageBox @browserWindow,
+            type: 'error'
+            buttons: ['OK']
+            title: 'Marp'
+            message: "Marp cannot write the file to #{fileName}."
+            detail: err.toString()
+
           MdsWindow.appWillQuit = false
+          @trigger triggers.failed, err if triggers.failed?
+
+        @trigger triggers.finalized if triggers.finalized?
 
     forceClose: -> @browserWindow.destroy()
 

@@ -224,7 +224,7 @@ do ->
             printBackground: true
           , (err, data) ->
             unless err
-              MdsRenderer.sendToMain 'writeFile', opts.filename, data, 'unfreeze'
+              MdsRenderer.sendToMain 'writeFile', opts.filename, data, { finalized: 'unfreeze' }
             else
               MdsRenderer.sendToMain 'unfreeze'
 
@@ -242,8 +242,8 @@ do ->
 
     .on 'setImageDirectory', (directories) -> editorStates.setImageDirectory directories
 
-    .on 'save', (fname, triggerOnSucceeded = null) ->
-      MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue(), triggerOnSucceeded
+    .on 'save', (fname, triggers = {}) ->
+      MdsRenderer.sendToMain 'writeFile', fname, editorStates.codeMirror.getValue(), triggers
       MdsRenderer.sendToMain 'initializeState', fname
 
     .on 'viewMode', (mode) ->
