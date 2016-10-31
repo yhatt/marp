@@ -85,10 +85,18 @@ module.exports = class MdsWindow
             title: 'Marp'
             message: 'Are you sure?'
             detail: "#{@getShortPath()} has been modified. Do you want to save the changes?"
+            cancelId: 2
           , (result) =>
             switch result
-              when 0 then @trigger 'save', 'forceClose'
-              when 1 then @trigger 'forceClose'
+              when 0
+                # Wrap by setTimeout to avoid app termination unexpectedly on Linux.
+                setTimeout =>
+                  @trigger 'save', 'forceClose'
+                , 0
+              when 1
+                setTimeout =>
+                  @trigger 'forceClose'
+                , 0
               else
                 MdsWindow.appWillQuit = false
 
