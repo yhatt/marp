@@ -87,16 +87,10 @@ module.exports = class MdsWindow
             detail: "#{@getShortPath()} has been modified. Do you want to save the changes?"
             cancelId: 2
           , (result) =>
+            # Wrap by setTimeout to avoid app termination unexpectedly on Linux.
             switch result
-              when 0
-                # Wrap by setTimeout to avoid app termination unexpectedly on Linux.
-                setTimeout =>
-                  @trigger 'save', 'forceClose'
-                , 0
-              when 1
-                setTimeout =>
-                  @trigger 'forceClose'
-                , 0
+              when 0 then setTimeout (=> @trigger 'save', 'forceClose'), 0
+              when 1 then setTimeout (=> @trigger 'forceClose'), 0
               else
                 MdsWindow.appWillQuit = false
 
