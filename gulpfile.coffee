@@ -14,7 +14,7 @@ packageOpts =
   dir: 'dist'
   out: 'packages'
   name: config.name
-  version: config.dependencies['electron']
+  version: config.devDependencies['electron']
   prune: true
   overwrite: true
   'app-bundle-id': 'jp.yhatt.marp'
