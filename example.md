@@ -208,7 +208,7 @@ Include multiple`![bg](path)` tags to stack background images horizontally.
 
 ---
 
-#### Maths Typsetting
+#### Maths Typesetting
 
 Mathematics is typeset using the `KaTeX` package. Use `$` for inline maths, such as $ax^2+bc+c$, and `$$` for block maths:
 
