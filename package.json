@@ -1,6 +1,6 @@
 {
   "name": "Marp",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Markdown Presentation Writer (Powered by Electron)",
   "repository": {
     "type": "git",
