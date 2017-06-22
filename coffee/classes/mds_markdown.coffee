@@ -16,7 +16,7 @@ module.exports = class MdsMarkdown
         return ''
       else if highlightJs.getLanguage(lang)
         try
-          return highlightJs.highlight(lang, code).value
+          return highlightJs.highlight(lang, code, true).value
 
     highlightJs.highlightAuto(code).value
 
