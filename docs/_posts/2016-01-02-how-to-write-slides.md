@@ -7,7 +7,7 @@ category: top
 
 # How to write slides?
 
-The text format is based on [Github Flavored Markdown](https://guides.github.com/features/mastering-markdown/){:target="_blank"}.
+The text format is based on [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/){:target="_blank"}.
 
 Marp uses the horizontal ruler to create multi-page slides. A `---` between empty lines splits the presentation into slides. This format is similar to [Deckset](http://www.decksetapp.com/){:target="_blank"}.
 
