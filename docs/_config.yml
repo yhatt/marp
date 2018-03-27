@@ -3,19 +3,19 @@ title: Marp
 subTitle: Markdown Presentation Writer
 favicon: https://raw.githubusercontent.com/yhatt/marp/master/images/marp.png
 faviconType: image/png
-repository: https://github.com/yhatt/marp/
+repository_url: https://github.com/yhatt/marp/
 
 build:
-  version: 0.0.11
+  version: 0.0.12
   url:
     windows:
-      x86: https://github.com/yhatt/marp/releases/download/v0.0.11/0.0.11-Marp-win32-ia32.zip
-      x64: https://github.com/yhatt/marp/releases/download/v0.0.11/0.0.11-Marp-win32-x64.zip
+      x86: https://github.com/yhatt/marp/releases/download/v0.0.12/0.0.12-Marp-win32-ia32.zip
+      x64: https://github.com/yhatt/marp/releases/download/v0.0.12/0.0.12-Marp-win32-x64.zip
     macosx:
-      x64: https://github.com/yhatt/marp/releases/download/v0.0.11/0.0.11-Marp-darwin-x64.dmg
+      x64: https://github.com/yhatt/marp/releases/download/v0.0.12/0.0.12-Marp-darwin-x64.dmg
     linux:
-      x86: https://github.com/yhatt/marp/releases/download/v0.0.11/0.0.11-Marp-linux-ia32.tar.gz
-      x64: https://github.com/yhatt/marp/releases/download/v0.0.11/0.0.11-Marp-linux-x64.tar.gz
+      x86: https://github.com/yhatt/marp/releases/download/v0.0.12/0.0.12-Marp-linux-ia32.tar.gz
+      x64: https://github.com/yhatt/marp/releases/download/v0.0.12/0.0.12-Marp-linux-x64.tar.gz
 
 exclude:
   - Gemfile

@@ -1,5 +1,5 @@
 <div class="btn-group download-button">
-  <a class="btn {{ include.class }}" target="_blank" href="{{ site.repository }}releases">
+  <a class="btn {{ include.class }}" target="_blank" href="{{ site.repository_url }}releases">
     Download v{{ site.build.version }}
     &nbsp;<span class="glyphicon glyphicon-download-alt"></span>
   </a>
@@ -40,7 +40,7 @@
     </li>
     <li role="separator" class="divider"></li>
     <li>
-      <a href="{{ site.repository }}releases" target="_blank">
+      <a href="{{ site.repository_url }}releases" target="_blank">
         <i class="fa fa-github" aria-hidden="true"></i>&ensp;<small>Releases notes...</small>
       </a>
     </li>
