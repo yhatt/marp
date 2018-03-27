@@ -36,8 +36,8 @@ foobar
 ### Getting started
 
 ```
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 ### Customizing Slide CSS
@@ -47,7 +47,7 @@ It's easy, include a `<link>` tag at the top of your presentation, or alternativ
 ### Create release builds
 
 ```
-gulp release
+yarn gulp release
 ```
 
 Please set application version in `package.json`.
@@ -60,16 +60,7 @@ If you want to build for Windows in other platforms, please install [Wine](https
 
 ##### OSX
 
-To build for Darwin is only supported in OSX. Please install [appdmg](https://github.com/LinusU/node-appdmg) to create archive (`.dmg`) for Darwin release.
-
-```
-npm install appdmg
-```
-
-###### Notices
-
-- **Don't add development dependency of `appdmg` to `package.json`.** The release task would fail in other platforms.
-- *`gulp-appdmg` is no longer in use since v0.0.4.*
+To build for Darwin is only supported in OSX.
 
 ## Licenses
 

@@ -16,6 +16,7 @@ packageOpts =
   name: config.name
   version: config.devDependencies['electron']
   prune: true
+  packageManager: 'yarn'
   overwrite: true
   'app-bundle-id': 'jp.yhatt.marp'
   'app-version': config.version
@@ -108,26 +109,29 @@ gulp.task 'dist', ['clean:dist'], ->
     'package.json'
     'example.md'
     'LICENSE'
+    'yarn.lock'
   ], { base: '.' })
     .pipe gulp.dest('dist')
     .pipe $.install
-      production: true
+      commands:
+        'package.json': 'yarn'
+      yarn: ['--production']
 
 gulp.task 'package', ['clean:packages', 'dist'], (done) ->
   runSequence 'package:win32', 'package:darwin', 'package:linux', done
 
-gulp.task 'package:win32', (done) ->
+gulp.task 'package:win32', ->
   packageElectron {
     platform: 'win32'
     arch: 'ia32,x64'
     icon: Path.join(__dirname, 'resources/windows/marp.ico')
-  }, done
-gulp.task 'package:linux', (done) ->
+  }
+gulp.task 'package:linux', ->
   packageElectron {
     platform: 'linux'
     arch: 'ia32,x64'
-  }, done
-gulp.task 'package:darwin', (done) ->
+  }
+gulp.task 'package:darwin', ->
   packageElectron {
     platform: 'darwin'
     arch: 'x64'
@@ -145,7 +149,6 @@ gulp.task 'package:darwin', (done) ->
           }
         ]
       .pipe gulp.dest('.')
-      .on 'end', done
 
 gulp.task 'build',        (done) -> runSequence 'compile:production', 'package', done
 gulp.task 'build:win32',  (done) -> runSequence 'compile:production', 'dist', 'package:win32', done
@@ -170,7 +173,6 @@ gulp.task 'archive:darwin', (done) ->
 
   unless appdmg
     $.util.log 'Archiving for darwin is supported only OSX.'
-    $.util.log 'In OSX, please install appdmg (`npm install appdmg`)'
     return done()
 
   globFolders 'packages/*-darwin-*', (path, globDone) ->
