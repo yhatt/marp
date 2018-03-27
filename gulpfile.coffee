@@ -13,7 +13,7 @@ packageOpts =
   asar: true
   dir: 'dist'
   out: 'packages'
-  name: config.name
+  name: config.productName
   version: config.devDependencies['electron']
   prune: true
   packageManager: 'yarn'
@@ -21,12 +21,12 @@ packageOpts =
   'app-bundle-id': 'jp.yhatt.marp'
   'app-version': config.version
   'version-string':
-    ProductName: config.name
-    InternalName: config.name
-    FileDescription: config.name
+    ProductName: config.productName
+    InternalName: config.productName
+    FileDescription: config.productName
     CompanyName: 'yhatt'
     LegalCopyright: ''
-    OriginalFilename: "#{config.name}.exe"
+    OriginalFilename: "#{config.productName}.exe"
 
 packageElectron = (opts = {}, done) ->
   packager extend(packageOpts, opts), (err) ->
@@ -137,7 +137,7 @@ gulp.task 'package:darwin', ->
     arch: 'x64'
     icon: Path.join(__dirname, 'resources/darwin/marp.icns')
   }, ->
-    gulp.src ["packages/*-darwin-*/#{config.name}.app/Contents/Info.plist"], { base: '.' }
+    gulp.src ["packages/*-darwin-*/#{config.productName}.app/Contents/Info.plist"], { base: '.' }
       .pipe $.plist
         CFBundleDocumentTypes: [
           {
@@ -185,7 +185,7 @@ gulp.task 'archive:darwin', (done) ->
             target: release_to
             basepath: Path.join(__dirname, path)
             specification:
-              title: config.name
+              title: config.productName
               background: Path.join(__dirname, "resources/darwin/dmg-background.png")
               'icon-size': 80
               window: {
@@ -193,7 +193,7 @@ gulp.task 'archive:darwin', (done) ->
                 size: { width: 624, height: 412 }
               }
               contents: [
-                { x: 210, y: 300, type: 'file', path: "#{config.name}.app" }
+                { x: 210, y: 300, type: 'file', path: "#{config.productName}.app" }
                 { x: 410, y: 300, type: 'link', path: '/Applications' }
               ]
           }

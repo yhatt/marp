@@ -3,6 +3,7 @@
   "version": "0.0.12",
   "private": true,
   "description": "Markdown Presentation Writer (Powered by Electron)",
+  "productName": "Marp",
   "repository": {
     "type": "git",
     "url": "https://github.com/yhatt/marp"
