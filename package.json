@@ -1,6 +1,7 @@
 {
-  "name": "Marp",
+  "name": "marp",
   "version": "0.0.11",
+  "private": true,
   "description": "Markdown Presentation Writer (Powered by Electron)",
   "repository": {
     "type": "git",
@@ -11,7 +12,6 @@
     "start": "gulp compile && electron . --development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "Yuki Hattori",
   "license": "MIT",
   "devDependencies": {
