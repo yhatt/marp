@@ -16,7 +16,7 @@ Marp
 :arrow_forward: **[Download latest archives from release page.](https://github.com/yhatt/marp/releases)**
 
 - **Windows**: Unzip `*.*.*-Marp-win32-[arch].zip` and run `Marp.exe`.
-- **Mac OS X**: Mount `*.*.*-Marp-darwin-x64.dmg`, D&D `Marp` to `Applications` and run it from Applications folder / Launchpad. Or use [Homebrew](http://brew.sh) [Cask](https://caskroom.github.io): `brew cask install marp`
+- **macOS**: Mount `*.*.*-Marp-darwin-x64.dmg`, D&D `Marp` to `Applications` and run it from Applications folder / Launchpad. Or use [Homebrew](http://brew.sh) [Cask](https://caskroom.github.io): `brew cask install marp`
 - **Linux**: Unpack `*.*.*-Marp-linux-[arch].tar.gz` and run `Marp`.
 
 ### How to write slides?
@@ -62,9 +62,9 @@ Please set application version in `package.json`.
 
 If you want to build for Windows in other platforms, please install [Wine](https://www.winehq.org/) to rewrite Electron's resources.
 
-##### OSX
+##### macOS
 
-To build for Darwin is only supported in OSX.
+To build for Darwin is only supported in macOS.
 
 ## Licenses
 
