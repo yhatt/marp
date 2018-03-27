@@ -5,6 +5,10 @@ Marp
 
 ![Marp](screenshot.png)
 
+> :warning: **This repository is pre-release version, and we have already dropped maintenance.** We are planning the future of Marp at [**@marp-team/marp**](https://github.com/marp-team/marp) (UNDER CONSTRUCTION and NOT READY TO USE).
+>
+> We will archive this repository when a future Marp has grown to replace a pre-release version.
+
 ## Usage
 
 ### Install
