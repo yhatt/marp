@@ -68,5 +68,6 @@ To build for Darwin is only supported in macOS.
 
 ## Licenses
 
-Copyright &copy; 2016 [Yuki Hattori](https://github.com/yhatt).
+Copyright &copy; 2016-2018 [Yuki Hattori](https://github.com/yhatt).
+
 This software released under the [MIT License](https://github.com/yhatt/marp/blob/master/LICENSE).
