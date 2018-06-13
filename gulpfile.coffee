@@ -15,8 +15,7 @@ packageOpts =
   out: 'packages'
   name: config.productName
   version: config.devDependencies['electron']
-  prune: true
-  packageManager: 'yarn'
+  prune: false
   overwrite: true
   'app-bundle-id': 'jp.yhatt.marp'
   'app-version': config.version
@@ -115,7 +114,7 @@ gulp.task 'dist', ['clean:dist'], ->
     .pipe $.install
       commands:
         'package.json': 'yarn'
-      yarn: ['--production']
+      yarn: ['--production', '--ignore-optional', '--no-bin-links']
 
 gulp.task 'package', ['clean:packages', 'dist'], (done) ->
   runSequence 'package:win32', 'package:darwin', 'package:linux', done
@@ -172,7 +171,7 @@ gulp.task 'archive:darwin', (done) ->
     null
 
   unless appdmg
-    $.util.log 'Archiving for darwin is supported only OSX.'
+    $.util.log 'Archiving for darwin is supported only macOS.'
     return done()
 
   globFolders 'packages/*-darwin-*', (path, globDone) ->
