@@ -1,6 +1,6 @@
 {
   "name": "marp",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "private": true,
   "description": "Markdown Presentation Writer (Powered by Electron)",
   "productName": "Marp",
@@ -16,7 +16,6 @@
   "author": "Yuki Hattori",
   "license": "MIT",
   "devDependencies": {
-    "appdmg": "^0.5.2",
     "coffee-script": "^1.10.0",
     "del": "^3.0.0",
     "electron": "1.8.4",
@@ -54,5 +53,8 @@
     "path": "^0.12.7",
     "photon": "github:connors/photon",
     "twemoji": "^2.5.1"
+  },
+  "optionalDependencies": {
+    "appdmg": "^0.5.2"
   }
 }
