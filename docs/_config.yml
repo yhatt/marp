@@ -6,16 +6,16 @@ faviconType: image/png
 repository_url: https://github.com/yhatt/marp/
 
 build:
-  version: 0.0.13
+  version: 0.0.14
   url:
     windows:
-      x86: https://github.com/yhatt/marp/releases/download/v0.0.13/0.0.13-Marp-win32-ia32.zip
-      x64: https://github.com/yhatt/marp/releases/download/v0.0.13/0.0.13-Marp-win32-x64.zip
+      x86: https://github.com/yhatt/marp/releases/download/v0.0.14/0.0.14-Marp-win32-ia32.zip
+      x64: https://github.com/yhatt/marp/releases/download/v0.0.14/0.0.14-Marp-win32-x64.zip
     macosx:
-      x64: https://github.com/yhatt/marp/releases/download/v0.0.13/0.0.13-Marp-darwin-x64.dmg
+      x64: https://github.com/yhatt/marp/releases/download/v0.0.14/0.0.14-Marp-darwin-x64.dmg
     linux:
-      x86: https://github.com/yhatt/marp/releases/download/v0.0.13/0.0.13-Marp-linux-ia32.tar.gz
-      x64: https://github.com/yhatt/marp/releases/download/v0.0.13/0.0.13-Marp-linux-x64.tar.gz
+      x86: https://github.com/yhatt/marp/releases/download/v0.0.14/0.0.14-Marp-linux-ia32.tar.gz
+      x64: https://github.com/yhatt/marp/releases/download/v0.0.14/0.0.14-Marp-linux-x64.tar.gz
 
 exclude:
   - Gemfile
