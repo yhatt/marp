@@ -1,6 +1,6 @@
 {
   "name": "marp",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "private": true,
   "description": "Markdown Presentation Writer (Powered by Electron)",
   "productName": "Marp",
