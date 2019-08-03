@@ -6,11 +6,9 @@ screenShot: https://yhatt.github.io/marp/images/marp-screenshot.png
 ---
 
 <div class="text-center">
-  {% include download_btn.html class="btn-landing btn-lg" %}
+  <p><big>⚠️ We have already dropped maintenance.</big></p><br />
 </div>
 
-Cross-platform support. <small style="white-space: nowrap;">(Windows, macOS, and Linux)</small>
-
-<p class="notice">
-  <strong>We have already dropped maintenance.</strong>
-</p>
+<div class="text-center">
+  {% include download_btn.html class="btn-landing btn-xs" %}
+</div>
