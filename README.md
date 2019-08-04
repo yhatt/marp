@@ -11,6 +11,8 @@ See more details in [yhatt/marp#267](https://github.com/yhatt/marp/issues/267).
 
 > We will archive this repository when a future Marp has grown to replace a pre-release version.
 
+<!--
+
 ---
 
 ![Marp](screenshot.png)
@@ -71,6 +73,8 @@ If you want to build for Windows in other platforms, please install [Wine](https
 ##### macOS
 
 To build for Darwin is only supported in macOS.
+
+-->
 
 ## Licenses
 
