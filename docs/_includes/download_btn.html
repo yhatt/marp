@@ -1,7 +1,6 @@
 <div class="btn-group download-button">
   <a class="btn {{ include.class }}" target="_blank" href="{{ site.repository_url }}releases">
-    Download v{{ site.build.version }}
-    &nbsp;<span class="glyphicon glyphicon-download-alt"></span>
+    Use sunsetted app at your own risk.
   </a>
   <button type="button" class="btn {{ include.class }} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <span class="caret"></span>
@@ -11,31 +10,31 @@
     <li>
       <a href="{{ site.build.url.windows.x86 }}" class="windows x86">
         <i class="fa fa-windows" aria-hidden="true"></i>&ensp;Windows <small>32bit</small>
-        <small class="text-muted recommend-help">(Recommend)</small>
+        <small class="text-muted recommend-help">*</small>
       </a>
     </li>
     <li>
       <a href="{{ site.build.url.windows.x64 }}" class="windows x64">
         <i class="fa fa-windows" aria-hidden="true"></i>&ensp;Windows <small>64bit</small>
-        <small class="text-muted recommend-help">(Recommend)</small>
+        <small class="text-muted recommend-help">*</small>
       </a>
     </li>
     <li>
       <a href="{{ site.build.url.macosx.x64 }}" class="macosx x64">
         <i class="fa fa-apple" aria-hidden="true"></i>&ensp;Mac OS X
-        <small class="text-muted recommend-help">(Recommend)</small>
+        <small class="text-muted recommend-help">*</small>
       </a>
     </li>
     <li>
       <a href="{{ site.build.url.linux.x86 }}" class="linux x86">
         <i class="fa fa-linux" aria-hidden="true"></i>&ensp;Linux <small>32bit</small>
-        <small class="text-muted recommend-help">(Recommend)</small>
+        <small class="text-muted recommend-help">*</small>
       </a>
     </li>
     <li>
       <a href="{{ site.build.url.linux.x64 }}" class="linux x64">
         <i class="fa fa-linux" aria-hidden="true"></i>&ensp;Linux <small>64bit</small>
-        <small class="text-muted recommend-help">(Recommend)</small>
+        <small class="text-muted recommend-help">*</small>
       </a>
     </li>
     <li role="separator" class="divider"></li>
