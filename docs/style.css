@@ -1,0 +1,87 @@
+body {
+  background: #fff;
+  color: #555;
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  border-bottom: 1px solid #eee;
+  height: 60px;
+}
+
+h1.subject {
+  box-sizing: border-box;
+  color: #404050;
+  font-size: 20px;
+  height: 60px;
+  line-height: 40px;
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 10px;
+}
+
+h1.subject img {
+  display: block;
+  float: left;
+  height: 40px;
+  margin-right: 10px;
+  width: 40px;
+}
+
+h1.subject small {
+  font-size: 0.6em;
+}
+
+section {
+  box-sizing: border-box;
+  max-width: 1000px;
+  margin: 0 auto 5em auto;
+  padding: 0 20px;
+}
+
+section.jumbotron {
+  margin: 0 auto;
+}
+
+section.jumbotron img {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+section h1 {
+  text-align: center;
+  margin: 0 0 2em 0;
+  padding: 0.25em 0;
+  border-bottom: 3px solid #ccc;
+}
+
+section h2 {
+  margin: 1.5em 0 1em 0;
+  padding: 0.25em 0;
+  border-bottom: 1px solid #ccc;
+}
+
+section h3 {
+  margin: 2em 0 1em 0;
+}
+
+a {
+  color: #02669d;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #003668;
+}
+
+hr {
+  margin: 2.5em 0;
+  height: 0;
+  border: none;
+  border-bottom: 3px solid #ccc;
+}
