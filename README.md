@@ -24,7 +24,7 @@ If you are currently using Marp app, **_please stop using as soon as possible_**
 
 [Marp Next] is not complex! Simply you can just use either one if you want to create slide deck.
 
-### [Marp for VS Code](Recommended)
+### [Marp for VS Code]&nbsp;(Recommended)
 
 **[Marp for VS Code]**, an extension for [Visual Studio Code], is the best alternative for desktop app users. There are key features inherited from the classic Marp app.
 
