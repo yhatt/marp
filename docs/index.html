@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Marp - Markdown Presentation Writer</title>
+
+    <link rel="icon" type="image/png" href="./marp.png" />
+
+    <meta name="subject" content="Markdown Presentation Writer" />
+    <meta name="description" content="It's a time to migrate into Marp Next!" />
+    <meta name="author" content="Yuki Hattori, yhatt" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yhatt.github.io/marp" />
+    <meta property="og:title" content="Marp - Markdown Presentation Writer" />
+    <meta
+      property="og:description"
+      content="It's a time to migrate into Marp Next!"
+    />
+    <meta property="og:image" content="https://yhatt.github.io/marp/ogp.png" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@y_hatt" />
+    <meta
+      name="twitter:title"
+      content="Marp - The simplest markdown presentation writer"
+    />
+    <meta
+      name="twitter:description"
+      content="It's a time to migrate into Marp Next!"
+    />
+    <meta name="twitter:image" content="https://yhatt.github.io/marp/ogp.png" />
+
+    <link rel="stylesheet" type="text/css" href="./style.css">
+  </head>
+  <body>
+    <nav>
+      <h1 class="subject">
+        <img src="marp.png" alt="Marp" />
+        Marp
+        <small>Markdown Presentation Writer</small>
+      </h1>
+    </nav>
+    <section class="jumbotron">
+      <a href="https://marp.app/">
+        <img src="ogp.png" alt="It's a time to migrate into Marp Next!" />
+      </a>
+    </section>
+    <section>
+      <h1>
+        It's a time to migrate into <a href="https://marp.app/">Marp Next</a>!
+      </h1>
+      <p><strong>The publication of classic Marp app has ended.</strong></p>
+      <p>
+        Marp desktop app, <em>a simple Markdown presentation writer</em>,
+        already had stopped maintenance since 2017. Today
+        <a href="https://github.com/marp-team/">Marp team</a> is focusing into
+        <a href="https://marp.app/">Marp Next</a> project, the brand-new
+        presentation ecosystem for the future.
+      </p>
+      <p>
+        <em
+          ><a href="https://marp.app/blog/the-story-of-marp-next"
+            >See more details in our blog post.</a
+          ></em
+        >
+      </p>
+      <h2>Why?</h2>
+      <p>
+        We had kept publishing app for stuck users that are thinking Marp Next
+        is too complex.
+      </p>
+      <p>
+        But recently, we received
+        <a href="https://github.com/yhatt/marp/issues/276"
+          >a serious security report for outdated app</a
+        >.
+        <strong
+          ><em
+            >By opening a malicious Markdown, an attacker can execute arbitrary
+            code through remote.</em
+          ></strong
+        >
+        We are responsible for saving users from malicious.
+      </p>
+      <p>
+        If you are currently using Marp app,
+        <strong><em>please stop using as soon as possible</em></strong> and
+        migrate into well-maintained Marp Next tools.
+      </p>
+      <h2><a href="https://marp.app/">Marp Next</a> tools</h2>
+      <p>
+        <a href="https://marp.app/">Marp Next</a> is not complex! Simply you can
+        just use either one if you want to create slide deck.
+      </p>
+      <h3><a href="Recommended">Marp for VS Code</a></h3>
+      <p>
+        <strong
+          ><a
+            href="https://marketplace.visualstudio.com/items?itemName=marp-team.marp-vscode"
+            >Marp for VS Code</a
+          ></strong
+        >, an extension for
+        <a href="https://code.visualstudio.com">Visual Studio Code</a>, is the
+        best alternative for desktop app users. There are key features inherited
+        from the classic Marp app.
+      </p>
+      <ul>
+        <li>Live preview</li>
+        <li>
+          Export to PDF, HTML, and PPTX (via
+          <a href="https://github.com/marp-team/marp-cli">Marp CLI</a>)
+        </li>
+        <li>Support built-in 3 themes and custom theme CSS</li>
+      </ul>
+      <h3><a href="https://github.com/marp-team/marp-cli">Marp CLI</a></h3>
+      <p>
+        <strong
+          ><a href="https://github.com/marp-team/marp-cli">Marp CLI</a></strong
+        >
+        is simple but powerful CLI converter from Marp Markdown into PDF, HTML,
+        PPTX, and images. You can use it if you don't want GUI editor.
+      </p>
+      <p>
+        I also have
+        <a href="https://github.com/yhatt/marp-cli-example"
+          >an example repository</a
+        >
+        to automate generating slide deck and serving through
+        <a href="https://github.com/marp-team/marp-cli">Marp CLI</a> +
+        <a href="https://www.netlify.com/">Netlify</a> or
+        <a href="https://zeit.co/">ZEIT Now</a>.
+      </p>
+      <h2>Migrate Markdown</h2>
+      <p>
+        Marp Next is losing Markdown compatibility with classic app, but your
+        slide would keep appearance as before just by some changes in most
+        cases. Please see
+        <a href="https://marp.app/blog/the-story-of-marp-next#migration-plan"
+          >our blog post</a
+        >
+        for details.
+      </p>
+      <h2>Thanks</h2>
+      <p>
+        Thanks for a lot of users / contributors of desktop app. Marp has
+        changed my life as developer without doubt, and I've learned a lot from
+        many feedbacks.
+      </p>
+      <p>
+        Now <a href="https://marp.app/">Marp Next</a> project is evolving built
+        on them. I hope you like it too.
+      </p>
+      <hr />
+      <p>
+        <em>— Yuki Hattori (<a href="https://github.com/yhatt">@yhatt</a>)</em>
+      </p>
+    </section>
+  </body>
+</html>
