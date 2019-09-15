@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg width="136px" height="80px" viewBox="0 0 136 80" version="1.1" xmlns="http://www.w3.org/2000/svg">
-  <polyline fill="none" stroke="#aaa" stroke-dasharray="135" stroke-width="18" points="6.828,86.385 69.898,22.711 69.98,71.104 78.417,71.104 126.891,22.65 126.891,80.104">
-    <animate attributeName="stroke-dashoffset" from="270" to="-270" dur="1.5s" repeatCount="indefinite" />
-  </polyline>
-</svg>
